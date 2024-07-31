@@ -1,0 +1,97 @@
+﻿@using System.Linq
+@model CHY_Theater_Models.Models.Theater
+
+<div class="show-times mt-5">   
+    @{
+        var allShows = Model.Auditoria.SelectMany(a => a.Shows).OrderBy(s => s.ShowDateTime).ToList();
+        var groupedShows = allShows
+        .GroupBy(s => s.ShowDateTime.Date)
+        .ToDictionary(g => g.Key, g => g.GroupBy(s => s.Movie)
+        .OrderBy(mg => mg.Key.MovieName));
+    }
+    @if (allShows.Any())
+    {
+		<ul class="nav nav-tabs" id="showDateTabs" role="tablist">
+            @foreach (var dateGroup in groupedShows.Select((group, index) => new { Group = group, Index = index }))
+            {
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link @(dateGroup.Index == 0 ? "active" : "")"
+                            id="date-@dateGroup.Index-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#date-@dateGroup.Index"
+                            type="button"
+                            role="tab"
+                            aria-controls="date-@dateGroup.Index"
+                            aria-selected="@(dateGroup.Index == 0 ? "true" : "false")">
+                        @dateGroup.Group.Key.ToString("MM/dd")
+                    </button>
+                </li>
+            }
+        </ul>
+        <div class="tab-content" id="showDateTabContent">
+            @foreach (var dateGroup in groupedShows.Select((group, index) => new { Group = group, Index = index }))
+            {
+                <div class="tab-pane fade @(dateGroup.Index == 0 ? "show active" : "")"
+                     id="date-@dateGroup.Index"
+                     role="tabpanel"
+                     aria-labelledby="date-@dateGroup.Index-tab">
+                    @foreach (var movieGroup in dateGroup.Group.Value)
+                    {
+                        var movie = movieGroup.Key;
+                        <div class="movie-group mb-4">
+                            <h5 class="movie-title">@movie.MovieName</h5>
+                            <p class="movie-info text-white">
+                                @movie.MovieEnglishName |
+                                分級: @GetLevelString(movie.Level) |
+                                片長: @movie.Runtime 分鐘
+                            </p>
+                            <div class="row">
+                                @foreach (var show in movieGroup)
+                                {
+                                    <div class="col-md-2 mb-3">
+                                        <div class="card bg-dark clickable-card" onclick="bookShow(@show.ShowId)">
+                                            <div class="card-body">
+                                                <h6 class="card-title ">@show.ShowDateTime.ToString("HH:mm")</h6>
+                                                <div class="card-text text-white">
+                                                    <p>
+                                                        @show.Auditorium.AuditoriumName
+                                                        @show.Auditorium.TotalSeats 席
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>目前沒有可用的場次。</p>
+    }
+</div>
+
+<script>
+    function bookShow(showId) {
+        window.location.href = '@Url.Action("Book", "Bookings")?showId=' + showId;
+    }
+</script>
+
+@functions {
+    string GetLevelString(int level)
+    {
+        return level switch
+        {
+            0 => "普遍級",
+            6 => "保護級",
+            12 => "輔12級",
+            15 => "輔15級",
+            18 => "限制級",
+            _ => "未分級"
+        };
+    }
+}

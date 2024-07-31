@@ -1,0 +1,260 @@
+﻿@model CHY_Theater_Models.Models.Movie
+
+@{
+    ViewData["Title"] = Model.MovieName;
+}
+Styles{
+<style>
+    .container {
+        background-color: #1a1a1a;
+        color: #ffffff;
+        padding: 30px;
+        border-radius: 10px;
+    }
+
+    h1, h3, h4 {
+        color: lightgoldenrodyellow;
+    }
+
+    .btn-danger {
+        background-color: #e90101;
+        border-color: #e90101;
+    }
+
+    .btn-primary {
+        background-color: #0073e6;
+        border-color: #0073e6;
+    }
+
+    .card {
+        background-color: #2a2a2a;
+        color: #ffffff;
+        border: none;
+    }
+
+    .card-subtitle {
+        color: #aaaaaa;
+    }
+
+    img {
+        box-shadow: 0 0 20px rgba(233, 1, 1, 0.5);
+    }
+
+    .embed-responsive iframe {
+        width: 95%;
+        height: 600px; /* You can adjust this value to make it bigger */
+    }
+
+    .breadcrumb {
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 10px 15px;
+        border-radius: 5px;
+    }
+
+    .breadcrumb-item a {
+        color: #e90101;
+        text-decoration: none;
+    }
+
+    .breadcrumb-item.active {
+        color: #fff;
+    }
+
+    .breadcrumb-item + .breadcrumb-item::before {
+        color: #fff;
+    }
+    /* For Show */
+    .show-times .nav-tabs {
+        border-bottom: 2px solid red;
+    }
+
+        .show-times .nav-tabs .nav-link {
+            color: #ffffff;
+            background-color: #333333;
+            border: none;
+            border-radius: 0;
+        }
+
+            .show-times .nav-tabs .nav-link.active {
+                color: #ffffff;
+                background-color: darkslategrey;
+            }
+
+    .show-times h5 {
+        color: wheat;
+        border-bottom: 1px solid orange;
+        padding-bottom: 10px;
+    }
+
+    .show-times h6 {
+        color: #ffffff;
+        background-color: #333333;
+        padding: 5px 10px;
+        border-radius: 5px;
+        display: inline-block;
+    }
+
+    .show-times .card {
+        transition: transform 0.3s;
+    }
+
+    .show-times .clickable-card {
+        cursor: pointer;
+    }
+
+        .show-times .clickable-card:hover {
+            transform: scale(1.05);
+            animation: borderAnimationClockwise 1s forwards;
+        }
+
+    .show-times .book-text {
+        text-align: center;
+        color: #e90101;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .tab-content {
+        padding-top: 20px;
+    }
+    /* Define keyframes for border animation */
+    @@keyframes borderAnimationClockwise {
+        0% {
+            border-top: 3px solid red;
+            border-right: 0 solid red;
+            border-bottom: 0 solid blue;
+            border-left: 0 solid blue;
+        }
+
+        25% {
+            border-top: 3px solid red;
+            border-right: 3px solid red;
+            border-bottom: 0 solid blue;
+            border-left: 0 solid blue;
+        }
+
+        50% {
+            border-top: 3px solid red;
+            border-right: 3px solid red;
+            border-bottom: 3px solid blue;
+            border-left: 0 solid blue;
+        }
+
+        75% {
+            border-top: 3px solid red;
+            border-right: 3px solid red;
+            border-bottom: 3px solid blue;
+            border-left: 3px solid blue;
+        }
+
+        100% {
+            border-top: 4px solid red;
+            border-right: 4px solid red;
+            border-bottom: 4px solid blue;
+            border-left: 4px solid blue;
+        }
+    }
+</style>
+}
+<div class="container mt-5">
+    <nav aria-label="breadcrumb" class="mt-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">首頁</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Movies">電影</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.MovieName</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-4">
+			<img src="@Model.MovieImage" class="img-fluid rounded" alt="@Model.MovieName Poster">
+        </div>
+        <div class="col-md-8">
+            <h1>@Model.MovieName</h1>
+            <h3 class="text-muted">@Model.MovieEnglishName</h3>
+
+            <div class="mt-4">
+                <p><strong>導演：</strong> @Model.DirectorName</p>
+                <p><strong>上映日期：</strong> @Model.ReleaseDate.ToString("yyyy年MM月dd日")</p>
+                <p><strong>片長：</strong> @Model.Runtime 分鐘</p>
+                <p><strong>分級：</strong> @GetMovieRating(Model.Level)</p>
+                <p><strong>語言：</strong> @Model.Language</p>
+                <p><strong>類型：</strong> @string.Join(", ", Model.MovieClasses.Select(mc => mc.Class.ClassName))</p>
+            </div>
+
+
+
+            <div class="mt-4">
+                <h4>演員</h4>
+                <p>@string.Join(", ", Model.MovieActors.Select(ma => ma.Actor.ActorName))</p>
+            </div>
+
+            <div class="mt-4">
+                <h4>劇情簡介</h4>
+                <p>@Model.MovieDescription</p>
+            </div>
+            <div class="col-md-12">
+                <h4>評論 (@Model.Comments.Count)</h4>
+                @foreach (var comment in Model.Comments)
+                {
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">@comment.User.UserName</h5>
+                            <p class="card-text">@comment.CommentMessage</p>
+                        </div>
+                    </div>
+                }
+            </div>
+            @if (Model.MovieState == 1)
+            {
+                @*  <div class="mt-4">
+            <a href="@Url.Action("Index", "Shows", new { movieId = Model.MovieId })" class="btn btn-primary">查看場次</a>
+            </div> *@
+            }
+        </div>
+
+    </div>
+    @*   <div class="row mt-5">
+    <div class="col-md-12">
+    <h3>評論 (@Model.Comments.Count)</h3>
+    @foreach (var comment in Model.Comments)
+    {
+    <div class="card mb-3">
+    <div class="card-body">
+    <h5 class="card-title">@comment.User.UserName</h5>
+    <p class="card-text">@comment.CommentMessage</p>
+    </div>
+    </div>
+    }
+    </div>
+    </div> *@
+    <div class="row mt-3">
+        <h4>預告</h4>
+        @if (!string.IsNullOrEmpty(Model.Movievideo))
+        {
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="@Model.Movievideo" allowfullscreen></iframe>
+            </div>
+        }
+    </div>
+    @if (Model.MovieState == 1)
+    {
+        <div class="mt-4">
+            <partial name="_ShowTimes" model="Model.Shows.OrderBy(s => s.ShowDateTime)" />
+        </div>
+    }
+</div>
+
+@functions {
+    string GetMovieRating(int level)
+    {
+        return level switch
+        {
+            0 => "普遍級",
+            1 => "保護級",
+            2 => "輔導級",
+            3 => "限制級",
+            _ => "未知"
+        };
+    }
+}

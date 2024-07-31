@@ -1,0 +1,32 @@
+﻿/* Footer Start */
+/* Gradient Background for Footer */
+.gradient-bg {
+    background: linear-gradient(to right, rgba(10, 20, 85, 0.8), /* Dark blue-black for the night sky */
+    rgba(70, 40, 30, 0.8), /* Warm brown for the mountain tones */
+    rgba(100, 60, 40, 0.8) /* Lighter warm tone for the sunlit areas */
+    );
+    color: white; /* Ensure text is readable on the gradient background */
+}
+
+/* General Footer Styles */
+.text-muted {
+    color: rgba(255, 255, 255, 0.7) !important; /* Adjust text color for better readability */
+}
+
+/* Social Media Icons */
+.text-reset {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+    .text-reset:hover {
+        color: red !important;
+    }
+
+/* Footer Links */
+.footer-link {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+    .footer-link:hover {
+        color: white;
+    }

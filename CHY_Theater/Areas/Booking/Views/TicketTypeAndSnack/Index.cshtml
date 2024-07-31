@@ -1,0 +1,611 @@
+﻿@using System.Globalization
+@model TicketTpyeSnacksViewModel
+@functions {
+    string GetLevelImagePath(int level)
+    {
+        if (level >= 1 && level <= 5)
+        {
+            return $"/img/index_icon_0{level}.jpg";
+        }
+        return "~/img/index_icon_default.png";
+    }
+}
+@section Styles {
+    <style>
+        .unit-price, .total-amount {
+            text-align: right;
+        }
+        .movie-in
+        /* movie-details Start */
+    .movie-details {
+        padding-left: 20px;
+    }
+
+    .movie-details h2, .movie-details h3, .movie-details strong {
+        font-size: 1.1rem;
+    }
+
+    .movie-details p {
+        line-height: 1.6;
+        color: #6c757d;
+    }
+
+        .movie-information {
+            background-color: #1a1a1a;
+        }
+        /* movie-details End */
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .table tfoot td {
+            font-weight: 600;
+        }
+
+        .table {
+            --bs-table-bg: transparent;
+        }
+
+            .table > :not(caption) > * > * {
+                padding: 0.75rem 0.5rem;
+                background-color: var(--bs-table-bg);
+                border-bottom-width: 1px;
+                box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+            }
+
+            .table > tbody > tr:last-child > td {
+                border-bottom: none;
+            }
+
+            .table > thead > tr > th {
+                border-top: 1px solid #dee2e6;
+                border-bottom: 2px solid #dee2e6;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                font-size: 0.875rem;
+            }
+
+            .table > tfoot > tr > td {
+                border-top: 2px solid #dee2e6;
+            }
+
+        .quantity-select {
+            min-width: 80px;
+        }
+
+        .selected-row {
+            background-color: #e8f4fd;
+            transition: background-color 0.3s ease;
+        }
+
+        #proceed-button {
+            background-color: #FFC107; /* Amber color */
+            border-color: #FFA000; /* Darker amber for border */
+            color: #000; /* Black text for contrast */
+            transition: all 0.3s ease;
+        }
+
+            #proceed-button:hover {
+                background-color: #FFD54F; /* Lighter amber on hover */
+                border-color: #FFC107;
+            }
+
+        .animateBtn {
+            animation: pulsate 2s ease infinite;
+        }
+
+        @@keyframes pulsate {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(255, 193, 7, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 193, 7, 0);
+            }
+        }
+
+        #selected-tickets-list,
+        #selected-snacks-list {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+            #selected-tickets-list span,
+            #selected-snacks-list span {
+                margin-right: 0.5em;
+            }
+
+        .comma {
+            margin-right: 0.5em;
+        }
+
+        @@media (max-width: 768px) {
+            #selected-tickets-list,
+            #selected-snacks-list {
+                flex-direction: column;
+            }
+
+                #selected-tickets-list span,
+                #selected-snacks-list span {
+                    margin-right: 0;
+                    margin-bottom: 0.5em;
+                }
+
+            .comma {
+                display: none;
+            }
+        }
+        .main-content {
+            padding-top: 80px !important; /* Adjust this value based on your navbar height */
+        }
+
+        @@media (max-width: 768px) {
+            .main-content {
+                padding-top: 60px; /* Adjust for smaller screens if necessary */
+            }
+        }
+        /* Movie Poster */
+        .movie-poster-wrapper {
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 20px;
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: auto;
+            max-height: 450px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .movie-poster:hover {
+            transform: scale(1.03);
+        }
+
+        @@media (max-width: 768px) {
+            .movie-poster-wrapper {
+                max-width: 250px;
+            }
+    
+            .movie-poster {
+                max-height: 375px;
+            }
+        }
+
+        @@media (max-width: 576px) {
+            .movie-poster-wrapper {
+                max-width: 200px;
+            }
+    
+            .movie-poster {
+                max-height: 300px;
+            }
+        }
+
+        
+    </style>
+}
+
+<div class="container mt-4 shadow-lg p-5 movie-information rounded main-content">
+
+    <div class="  border rounded-3 p-3 shadow-sm">
+        <div class="row">
+            <div class="col-md-4 d-flex justify-content-center align-items-start">
+                <div class="movie-poster-wrapper">
+                    <img src="@Model.Movie.MovieImage" alt="@Model.Movie.MovieName" class="movie-poster img-fluid rounded shadow" />
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <ul class="movie-details mb-4 list-unstyled">
+                    <li class="mb-3">
+                        <h1 class="fw-bold text-white">@Model.Movie.MovieName</h1>
+                        <h2 class="fs-4 text-muted">@Model.Movie.MovieEnglishName</h2>
+                    </li>
+                    <li class="mb-3">
+                        <span class="fs-5 text-white">級別:</span>
+                        <img src="@GetLevelImagePath(Model.Movie.Level)" alt="Level @Model.Movie.Level" class="ms-2" style="height:40px" />
+                    </li>
+                    <li class="mb-3">
+                        <span class="fs-5 text-white">開演時間:</span>
+                        <span class="fs-5 ms-2">@Model.Show.ShowDateTime.ToString("yyyy年M月d日 H點")</span>
+                    </li>
+                    <li class="selected-tickets mt-4 pt-3 border-top">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="fw-bold fs-5 text-white mb-3">票種</h3>
+                                <div id="selected-tickets-list" class="mb-3"></div>
+                                <h3 class="fw-bold fs-5 text-white mb-3">明細</h3>
+                                <div id="selected-tickets-detail"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <h3 class="fw-bold fs-5 text-white mb-3">加購</h3>
+                                <div id="selected-snacks-list"></div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="mb-3">
+                        <span class="fs-5 text-black">總座位數:</span>
+                        <span id="total-seats" class="fs-5 ms-2"></span>
+                    </li>
+                    <li>
+                        <h3 class="fw-bold fs-5 text-black mb-3">配對活動</h3>
+                        <!-- Add content for "特別活動" here -->
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        @*   <div class="selected-tickets mt-3 pt-3 border-top">
+        <h4 class="fw-bold fs-5 text-muted">已選取票種</h4>
+        <ul id="selected-tickets-list" class="list-unstyled">
+        <!-- This will be populated dynamically with JavaScript -->
+        </ul>
+        </div> *@
+        <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+            <h3 class="mb-0">總計:</h3>
+            <h3 class="mb-0">$<span id="grand-total">0.00</span></h3>
+        </div>
+    </div>
+    
+    
+    
+    <div class="bg-white rounded-3 p-3">
+
+    <form asp-action="ProcessSelection" method="post">
+        <div class="d-flex justify-content-between align-items-center my-4">
+            <h2 class="mb-0">請選擇您的票種與加購</h2>
+            <button type="submit" id="proceed-button" class="btn" style="display: none;">
+                以選取<span id="total-ticket-quantity">0</span>張票;開始選取座位
+            </button>
+        </div>
+
+        <input type="hidden" name="ShowId" value="@Model.BookingSelection.ShowId" />
+        <input type="hidden" name="MovieId" value="@Model.BookingSelection.MovieId" />
+        <input type="hidden" name="TheaterId" value="@Model.BookingSelection.TheaterId" />
+        <input type="hidden" name="Auditoriumid" value="@Model.BookingSelection.Auditoriumid" />
+        @* <input type="hidden" id="GrandTotal" name="GrandTotal" value="0" /> *@
+
+        @* <h3 class="mb-3">Tickets</h3> *@
+        <div class="table-responsive">
+            <table class="table table-borderless mb-4">
+                <thead>
+                    <tr>
+                        <th>票種</th>
+                        <th class="text-end">單價</th>
+                        <th class="text-center">數量</th>
+                        <th class="text-end">小計</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ticketType in Model.TicketTypes)
+                    {
+                        <tr class="ticket-row" data-ticket-id="@ticketType.TicketTypeId" data-ticket-name="@ticketType.TypeName" data-ticket-price="@ticketType.Price" data-ticket-type="@ticketType.TicketDescription" data-seats-for-type="@ticketType.HowManySeatForType">
+                            <td>
+                                @ticketType.TypeName <br />
+                                <div style="font-size: smaller; color: gray;" class="mt-2">@ticketType.TicketDescription</div>
+                            </td>
+                            <td class="unit-price text-end">@ticketType.Price.ToString("C2")</td>
+                            <td class="text-center">
+                                <select class="quantity-select form-select form-select-sm w-auto mx-auto">
+                                    @for (int i = 0; i <= 10; i++)
+                                    {
+                                        <option value="@i">@i</option>
+                                    }
+                                </select>
+                            </td>
+                            <td class="total-amount text-end">
+                                @((0m).ToString("C2", CultureInfo.CreateSpecificCulture("en-US")))
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-end fw-bold">票價總計:</td>
+                        <td class="total-amount ticket-total text-end fw-bold">0.00</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+
+        @* <h3 class="mb-3">Snacks</h3> *@
+        <div class="table-responsive">
+                <table class="table table-borderless">
+                    <thead>
+                        <tr>
+                            <th>加購品項</th>
+                            <th>尺寸</th>
+                            <th class="text-end">單價</th>
+                            <th class="text-center">數量</th>
+                            <th class="text-end">小計</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            var groupedSnacks = Model.Snacks.GroupBy(s => s.SnackName);
+                        }
+                        @foreach (var group in groupedSnacks)
+                        {
+                            <tr class="snack-row" data-snack-name="@group.Key">
+                                <td>@group.Key</td>
+                                <td>
+                                    <select class="size-select form-select form-select-sm">
+                                        @foreach (var snack in group)
+                                        {
+                                            <option value="@snack.SnackId" data-price="@snack.Price">@snack.SnackSize</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td class="unit-price text-end">@group.First().Price.ToString("C0")</td>
+                                <td class="text-center">
+                                    <select class="quantity-select form-select form-select-sm w-auto mx-auto">
+                                        @for (int j = 0; j <= 10; j++)
+                                        {
+                                            <option value="@j">@j</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td class="total-amount text-end">@((0m).ToString("C0"))</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" class="text-end fw-bold">加購總計:</td>
+                            <td class="total-amount snack-total text-end fw-bold">@((0m).ToString("C2"))</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+    </form>
+	</div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.quantity-select, .size-select').change(updateTotal);
+            updateTotal(); // Call this to set initial values
+            function updateTotal() {
+                var ticketTotalAmount = 0;
+                var totalTicketQuantity = 0;
+                var selectedTickets = [];
+                var selectedTicketDetails = [];
+                var snacksTotalAmount = 0;
+                var selectedSnacks = [];
+
+                // Process tickets
+                $('.ticket-row').each(function () {
+                    var unitPrice = parseFloat($(this).data('ticket-price'));
+                    var quantity = parseInt($(this).find('.quantity-select').val()) || 0;
+                    var total = unitPrice * quantity;
+                    var ticketName = $(this).data('ticket-name');
+                    var ticketDescription = $(this).data('ticket-type');
+                    $(this).find('.total-amount').text(total.toFixed(2));
+                    ticketTotalAmount += total;
+                    totalTicketQuantity += quantity;
+                    $(this).toggleClass('selected-row', quantity > 0);
+                    if (quantity > 0) {
+                        selectedTickets.push(`${quantity} x ${ticketName}`);
+                        selectedTicketDetails.push({
+                            quantity: quantity,
+                            description: ticketDescription
+                        });
+                    }
+                });
+
+                // Update ticket total and selected tickets list
+                $('.ticket-total').text(ticketTotalAmount.toFixed(2));
+                updateSelectedList('#selected-tickets-list', selectedTickets, '');
+                updateSelectedTicketDetails('#selected-tickets-detail', selectedTicketDetails, '');
+                // Process snacks
+                var snacksTotalAmount = 0;
+                var selectedSnacks = [];
+
+                $('.snack-row').each(function () {
+                    var selectedSize = $(this).find('.size-select option:selected');
+                    var snackId = selectedSize.val();
+                    var unitPrice = parseFloat(selectedSize.data('price'));
+                    var quantity = parseInt($(this).find('.quantity-select').val()) || 0;
+                    var total = unitPrice * quantity;
+                    var snackName = $(this).data('snack-name');
+                    var snackSize = selectedSize.text();
+
+                    $(this).find('.unit-price').text(unitPrice.toFixed(2));
+                    $(this).find('.total-amount').text(total.toFixed(2));
+                    snacksTotalAmount += total;
+                    $(this).toggleClass('selected-row', quantity > 0);
+
+                    if (quantity > 0) {
+                        selectedSnacks.push(`${quantity} x ${snackName} (${snackSize})`);
+                    }
+                });
+
+                // Update snack total and selected snacks list
+                $('.snack-total').text(snacksTotalAmount.toFixed(2));
+                updateSelectedList('#selected-snacks-list', selectedSnacks, '');
+
+                // Update total ticket quantity in submit button and show/hide the button
+                $('#total-ticket-quantity').text(totalTicketQuantity);
+                if (totalTicketQuantity > 0) {
+                    $('#proceed-button').show().addClass('animateBtn');
+                } else {
+                    $('#proceed-button').hide().removeClass('animateBtn');
+                }
+
+                // Button hover effect
+                $('#proceed-button').hover(
+                    function () {
+                        $(this).removeClass('animateBtn');
+                    },
+                    function () {
+                        if ($('#total-ticket-quantity').text() !== '0') {
+                            $(this).addClass('animateBtn');
+                        }
+                    }
+                );
+
+                // Calculate and update grand total
+                var grandTotalAmount = ticketTotalAmount + snacksTotalAmount;
+                $('#grand-total').text(grandTotalAmount.toFixed(2));
+                // $('#GrandTotal').val(grandTotalAmount.toFixed(2));  // Update hidden input if needed
+            }
+
+            function updateSelectedTicketDetails(selector, details, emptyMessage) {
+                var container = $(selector);
+                container.empty();
+
+                if (details.length === 0) {
+                    container.html(`<span>${emptyMessage}</span>`);
+                } else {
+                    var combinedItems = {};
+                    details.forEach(function (detail) {
+                        var items = detail.description.split(';');
+                        items.forEach(function (item) {
+                            var parts = item.split(':');
+                            var description = parts[0].trim();
+                            var quantity = parseInt(parts[1].trim()) * detail.quantity;
+                            if (combinedItems[description]) {
+                                combinedItems[description] += quantity;
+                            } else {
+                                combinedItems[description] = quantity;
+                            }
+                        });
+                    });
+
+                    var combinedDescription = Object.entries(combinedItems).map(([key, value]) => `${key}:${value}`).join(';');
+                    var span = $('<span></span>').text(`${combinedDescription}`);
+                    container.append(span);
+                }
+            }
+
+            function updateSelectedList(selector, items, emptyMessage) {
+                var container = $(selector);
+                container.empty();
+
+                if (items.length === 0) {
+                    container.html(`<span>${emptyMessage}</span>`);
+                } else {
+                    items.forEach(function (item, index) {
+                        var span = $('<span></span>').text(item);
+                        container.append(span);
+                        if (index < items.length - 1) {
+                            container.append('<span class="comma">, </span>');
+                        }
+                    });
+                }
+            }
+
+            // Call updateTotal when page loads and when any quantity changes
+            $(document).ready(function () {
+                updateTotal();
+                $('.quantity-select').on('change', updateTotal);
+            });
+            //
+            $('.quantity-select').change(updateTotal);
+            updateTotal(); // Call this to set initial values
+
+            function calculateTotalSeats() {
+                let totalSeats = 0;
+                const ticketRows = document.querySelectorAll('.ticket-row');
+
+                ticketRows.forEach(row => {
+                    const howManySeatForType = parseInt(row.dataset.seatsForType, 10);
+                    const selectedQuantity = parseInt(row.querySelector('.quantity-select').value, 10);
+                    totalSeats += howManySeatForType * selectedQuantity;
+                });
+
+                // Update the total seats display
+                document.getElementById('total-seats').textContent = totalSeats;
+
+                return totalSeats;
+            }
+
+            // Update total when any quantity changes
+            document.querySelectorAll('.quantity-select').forEach(select => {
+                select.addEventListener('change', calculateTotalSeats);
+            });
+
+            // Initial calculation
+            calculateTotalSeats();
+
+
+            $('form').submit(function (e) {
+                e.preventDefault();
+                var selectedTickets = [];
+                $('.ticket-row').each(function () {
+                    var quantity = parseInt($(this).find('.quantity-select').val());
+                    if (quantity > 0) {
+                        selectedTickets.push({
+                            TicketTypeId: $(this).data('ticket-id'),
+                            TypeName: $(this).data('ticket-name'),
+                            Price: $(this).data('ticket-price'),
+                            Quantity: quantity,
+                            TicketDescription: $(this).data('ticket-type')
+                        });
+                    }
+                });
+
+                var selectedSnacks = [];
+                $('.snack-row').each(function () {
+                    var quantity = parseInt($(this).find('.quantity-select').val());
+                    if (quantity > 0) {
+                        var selectedSize = $(this).find('.size-select option:selected');
+                        selectedSnacks.push({
+                            SnackId: selectedSize.val(),
+                            SnackName: $(this).data('snack-name'),
+                            SnackSize: selectedSize.text(),
+                            Price: selectedSize.data('price'),
+                            Quantity: quantity
+                        });
+                    }
+                });
+
+                // Convert grand total to cents and round to nearest integer
+                var grandTotal = Math.round(parseFloat($('#grand-total').text()));
+                var grandSeatTotal = Math.round(parseFloat($('#total-seats').text()));
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'GrandTotal',
+                    value: grandTotal
+                }).appendTo('form');
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'GrandSeatTotal',
+                    value: grandSeatTotal
+                }).appendTo('form');
+                // Add selected tickets and snacks to hidden input fields
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'SelectedTickets',
+                    value: JSON.stringify(selectedTickets)
+                }).appendTo('form');
+
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'SelectedSnacks',
+                    value: JSON.stringify(selectedSnacks)
+                }).appendTo('form');
+
+
+                // Submit the form
+                this.submit();
+            });
+        });
+    </script>
+}

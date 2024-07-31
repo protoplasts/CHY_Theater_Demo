@@ -1,0 +1,171 @@
+﻿@model MovieViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+Styles{
+<style>
+    .movie-container {
+        padding-top: 100px; /* Adjust this value based on your navbar height */
+    }
+
+    .movie-tabs {
+        margin-bottom: 20px;
+    }
+
+        .movie-tabs .nav-link {
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            margin-right: 5px;
+        }
+
+            .movie-tabs .nav-link.active {
+                background-color: #e90101;
+                color: #fff;
+            }
+
+    .movie-card {
+        transition: transform 0.3s;
+        height: 100%;
+    }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+        }
+
+        .movie-card .card-img-top {
+            height: auto;
+            object-fit: cover;
+        }
+
+        .movie-card .card-body {
+            display: flex;
+            flex-direction: column;
+        }
+
+    .movie-description {
+        flex-grow: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
+
+    .card-buttons {
+        margin-top: auto;
+    }
+
+        .card-buttons .btn {
+            margin-right: 5px;
+        }
+
+    .btn-danger {
+        background-color: #e90101;
+        border-color: #e90101;
+    }
+
+    .btn-outline-light:hover {
+        background-color: #e90101;
+        border-color: #e90101;
+    }
+
+    .breadcrumb {
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 10px 15px;
+        border-radius: 5px;
+    }
+
+    .breadcrumb-item a {
+        color: #e90101;
+        text-decoration: none;
+    }
+
+    .breadcrumb-item.active {
+        color: #fff;
+    }
+
+    .breadcrumb-item + .breadcrumb-item::before {
+        color: #fff;
+    }
+</style>
+}
+
+
+<div class="container movie-container">
+    @*  <nav aria-label="breadcrumb" class="mt-3">
+    <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/">首頁</a></li>
+    <li class="breadcrumb-item active" aria-current="page">電影</li>
+    </ol>
+    </nav> *@
+    @await Component.InvokeAsync("Breadcrumb", new { currentPage = "電影" })
+
+    <main role="main" class="pb-3 mt-5">
+        <ul class="nav nav-tabs movie-tabs mt-5" id="movieTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="onshow-tab" data-bs-toggle="tab" data-bs-target="#onshow" type="button" role="tab" aria-controls="onshow" aria-selected="true">現正熱映</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="comingsoon-tab" data-bs-toggle="tab" data-bs-target="#comingsoon" type="button" role="tab" aria-controls="comingsoon" aria-selected="false">即將上映</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="movieTabsContent">
+            <div class="tab-pane fade show active" id="onshow" role="tabpanel" aria-labelledby="onshow-tab">
+                <div class="row">
+                    @foreach (var movie in Model.OnShowMovies)
+                    {
+                        <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+                            <a href="@Url.Action("Details", "Movies", new { id = movie.MovieId })" class="text-decoration-none">
+                                <div class="card bg-dark text-white movie-card">
+                                    <img src="@movie.MovieImage" class="card-img-top" alt="@movie.MovieName Poster" />
+                                    <div class="card-body">
+                                        <div class="movie-titles">
+                                            <h5 class="card-title mb-2">@movie.MovieName</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted">@movie.MovieEnglishName</h6>
+                                        </div>
+                                        <div class="card-buttons">
+                                            <a href="#" class="btn btn-danger">場次</a>
+                                            @if (!string.IsNullOrEmpty(movie.Movievideo))
+                                            {
+                                                <a href="@movie.Movievideo" class="btn btn-outline-light">預告</a>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="tab-pane fade" id="comingsoon" role="tabpanel" aria-labelledby="comingsoon-tab">
+                <div class="row">
+                    @foreach (var movie in Model.ComingSoonMovies)
+                    {
+                        <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+                            <a href="@Url.Action("Details", "Movies", new { id = movie.MovieId })" class="text-decoration-none">
+                                <div class="card bg-dark text-white movie-card">
+                                    <img src="@movie.MovieImage" class="card-img-top" alt="@movie.MovieName Poster" />
+                                    <div class="card-body">
+                                        <div class="movie-titles">
+                                            <h5 class="card-title mb-2">@movie.MovieName</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted">@movie.MovieEnglishName</h6>
+                                        </div>
+                                        <div class="card-buttons">
+                                            <a href="#" class="btn btn-danger">場次</a>
+                                            @if (!string.IsNullOrEmpty(movie.Movievideo))
+                                            {
+                                                <a href="@movie.Movievideo" class="btn btn-outline-light">預告</a>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+

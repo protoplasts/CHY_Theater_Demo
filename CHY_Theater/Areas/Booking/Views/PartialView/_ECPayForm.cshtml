@@ -1,0 +1,86 @@
+﻿@model ECPayViewModel
+
+<div class="card" id="ecpayForm">
+    <div class="card-header">
+        EC Pay 支付
+    </div>
+    <div class="card-body">
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <label class="form-label">付款選項</label>
+                <select id="PayOption" class="form-control" name="PayOption">
+                    <option selected="selected" value="ECPay">綠界支付</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">訂單編號</label>
+                <input type="text" class="form-control" id="MerchantOrderNo" value="@Model.MerchantTradeNo" readonly>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">商品說明</label>
+                <input type="text" class="form-control" id="ItemDesc" readonly>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">商品金額</label>
+                <input type="text" class="form-control" id="Amt" value="@Model.TotalAmount" readonly>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <label class="form-label">繳費有效期限</label>
+                <input type="text" class="form-control" id="ExpireDate" value="@Model.ExpireDate" readonly>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">付款人電子信箱</label>
+                <input type="text" class="form-control" id="Email">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <button type="button" class="btn btn-primary" id="ecpaySubmitButton">確認付款</button>
+            </div>
+            <div class="col-md-6">
+                <button type="button" class="btn btn-secondary" onclick="abandonOnlinePayment()">放棄線上支付</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divContent"></div>
+
+<script>
+    $(document).ready(function () {
+        $('#ItemDesc').val('如影隨形公司娛樂消費');
+
+        $('#PayOption').val('ECPay');
+        function SendToNewebPay(ChannelID) {
+            var postData = {
+                ChannelID: ChannelID,
+                MerchantTradeNo: $('#MerchantOrderNo').val(),
+                ItemDesc: $('#ItemDesc').val(),
+                Amt: $('#Amt').val(),
+                ExpireDate: $('#ExpireDate').val(),
+                PayOption: $('#PayOption').val(),
+                Email: $('#Email').val()
+            };
+
+            $.ajax({
+                url: '@Url.Content("~/ECP/SendToNewebPay")',
+                method: 'POST',
+                dataType: 'json',
+                data: { inModel: postData, __RequestVerificationToken: $('@Html.AntiForgeryToken()').val() },
+                success: function (returnObj) {
+                    alert("Hi there");
+                    $("#divContent").html(returnObj);
+                    $("#payForm").submit();
+                },
+                error: function (err) {
+                    alert(err.status + " " + err.statusText + '\n' + err.responseText);
+                }
+            });
+        };
+
+        $('#ecpaySubmitButton').click(function () {
+            SendToNewebPay('VACC');
+        });
+    });
+</script>

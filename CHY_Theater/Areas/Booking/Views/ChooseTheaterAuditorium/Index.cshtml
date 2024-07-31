@@ -1,0 +1,242 @@
+﻿@model TheaterAuditoriumsViewModel
+@section Styles {
+    <style>
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: 0 auto;
+            font-family: Arial, sans-serif;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #333;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #e6e6e6;
+        }
+
+        a {
+            color: #337ab7;
+            text-decoration: none;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+        .theater-btn-container {
+           
+            text-align: center; /* Center the buttons */
+            padding-top: 100px; /* Adjust this value based on your navbar height */
+            padding-bottom:100px;
+        }
+
+        .btn-theater {
+            margin: 0.5rem; /* Provide some space around buttons */
+            width: 200px; /* Set a fixed width for all buttons */
+            background-color: cornsilk; /* Initial background color */
+            color: black; /* Initial font color */
+            border: 1px solid black; /* Border to make the button visible */
+            transition: all 0.3s ease; /* Smooth transition for hover effects */
+        }
+
+            .btn-theater:hover {
+                background-color: darkcyan !important; /* Background color on hover */
+                color: white; /* Font color on hover */
+                transform: scale(1.05); /* Slightly enlarge the button */
+                border-color: darkcyan !important;
+            }
+
+       
+
+        .container {
+            max-width: 1200px;
+            margin-top: 2rem;
+        }
+
+        .tab-link {
+            background-color: #ffffff;
+            color: #1e5da9;
+            border: 1px solid #dee2e6;
+            padding: 10px 20px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 500;
+        }
+
+            .tab-link.active, .tab-link:hover {
+                background-color: darkcyan;
+                color: #ffffff;
+                border-color: darkcyan;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background-color: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card {
+            border: none;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+
+            .card:hover {
+                box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+                transform: translateY(-5px);
+            }
+
+        .card-header {
+            background-color: #1e5da9;
+            color: #ffffff;
+            border-bottom: 1px solid #dee2e6;
+            padding: 15px 20px;
+        }
+
+        .card:hover .card-header {
+            background-color: #1e5da9;
+            color: #ffffff;
+        }
+
+        .movie-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .level-image {
+            max-width: 50px;
+            height: auto;
+        }
+
+        .auditorium-info {
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .showtime-link {
+            background-color: #1e5da9;
+            color: #ffffff;
+            border: none;
+            padding: 8px 15px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+            .showtime-link:hover {
+                background-color: black;
+                color: #ffffff;
+                transform: scale(1.05);
+            }
+
+        .showtime-buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px; /* Adjust the gap between buttons as needed */
+        }
+
+            .showtime-buttons-container form {
+                margin: 0;
+            }
+
+        .btn-theater.active {
+            background-color: darkcyan !important;
+            color: white;
+            transform: scale(1.15);
+            border-color: darkcyan !important;
+        }
+        
+    </style>
+}
+<section>
+	<img src="~/img/test3.jpg" alt="Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;" />
+
+<div class="theater-btn-container ">
+
+	<h1 class="text-light">選擇影城</h1>
+    @foreach (var theater in @Model.Theaters)
+    {
+            <button onclick="loadAuditoriums(@theater.TheaterId, event)" class="btn btn-theater">
+                @theater.TheaterName
+            </button>
+    }
+</div>
+
+<div id="auditoriumContent" class="mb-5"></div>
+</section>
+@section Scripts {
+    <script>
+        function loadAuditoriums(theaterId) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.btn-theater').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Add active class to the clicked button
+            event.target.classList.add('active');
+            $.ajax({
+                url: '@Url.Action("ChooseAuditorium", "ChooseTheaterAuditorium")',
+                type: 'GET',
+                data: { theaterID: theaterId },
+                success: function (result) {
+                    $('#auditoriumContent').html(result);
+                    initializeTabs();
+                },
+                error: function (error) {
+                    console.log('Error loading auditoriums:', error);
+                }
+            });
+        }
+
+        function initializeTabs() {
+            const tabs = document.querySelectorAll('.tab-link');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(function (tab) {
+                tab.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const targetId = tab.getAttribute('data-target');
+
+                    tabContents.forEach(function (content) {
+                        content.style.display = 'none';
+                    });
+                    tabs.forEach(function (item) {
+                        item.classList.remove('active');
+                    });
+
+                    document.querySelector(targetId).style.display = 'block';
+                    tab.classList.add('active');
+                });
+            });
+            // Activate the first tab by default
+            if (tabs.length > 0) {
+                tabs[0].click();
+            }
+        }
+    </script>
+}

@@ -1,0 +1,92 @@
+﻿@using System.Linq
+@using CHY_Theater_Models.Models
+@model IEnumerable<Show>
+<div class="show-times mt-5">
+    <h3>場次</h3>
+    @if (Model.Any())
+    {
+        var groupedShows = Model.OrderBy(s => s.ShowDateTime)
+        .GroupBy(s => s.ShowDateTime.Date)
+        .ToDictionary(g => g.Key, g => g.GroupBy(s => s.Auditorium.Theater.TheaterName)
+        .ToDictionary(tg => tg.Key, tg => tg.GroupBy(s => s.Auditorium.AuditoriumType ?? "標準")));
+
+        <ul class="nav nav-tabs" id="showDateTabs" role="tablist">
+            @foreach (var dateGroup in groupedShows.Select((group, index) => new { Group = group, Index = index }))
+            {
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link @(dateGroup.Index == 0 ? "active" : "")"
+                            id="date-@dateGroup.Index-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#date-@dateGroup.Index"
+                            type="button"
+                            role="tab"
+                            aria-controls="date-@dateGroup.Index"
+                            aria-selected="@(dateGroup.Index == 0 ? "true" : "false")">
+                        @dateGroup.Group.Key.ToString("MM/dd")
+                    </button>
+                </li>
+            }
+        </ul>
+
+        <div class="tab-content" id="showDateTabContent">
+            @foreach (var dateGroup in groupedShows.Select((group, index) => new { Group = group, Index = index }))
+            {
+                <div class="tab-pane fade @(dateGroup.Index == 0 ? "show active" : "")"
+                     id="date-@dateGroup.Index"
+                     role="tabpanel"
+                     aria-labelledby="date-@dateGroup.Index-tab">
+
+                    @foreach (var theaterGroup in dateGroup.Group.Value)
+                    {
+                        var firstShow = theaterGroup.Value.FirstOrDefault()?.FirstOrDefault();
+                        if (firstShow != null)
+                        {
+                            var theater = firstShow.Auditorium.Theater;
+                            <h5 class="mt-4 mb-3">
+                                @theaterGroup.Key
+                                <small class="text-muted d-block mt-2">
+                                    Phone: @theater.TheaterPhone | Email: @theater.TheaterEmail | @theater.TheaterLocation
+                                </small>
+                            </h5>
+                        }
+                        else
+                        {
+                            <h5 class="mt-4 mb-3">@theaterGroup.Key</h5>
+                        }
+
+                        @foreach (var auditoriumTypeGroup in theaterGroup.Value)
+                        {
+                            <h6 class="mt-3 mb-2">@auditoriumTypeGroup.Key</h6>
+                            <div class="row">
+                                @foreach (var show in auditoriumTypeGroup)
+                                {
+                                    <div class="col-md-2 mb-3">
+                                        <a asp-area="Booking" asp-controller="TicketTypeAndSnack" asp-action="Index" asp-route-showId="@show.ShowId" class="card bg-dark clickable-card">
+                                            <div class="card-body">
+                                                <h6 class="card-title">@show.ShowDateTime.ToString("HH:mm")</h6>
+                                                <div class="card-text">
+                                                    <p>
+                                                        @show.Auditorium.AuditoriumName
+                                                        @show.Auditorium.TotalSeats 席
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    }
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>目前沒有可用的場次。</p>
+    }
+</div>
+
+<script>
+  
+</script>

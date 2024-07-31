@@ -1,0 +1,141 @@
+﻿@model TheaterAuditoriumsViewModel
+@{
+    // Group all shows by date, then by movie, then by auditorium
+    var showsByDateAndMovie = Model.Auditoriums
+        .SelectMany(a => a.Shows.Select(s => new { Show = s, Auditorium = a }))
+        .GroupBy(x => x.Show.ShowDateTime.Date)
+        .OrderBy(g => g.Key)
+        .Select(dateGroup => new
+        {
+            Date = dateGroup.Key,
+            Movies = dateGroup
+                .GroupBy(x => x.Show.MovieId)
+                .Select(movieGroup => new
+                {
+                    MovieId = movieGroup.Key,
+                    MovieName = movieGroup.First().Show.MovieName,
+                    Level = movieGroup.First().Show.Level,
+                    Auditoriums = movieGroup
+                        .GroupBy(x => x.Auditorium.AuditoriumId)
+                        .Select(auditoriumGroup => new
+                        {
+                            AuditoriumId = auditoriumGroup.Key,
+                            AuditoriumName = auditoriumGroup.First().Auditorium.AuditoriumName,
+                            AuditoriumType = auditoriumGroup.First().Auditorium.AuditoriumType,
+                            Showtimes = auditoriumGroup.Select(x => new
+                            {
+                                DateTime = x.Show.ShowDateTime,
+                                ShowId = x.Show.ShowId
+                            }).OrderBy(x => x.DateTime)
+                        })
+                })
+        });
+}
+
+@functions {
+    string GetLevelImagePath(int level)
+    {
+        if (level >= 1 && level <= 5)
+        {
+            return $"/img/Class/index_icon_0{level}.jpg";
+        }
+        return "~/img/Class/index_icon_default.png";
+    }
+}
+
+
+<div class="container">
+    <!-- Tab Links -->
+    <div class="tab-links">
+        @foreach (var dateGroup in showsByDateAndMovie)
+        {
+            <button class="tab-link" data-target="#date-@dateGroup.Date.ToString("yyyy-MM-dd")">
+                @dateGroup.Date.ToString("MMM dd")
+            </button>
+        }
+    </div>
+
+    <!-- Tab Content -->
+    @foreach (var dateGroup in showsByDateAndMovie)
+    {
+        <div id="date-@dateGroup.Date.ToString("yyyy-MM-dd")" class="tab-content">
+            @foreach (var movie in dateGroup.Movies)
+            {
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <div class="row align-items-center">
+                            <div class="col-md-1 text-center">
+                                <img src="@GetLevelImagePath(movie.Level)" alt="Level @movie.Level" class="level-image" />
+                            </div>
+                            <div class="col-md-11">
+                                <span class="movie-title">@movie.MovieName</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @foreach (var auditorium in movie.Auditoriums)
+                        {
+                            <div class="auditorium-info">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2 text-center">
+                                        <strong>@auditorium.AuditoriumType</strong>
+                                    </div>
+                                    <div class="col-md-2 text-center">
+                                        <span>@auditorium.AuditoriumName</span>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="showtime-buttons-container">
+                                            @foreach (var showtime in auditorium.Showtimes)
+                                            {
+                                                <form asp-controller="TicketTypeAndSnack" asp-action="Index" method="get">
+                                                    @* <input type="hidden" name="theaterId" value="@Model.TheaterId" />
+                                                    <input type="hidden" name="movieId" value="@movie.MovieId" /> *@
+                                                    <input type="hidden" name="showId" value="@showtime.ShowId" />
+                                                    @* <input type="hidden" name="auditoriumid" value="@auditorium.AuditoriumId" /> *@
+                                                    <button type="submit" class="btn showtime-link">@showtime.DateTime.ToString("t")</button>
+                                                </form>
+                                            }
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Tab functionality
+            const tabs = document.querySelectorAll('.tab-link');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(function (tab) {
+                tab.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const targetId = tab.getAttribute('data-target');
+
+                    tabContents.forEach(function (content) {
+                        content.style.display = 'none';
+                    });
+                    tabs.forEach(function (item) {
+                        item.classList.remove('active');
+                    });
+
+                    document.querySelector(targetId).style.display = 'block';
+                    tab.classList.add('active');
+                });
+            });
+
+            // Activate the first tab by default
+            if (tabs.length > 0) {
+                tabs[0].click();
+            }
+        });
+    </script>
+}

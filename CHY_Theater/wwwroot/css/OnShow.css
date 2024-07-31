@@ -1,0 +1,103 @@
+/* 憲政熱映 */
+/* 確保父容器可以處理縮放效果 */
+.movie-card-wrapper {
+    overflow: visible; /* Ensure overflow is visible */
+    transform: scale(0.9);
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Added box-shadow transition */
+}
+#movieCarousel {
+    position: relative;
+}
+.movie-card {
+    transition: transform 0.3s ease;
+}
+
+.movie-card-wrapper:hover {
+    transform: scale(0.95); /* Parent container enlarges on hover */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Add shadow effect */
+}
+
+    .movie-card-wrapper:hover .movie-card {
+        transform: scale(1); /* Maintain the scale of the inner card */
+        animation: borderAnimationClockwise 1s forwards;
+    }
+
+/* Define keyframes for border animation */
+@keyframes borderAnimationClockwise {
+    0% {
+        border-top: 3px solid red;
+        border-right: 0 solid red;
+        border-bottom: 0 solid blue;
+        border-left: 0 solid blue;
+    }
+
+    25% {
+        border-top: 3px solid red;
+        border-right: 3px solid red;
+        border-bottom: 0 solid blue;
+        border-left: 0 solid blue;
+    }
+
+    50% {
+        border-top: 3px solid red;
+        border-right: 3px solid red;
+        border-bottom: 3px solid blue;
+        border-left: 0 solid blue;
+    }
+
+    75% {
+        border-top: 3px solid red;
+        border-right: 3px solid red;
+        border-bottom: 3px solid blue;
+        border-left: 3px solid blue;
+    }
+
+    100% {
+        border-top: 4px solid red;
+        border-right: 4px solid red;
+        border-bottom: 4px solid blue;
+        border-left: 4px solid blue;
+    }
+}
+
+.card-subtitle.mb-2.text-muted {
+    display: block !important;
+    color: red !important; /* Change the color to a contrasting value for easier visibility */
+}
+
+.card-buttons {
+    display: none; /* Initially hide the buttons */
+    transition: opacity 0.3s ease; /* Add a transition for smooth opacity change */
+    opacity: 0; /* Initially set the opacity to 0 for a smoother transition */
+}
+
+.movie-card-wrapper:hover .card-buttons {
+    display: flex; /* Show the buttons on hover */
+    justify-content: space-between; /* Distribute buttons evenly */
+    margin-top: 10px; /* Add some spacing from the content above */
+    opacity: 1; /* Set the opacity to 1 when hovered over */
+}
+
+#movieCarousel .carousel-control-prev,
+#movieCarousel .carousel-control-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: auto;
+    height: auto;
+    background: none;
+    border: none;
+}
+
+#movieCarousel .carousel-control-prev {
+    left: -5%;
+}
+
+#movieCarousel .carousel-control-next {
+    right: -5%;
+}
+
+#movieCarousel .carousel-control-prev-icon,
+#movieCarousel .carousel-control-next-icon {
+    background-color: red;
+}

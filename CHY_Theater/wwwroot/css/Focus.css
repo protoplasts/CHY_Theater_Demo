@@ -1,0 +1,70 @@
+﻿/* Focus Image Box */
+.focus-img-box {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-position: center;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Play Button */
+.play-button {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    color: white;
+}
+
+    .play-button i {
+        font-size: 30px;
+    }
+
+/* Focus Info */
+.focus-info {
+    padding: 1.5rem;
+}
+
+    .focus-info .tag {
+        background-color: #ff0000;
+        color: #fff;
+        padding: 0.25rem 0.5rem;
+        border-radius: 5px;
+        font-size: 0.8rem;
+    }
+
+    .focus-info h2 {
+        font-size: 2rem;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .focus-info h6 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+
+    .focus-info p {
+        margin-bottom: 1.5rem;
+    }
+
+    .focus-info .btn-group .btn {
+        margin-right: 0.5rem;
+    }
+
+/* Responsive Design */
+@media (max-width: 991.98px) {
+    .focus-info {
+        text-align: center;
+        margin-top: 1.5rem;
+    }
+}

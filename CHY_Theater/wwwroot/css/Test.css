@@ -1,0 +1,202 @@
+﻿
+/* test css  Start*/
+
+/* Add the black square background behind .img-box */
+.img-box::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Slight transparency */
+    z-index: -1; /* Keep it behind the content */
+}
+
+/* Ensure .img-box content stays on top */
+.img-box img {
+    position: relative;
+    z-index: 1;
+}
+
+/* Add the black square background behind .row.mb-4 */
+.container.post-box::before {
+    content: "";
+    position: absolute;
+    top: -5%;
+    left: 8.4%;
+    width: 81.7%;
+    height: 100%;
+    background-color: rgba(25,21,40,255); /* Slight transparency */
+    z-index: 0; /* Keep it behind the content */
+}
+
+/* Ensure row content stays on top */
+.container.post-box {
+    position: relative;
+}
+
+/* Ensure the .haha content stays on top */
+.haha {
+    position: relative;
+    background-color: transparent;
+    padding-left: 10px; /* Adjust the value as needed */
+}
+
+/* Existing styles */
+#post {
+    background-size: cover;
+    background-position: center;
+    padding: 2rem;
+}
+
+.container.post-box {
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+img.img-fluid {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+}
+
+.latest-event .badge {
+    background-color: #007bff;
+}
+
+.focus-box {
+    background-color: #1c1c1c;
+    border-radius: 10px;
+    padding: 30px;
+    color: #fff;
+}
+
+.img-box {
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    display: block;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+    .img-box:hover {
+        transform: scale(1.05);
+        z-index: 1;
+    }
+
+.info-text {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+
+
+a {
+    color: #4CAF50;
+}
+
+    a:hover {
+        color: #9CCC65;
+    }
+
+.btn-outline-primary {
+    color: aquamarine;
+    border: 3px solid transparent;
+    padding: 10px 20px;
+    position: relative;
+    z-index: 1;
+    background-color: darkslateblue;
+    overflow: hidden;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+@keyframes borderAnimationClockwise2 {
+    0% {
+        border-top: 3px solid red;
+        border-right: 0 solid red;
+        border-bottom: 0 solid blue;
+        border-left: 0 solid blue;
+    }
+
+    25% {
+        border-top: 3px solid red;
+        border-right: 3px solid red;
+        border-bottom: 0 solid blue;
+        border-left: 0 solid blue;
+    }
+
+    50% {
+        border-top: 3px solid red;
+        border-right: 3px solid red;
+        border-bottom: 3px solid blue;
+        border-left: 0 solid blue;
+    }
+
+    75% {
+        border-top: 3px solid red;
+        border-right: 3px solid red;
+        border-bottom: 3px solid blue;
+        border-left: 3px solid blue;
+    }
+
+    100% {
+        border-top: 3px solid red;
+        border-right: 3px solid red;
+        border-bottom: 3px solid blue;
+        border-left: 3px solid blue;
+    }
+}
+
+.btn-outline-primary:hover {
+    animation: borderAnimationClockwise2 1s forwards; /* Trigger the animation on hover */
+}
+
+
+@media (max-width: 768px) {
+    .post-box .row {
+        flex-direction: column;
+    }
+}
+
+
+@media (min-width: 768px) {
+    .col-md-6.custom-rihgt-width {
+        flex: 0 0 41.66667%;
+        max-width: 40%;
+    }
+}
+/* test css  End*/
+
+
+
+        #post {
+            position: relative;
+            padding: 2rem;
+            overflow: hidden;
+        }
+
+        .background-image-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .background-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }

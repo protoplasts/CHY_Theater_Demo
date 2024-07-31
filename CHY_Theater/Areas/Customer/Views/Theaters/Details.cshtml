@@ -1,0 +1,383 @@
+﻿@model CHY_Theater_Models.Models.Theater
+
+@{
+    ViewData["Title"] = Model.TheaterName; Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles {
+    <style>
+        .theater-container {
+            padding-top: 100px; /* Adjust based on your navbar height */
+        }
+
+        .theater-details-card {
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .theater-image {
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .theater-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .theater-info p {
+            margin-bottom: 0.5rem;
+        }
+
+        .theater-info i {
+            width: 20px;
+            color: #e90101;
+        }
+
+        .btn-danger {
+            background-color: #e90101;
+            border-color: #e90101;
+        }
+
+        .btn-outline-light:hover {
+            background-color: #e90101;
+            border-color: #e90101;
+        }
+
+        .breadcrumb {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+
+        .breadcrumb-item a {
+            color: #e90101;
+            text-decoration: none;
+        }
+
+        .breadcrumb-item.active {
+            color: #fff;
+        }
+
+        .breadcrumb-item + .breadcrumb-item::before {
+            color: #fff;
+        }
+        /* For Show */
+        .show-times .nav-tabs {
+            border-bottom: 2px solid red;
+        }
+
+            .show-times .nav-tabs .nav-link {
+                color: #ffffff;
+                background-color: #333333;
+                border: none;
+                border-radius: 0;
+            }
+
+                .show-times .nav-tabs .nav-link.active {
+                    color: #ffffff;
+                    background-color: darkslategrey;
+                }
+
+        .show-times h5 {
+            color: wheat;
+            border-bottom: 1px solid orange;
+            padding-bottom: 10px;
+        }
+
+        .show-times h6 {
+            color: #ffffff;
+            background-color: #333333;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .show-times .card {
+            transition: transform 0.3s;
+        }
+
+        .show-times .clickable-card {
+            cursor: pointer;
+        }
+
+            .show-times .clickable-card:hover {
+                transform: scale(1.05);
+                animation: borderAnimationClockwise 1s forwards;
+            }
+
+        .show-times .book-text {
+            text-align: center;
+            color: #e90101;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .tab-content {
+            padding-top: 20px;
+        }
+        /* Define keyframes for border animation */
+        @@keyframes borderAnimationClockwise {
+            0% {
+                border-top: 3px solid red;
+                border-right: 0 solid red;
+                border-bottom: 0 solid blue;
+                border-left: 0 solid blue;
+            }
+
+            25% {
+                border-top: 3px solid red;
+                border-right: 3px solid red;
+                border-bottom: 0 solid blue;
+                border-left: 0 solid blue;
+            }
+
+            50% {
+                border-top: 3px solid red;
+                border-right: 3px solid red;
+                border-bottom: 3px solid blue;
+                border-left: 0 solid blue;
+            }
+
+            75% {
+                border-top: 3px solid red;
+                border-right: 3px solid red;
+                border-bottom: 3px solid blue;
+                border-left: 3px solid blue;
+            }
+
+            100% {
+                border-top: 4px solid red;
+                border-right: 4px solid red;
+                border-bottom: 4px solid blue;
+                border-left: 4px solid blue;
+            }
+        }
+    </style>
+}
+
+
+<div class="container theater-container">
+    <nav aria-label="breadcrumb" class="mt-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">首頁</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", "Theaters")">影城</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.TheaterName</li>
+        </ol>
+    </nav>
+
+    <div class="card bg-dark text-white theater-details-card">
+        <div class="row g-0">
+            <div class="col-md-6">
+                @if (!string.IsNullOrEmpty(Model.TheaterImage))
+                {
+                    <img src="@Model.TheaterImage" class="card-img-top" alt="@Model.TheaterName">
+                }
+                else
+                {
+                    <img src="~/img/no_image_available.jpg" class="card-img-top" alt="Default Theater Image">
+                }
+            </div>
+            <div class="col-md-6">
+                <div class="card-body">
+                    <h1 class="card-title">@Model.TheaterName</h1>
+                    <p class="card-text theater-description">@Model.TheaterDescription</p>
+                    <div class="theater-info">
+                        <p><i class="fas fa-map-marker-alt"></i> <strong>地址：</strong> @Model.TheaterLocation</p>
+                        <p><i class="fas fa-phone"></i> <strong>電話：</strong> @Model.TheaterPhone</p>
+                        <p><i class="fas fa-envelope"></i> <strong>Email：</strong> @Model.TheaterEmail</p>
+                        <p><i class="fas fa-clock"></i> <strong>營業時間：</strong> @Model.TheaterStartTime.ToString("HH:mm") - @Model.TheaterEndTime.ToString("HH:mm")</p>
+                    </div>
+                    <div class="mt-4 mb-3">
+                        <button id="showTimesBtn" class="btn btn-danger"><i class="fas fa-ticket-alt"></i> 放映場次</button>
+                        <button id="auditoriumInfoBtn" class="btn btn-outline-light"><i class="fas fa-film"></i> 放映廳資訊</button>
+                    </div>
+                    <p><i class="fas fa-map-marker-alt"></i> <strong>交通位置</strong></p>
+
+                    <div id="map" style="height: 300px; width: 100%;"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.Auditoria.Any())
+    {
+        <div id="auditoriumInfoContainer" class="mt-5" style="display: show;">
+            <h2 class="text-white mb-4">放映廳資訊</h2>
+            <div class="row">
+                @foreach (var auditorium in Model.Auditoria)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card bg-dark text-white">
+                            <div class="card-body">
+                                <h5 class="card-title">@auditorium.AuditoriumName</h5>
+                                <p class="card-text">座位數: @auditorium.TotalSeats</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <h2 class="text-white mb-4">
+                停車資訊
+            </h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <p class="text-white">磋峨立體停車場	</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <p class="text-white">
+                        汽車 週一至週五：50元 / 時(10-22)，10元 / 時(22-10)
+                        假日60元 / 時(10-24)，10元 / 時(22-10) | 機車 20元 / 次
+                    </p>
+
+                </div>
+                <div class="col-md-4 mb-4">
+                    <p class="text-white">高潭市百華區磋峨街83號</p>
+                </div>
+            </div>
+            <h2 class="text-white mb-4">
+                影廳設施
+
+            </h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <a href="https://www.d-box.com/en">
+
+                        <img src="~/img/影廳資訊/dbox.jpg" style="height:200px" />
+                    </a>
+
+                    <p class="text-white">D-BOX動感座椅	</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <a href="https://www.christiedigital.com/">
+                        <img src="~/img/影廳資訊/754-3-fb.jpg" style="height:200px" alt="Christie 4K RGB Laser Projector">
+                    </a>
+                    <p class="text-white">
+                        Christie 4K RGB Laser Projector
+                    </p>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <a href="https://www.dolby.com/technologies/dolby-atmos/">
+
+                        <img src="~/img/影廳資訊/dolby-atmos-logo.jpg" style="height:200px" />
+                    </a>
+
+                    <p class="text-white">DOLBY ATMOS 杜比全景聲</p>
+                </div>
+            </div>
+
+        </div>
+    }
+
+    <div id="showTimesContainer" class="mt-5" style="display: none;">
+        <h2 class="text-white mb-4">放映場次</h2>
+        @await Html.PartialAsync("_TheaterShowTimes", Model)
+    </div>
+</div>
+<!-- Your existing code -->
+<!-- Map Modal -->
+<div class="modal fade" id="mapModal" tabindex="-1" aria-labelledby="mapModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mapModalLabel">@Model.TheaterName 地圖</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="map" style="height: 500px;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Your existing code -->
+@section Scripts {
+        @* <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7WdAdRObRLxdZTWRk82MqP_lZSoSsGAU"></script> *@
+    <script>
+               $(document).ready(function () {
+                   $("#showTimesBtn").click(function () {
+                       $("#showTimesContainer").show();
+                       $("#auditoriumInfoContainer").hide();
+                       $(this).removeClass('btn-outline-danger').addClass('btn-danger');
+                       $("#auditoriumInfoBtn").removeClass('btn-danger').addClass('btn-outline-light');
+                   });
+
+                   $("#auditoriumInfoBtn").click(function () {
+                       $("#auditoriumInfoContainer").show();
+                       $("#showTimesContainer").hide();
+                       $(this).removeClass('btn-outline-light').addClass('btn-danger');
+                       $("#showTimesBtn").removeClass('btn-danger').addClass('btn-outline-danger');
+                   });
+               });
+               function initMap() {
+                   const geocoder = new google.maps.Geocoder();
+                   const address = "@Model.TheaterLocation";
+
+                   geocoder.geocode({ 'address': address }, function (results, status) {
+                       if (status === 'OK') {
+                           const theaterLocation = results[0].geometry.location;
+
+                           const map = new google.maps.Map(document.getElementById("map"), {
+                               center: theaterLocation,
+                               zoom: 15
+                           });
+
+                           new google.maps.Marker({
+                               position: theaterLocation,
+                               map: map,
+                               title: "@Model.TheaterName"
+                           });
+                       } else {
+                           alert('Geocode was not successful for the following reason: ' + status);
+                       }
+                   });
+               }
+
+               document.addEventListener('DOMContentLoaded', function () {
+                   initMap();
+               });
+    </script>
+    @* <script>
+        let map;
+
+        function initMap() {
+            const geocoder = new google.maps.Geocoder();
+            const address = "@Model.TheaterLocation";
+
+            geocoder.geocode({ 'address': address }, function (results, status) {
+                if (status === 'OK') {
+                    const theaterLocation = results[0].geometry.location;
+
+                    map = new google.maps.Map(document.getElementById("map"), {
+                        center: theaterLocation,
+                        zoom: 15
+                    });
+
+                    new google.maps.Marker({
+                        position: theaterLocation,
+                        map: map,
+                        title: "@Model.TheaterName"
+                    });
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        }
+
+        document.getElementById('mapModal').addEventListener('shown.bs.modal', function () {
+            initMap();
+        });
+
+        document.querySelector('.btn-outline-light').addEventListener('click', function (event) {
+            event.preventDefault();
+            var mapModal = new bootstrap.Modal(document.getElementById('mapModal'));
+            mapModal.show();
+        });
+    </script> *@
+}

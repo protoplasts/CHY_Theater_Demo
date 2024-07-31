@@ -1,0 +1,591 @@
+﻿@using FUEN104_2_FinalProject.Models.ViewModels
+@using System.Web
+@model SeatViewModel
+@functions {
+    string GetLevelImagePath(int level)
+    {
+        if (level >= 1 && level <= 5)
+        {
+            return $"/img/Class/index_icon_0{level}.jpg";
+        }
+        return "~/img/Class/index_icon_default.png";
+    }
+}
+
+@section Styles {
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .seat-selection-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .movie-details {
+            display: flex;
+            gap: 40px;
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+
+        .movie-poster {
+            flex: 0 0 300px;
+        }
+
+            .movie-poster img {
+                width: 100%;
+                height: auto;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                transition: transform 0.3s ease;
+            }
+
+                .movie-poster img:hover {
+                    transform: scale(1.05);
+                }
+
+        .movie-info {
+            flex: 1;
+        }
+
+            .movie-info h3 {
+                font-size: 28px;
+                color: #333;
+                margin-bottom: 20px;
+                border-bottom: 2px solid #e0e0e0;
+                padding-bottom: 10px;
+            }
+
+            .movie-info p {
+                margin-bottom: 15px;
+                font-size: 16px;
+                line-height: 1.6;
+            }
+
+            .movie-info strong {
+                color: #555;
+                font-weight: 600;
+            }
+
+            .movie-info ul {
+                list-style-type: none;
+                padding-left: 0;
+            }
+
+            .movie-info li {
+                margin-bottom: 10px;
+                padding: 8px;
+                background-color: #fff;
+                border-radius: 6px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            }
+
+                .movie-info li:hover {
+                    background-color: #f0f0f0;
+                }
+
+        #timeLeft {
+            font-weight: bold;
+            color: #e53935;
+        }
+
+        #selectedSeatInfo {
+            font-weight: bold;
+            color: #4caf50;
+        }
+
+        .seat-map {
+            display: grid;
+            grid-gap: 10px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .seat-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .seat {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+            .seat.available {
+                background-color: #8bc34a;
+            }
+
+            .seat.booked {
+                background-color: #e53935;
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            .seat.chosen {
+                background-color: lightgray;
+            }
+
+            .seat:hover:not(.booked) {
+                transform: scale(1.1);
+                background-color: #20c997;
+            }
+
+        .screen {
+            width: 80%;
+            height: 60px;
+            background-color: #e0e0e0;
+            border: 2px solid #bdbdbd;
+            margin: 0 auto 30px;
+            text-align: center;
+            line-height: 60px;
+            font-weight: bold;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+            .legend .seat {
+                width: 25px;
+                height: 25px;
+                margin-right: 15px;
+            }
+
+        .animateBtn {
+            animation: pulse 2s infinite;
+        }
+
+        @@keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        #quantityButton:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        main[role="main"] {
+            flex: 1 0 auto;
+            padding-bottom: 100px;
+        }
+
+        footer {
+            flex-shrink: 0;
+        }
+
+        .row.bg-light {
+            transition: background-color 0.3s ease;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+            .row.bg-light:hover {
+                background-color: #ffcccb;
+            }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+            .legend-item .seat {
+                width: 20px;
+                height: 20px;
+                margin-right: 5px;
+            }
+
+        .legend-text {
+            font-size: 14px;
+        }
+    </style>
+}
+
+
+<div class="seat-selection-container my-3">
+    <div class="movie-details">
+        <div class="movie-poster">
+            <img src="@Model.MovieImag" alt="Movie Poster">
+        </div>
+        <div class="movie-info">
+            <h3>@Model.MovieName (@Model.MovieEnglishName)</h3>
+            <p>
+                <strong class="fw-bold fs-4 text-muted">級別:</strong> @* @Model.Movie.Level *@
+                <img src="@GetLevelImagePath(Model.Level)" alt="Level @Model.Level" class="" style="height:50px" />
+
+            </p>
+            <p><strong>開演時間 :</strong> @Model.ShowDateTime.ToString("yyyy/MM/dd HH:mm") <span id="timeLeft"></span></p>
+            <p><strong>地點:</strong> @Model.AuditoriumName-@Model.Auditoriumtype</p>
+            <p><strong>票種:</strong></p>
+            <ul>
+                @foreach (var ticketType in Model.TicketTypes)
+                {
+                    <p>@ticketType.TypeName - @ticketType.Quantity 張 </p>
+                }
+            </ul>
+            <p><strong>明細:</strong> </p>
+            <ul>
+
+                <li>@Model.GetCombinedTicketDescription()</li>
+
+
+            </ul>
+            <p><strong>加購品項:</strong> </p>
+
+            <ul>
+
+                @foreach (var ticketType in Model.SelectedSnacks)
+                {
+                    <li>
+
+                        @ticketType.SnackName x @ticketType.Quantity
+
+                    </li>
+                }
+            </ul>
+            <p><strong>座位:</strong> <span id="selectedSeatInfo"></span></p>
+            <p><strong>總計:</strong> @Model.BookingSelection.TotalPrice</p>
+
+
+        </div>
+    </div>
+
+    <div class="row my-4 bg-light rounded shadow-sm">
+        <div class="col-6 text-center d-flex align-items-center justify-content-center">
+            <h3 class="mb-0 text-primary">選取座位</h3>
+        </div>
+        <div class="col-6 d-flex justify-content-center align-items-center py-3">
+            <button class="btn btn-warning btn-lg animateBtn" id="quantityButton" disabled>
+                Still need to choose @Model.TotalSeats seat(s)
+            </button>
+        </div>
+    </div>
+
+    <div class="screen">銀幕</div>
+
+    <div id="seatMap" class="seat-map">
+        @foreach (var row in Model.SeatList.GroupBy(s => s.SeatRow).OrderBy(g => g.Key))
+        {
+            <div class="seat-row">
+                @foreach (var seat in row.OrderBy(s => s.SeatNumber))
+                {
+                    var seatStatus = seat.SeatStatus == "Available" ? "available" : "booked";
+                    <div class="seat @seatStatus"
+                         data-seat-id="@seat.SeatID"
+                         onclick="changeSeat('@seat.SeatID', '@seat.SeatNumber', '@seatStatus', '@seat.SeatRow')">
+                        @seat.SeatNumber
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="legend mt-3">
+        <div class="legend-item">
+            <span class="seat available"></span>
+            <span class="legend-text">可選取</span>
+        </div>
+        <div class="legend-item">
+            <span class="seat booked"></span>
+            <span class="legend-text">無法選取</span>
+        </div>
+        <div class="legend-item">
+            <span class="seat chosen"></span>
+            <span class="legend-text">已選取</span>
+        </div>
+    </div>
+
+
+</div>
+
+<div id="notificationDialog" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content rounded-4 shadow">
+            <div class="modal-body p-4 text-center">
+                <h5 class="mb-2">提示</h5>
+                <hr style="border-top: 1px solid red;" />
+                <p class="mb-0" id="notificationMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    let selectedSeats = [];
+    let requiredSeats = @Model.TotalSeats;
+    let confirmButton = document.getElementById('confirmButton');
+    let quantityButton = document.querySelector('.animateBtn');
+
+    function enableConfirmButton() {
+        quantityButton.disabled = selectedSeats.length !== requiredSeats;
+    }
+
+    function changeSeat(seatID, seatNumber, seatStatus, seatRow) {
+        if (seatStatus === 'booked') {
+            showNotification('這個座位已經被預訂了。請您選擇其他可用座位.');
+            return;
+        }
+
+        const seat = document.querySelector(`.seat[data-seat-id="${seatID}"]`);
+        const seatIndex = selectedSeats.findIndex(seat => seat.SeatID === seatID);
+
+        if (seatIndex !== -1) {
+            selectedSeats.splice(seatIndex, 1);
+            seat.classList.remove('chosen');
+            showNotification(`您已取消選擇座位。您已選擇 ${selectedSeats.length} 個座位，還需再選擇 ${requiredSeats - selectedSeats.length} 個座位。`);
+        } else if (selectedSeats.length < requiredSeats) {
+            selectedSeats.push({ SeatID: seatID, seatRow: seatRow, seatNumber: seatNumber });
+            seat.classList.add('chosen');
+            if (selectedSeats.length === requiredSeats) {
+                showNotification(`您已經選取完所需的座位數`);
+            } else {
+                showNotification(`您已選擇 ${selectedSeats.length} 個座位。您需要再選擇 ${requiredSeats - selectedSeats.length} 個席位。`);
+            }
+        } else {
+            showNotification('請先取消選取已選取座位。');
+            return;
+        }
+
+        enableConfirmButton();
+        updateSelectedSeatInfo();
+        updateQuantityButtonText();
+    }
+
+    function updateSelectedSeatInfo() {
+        let infoText = selectedSeats.length > 0
+            ? selectedSeats.map(seat => `${seat.seatRow}排 ${seat.seatNumber}號`).join('; ')
+            : 'No seats selected';
+        document.getElementById('selectedSeatInfo').textContent = infoText;
+    }
+
+    function updateQuantityButtonText() {
+        const remainingSeats = requiredSeats - selectedSeats.length;
+        const buttonText = remainingSeats === 0
+            ? '確認您的訂單'
+            : `還有 ${remainingSeats}個座位待選取`;
+        quantityButton.textContent = buttonText;
+
+        if (remainingSeats === 0) {
+            quantityButton.classList.remove('btn-primary');
+            quantityButton.classList.add('btn-success');
+        } else {
+            quantityButton.classList.remove('btn-success');
+            quantityButton.classList.add('btn-primary');
+        }
+
+        quantityButton.disabled = remainingSeats !== 0;
+    }
+
+    function showNotification(message) {
+        document.getElementById('notificationMessage').textContent = message;
+        new bootstrap.Modal(document.getElementById('notificationDialog')).show();
+    }
+
+    function confirmSelection() {
+        Swal.fire({
+            title: '確認您的選擇',
+            text: `您已選擇了 ${selectedSeats.length} 個座位。按確定繼續支付。`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: '確定',
+            cancelButtonText: '取消'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Implement your payment logic here
+                console.log('Proceeding to payment with seats:', selectedSeats);
+
+                // Create a form to submit the data
+                let form = document.createElement('form');
+                form.method = 'POST';
+                form.action = 'ConfirmSelection'; // Adjust this to your actual route
+
+                // Add selected seats
+                selectedSeats.forEach((seat, index) => {
+                    let seatIdInput = document.createElement('input');
+                    seatIdInput.type = 'hidden';
+                    seatIdInput.name = `SelectedSeats[${index}].SeatID`;
+                    seatIdInput.value = seat.SeatID;
+                    form.appendChild(seatIdInput);
+
+                    let seatRowInput = document.createElement('input');
+                    seatRowInput.type = 'hidden';
+                    seatRowInput.name = `SelectedSeats[${index}].SeatRow`;
+                    seatRowInput.value = seat.seatRow;
+                    form.appendChild(seatRowInput);
+
+                    let seatNumberInput = document.createElement('input');
+                    seatNumberInput.type = 'hidden';
+                    seatNumberInput.name = `SelectedSeats[${index}].SeatNumber`;
+                    seatNumberInput.value = seat.seatNumber;
+                    form.appendChild(seatNumberInput);
+                });
+
+                // Add other necessary data
+                let movieNameInput = document.createElement('input');
+                movieNameInput.type = 'hidden';
+                movieNameInput.name = 'MovieName';
+                movieNameInput.value = decodeURIComponent('@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.MovieName))');
+                form.appendChild(movieNameInput);
+
+                let movieEnglishNameInput = document.createElement('input');
+                movieEnglishNameInput.type = 'hidden';
+                movieEnglishNameInput.name = 'MovieEnglishName';
+                movieEnglishNameInput.value = '@Model.MovieEnglishName';
+                form.appendChild(movieEnglishNameInput);
+
+                let movieTotalPrice = document.createElement('input');
+                movieTotalPrice.type = 'hidden';
+                movieTotalPrice.name = 'MovieTotalPrice';
+                movieTotalPrice.value = '@Model.BookingSelection.TotalPrice';
+                form.appendChild(movieTotalPrice);
+
+                let movieImg = document.createElement('input');
+                movieImg.type = 'hidden';
+                movieImg.name = 'MovieImg';
+                movieImg.value = '@Model.MovieImag';
+                form.appendChild(movieImg);
+
+                let levelInput = document.createElement('input');
+                levelInput.type = 'hidden';
+                levelInput.name = 'Level';
+                levelInput.value = '@Model.Level';
+                form.appendChild(levelInput);
+
+                let showDateTimeInput = document.createElement('input');
+                showDateTimeInput.type = 'hidden';
+                showDateTimeInput.name = 'ShowDateTime';
+                showDateTimeInput.value = '@Model.ShowDateTime.ToString("yyyy-MM-ddTHH:mm:ss")';
+                form.appendChild(showDateTimeInput);
+
+                let auditoriumNameInput = document.createElement('input');
+                auditoriumNameInput.type = 'hidden';
+                auditoriumNameInput.name = 'AuditoriumName';
+                auditoriumNameInput.value = decodeURIComponent('@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.AuditoriumName))');
+                form.appendChild(auditoriumNameInput);
+
+                let auditoriumIdInput = document.createElement('input');
+                auditoriumIdInput.type = 'hidden';
+                auditoriumIdInput.name = 'AuditoriumId';
+                auditoriumIdInput.value = '@Model.BookingSelection.Auditoriumid';
+                form.appendChild(auditoriumIdInput);
+
+                let showIdInput = document.createElement('input');
+                showIdInput.type = 'hidden';
+                showIdInput.name = 'ShowId';
+                showIdInput.value = '@Model.BookingSelection.ShowId';
+                form.appendChild(showIdInput);
+
+                let selectedTicketTypeIdInput = document.createElement('input');
+                selectedTicketTypeIdInput.type = 'hidden';
+                selectedTicketTypeIdInput.name = 'SelectedTicketTypeId';
+                selectedTicketTypeIdInput.value = '@Model.BookingSelection.SelectedTicketTypeId';
+                form.appendChild(selectedTicketTypeIdInput);
+
+                // Add snack data
+                let selectedSnacks = @Html.Raw(Json.Serialize(Model.SelectedSnacks));
+                selectedSnacks.forEach((snack, index) => {
+                    Object.keys(snack).forEach(key => {
+                        let input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = `SelectedSnacks[${index}].${key}`;
+                        input.value = snack[key];
+                        form.appendChild(input);
+                    });
+                });
+
+                // Add ticket data
+                let selectedTickets = @Html.Raw(Json.Serialize(Model.TicketTypes));
+                selectedTickets.forEach((ticket, index) => {
+                    Object.keys(ticket).forEach(key => {
+                        let input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = `SelectedTickets[${index}].${key}`;
+                        input.value = ticket[key];
+                        form.appendChild(input);
+                    });
+                });
+
+                // Submit the form
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        quantityButton.addEventListener('click', confirmSelection);
+        enableConfirmButton();
+        updateQuantityButtonText();
+    });
+
+    // Time left calculation
+    var showTime = new Date('@Model.ShowDateTime.ToString("yyyy-MM-ddTHH:mm:ss")');
+    function updateTimeLeft() {
+        var now = new Date();
+        var distance = showTime - now;
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var timeLeftDisplay = "";
+        if (days > 0) {
+            timeLeftDisplay = days + " 天後";
+        } else if (hours > 0) {
+            timeLeftDisplay = hours + "小時 " + minutes + "分";
+        } else if (minutes > 0) {
+            timeLeftDisplay = minutes + "分";
+        } else {
+            timeLeftDisplay = "即將開演";
+        }
+        document.getElementById("timeLeft").textContent = "(" + timeLeftDisplay + ")";
+    }
+    setInterval(updateTimeLeft, 1000);
+    updateTimeLeft();
+</script>

@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Confirm Email";
+}
+
+<h2>Confirm Email</h2>
+
+<p>
+    Please confirm your email by clicking the button below.
+</p>
+
+<form asp-action="FakeConfirmEmailConfirmed" method="post">
+    <input type="hidden" name="userId" value="@ViewData["UserId"]" />
+    <input type="hidden" name="code" value="@ViewData["Code"]" />
+    <input type="hidden" name="returnurl" value="@ViewData["ReturnUrl"]" />
+    <button type="submit" class="btn btn-primary">Confirm Email</button>
+</form>

@@ -1,0 +1,127 @@
+﻿  <!-- Focus Section Start -->
+<section id="focus" class="focus-box container mb-3">
+    <div class="carousel slide " id="focusCarousel" data-bs-ride="carousel">
+        <div class="carousel-inner ">
+
+            <!-- First Carousel Item -->
+            <div class="carousel-item active mb-3 mt-3">
+                <div class="row align-items-center">
+                    <div class="col-12 col-md-6">
+                        <div class="focus-img-box" style="background-image: url('./IMG/FullPageBackground_1.jpg');">
+                            <a href="#" class="play-button" data-bs-toggle="modal" data-bs-target="#videoModal" data-bs-video="https://www.youtube.com/embed/N4PxKOZZKoY?si=r9vWLU_RmCd3rEfL">
+                                <span class="visually-hidden">play</span>
+                                <i class="fa-solid fa-circle-play"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="focus-info">
+                            <span class="tag">焦點</span>
+                            <h2>絕地戰警：生死與共</h2>
+                            <h6>BAD BOYS: RIDE OR DIE</h6>
+                            <p class="d-none d-md-block">
+                                威爾史密斯與馬汀勞倫斯再度回歸，幹話無極限的警探麥克與馬可斯重逢。就算在槍林彈雨之中也堅持要虧對方的硬漢二人組，這次被迫走上逃亡之路，賣命為自己和隊長洗刷冤屈。
+                            </p>
+                            <a class="btn btn-primary" href="#">詳細介紹</a>
+                            <a class="btn btn-secondary" href="#">上映場次</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Second Carousel Item -->
+            <div class="carousel-item mb-3 mt-3">
+                <div class="row align-items-center">
+                    <div class="col-12 col-md-6">
+                        <div class="focus-img-box" style="background-image: url('https://mobilebackendapi2.ambassador.com.tw/assets/img/movies/INSIDEOUT2_FullPageBackground.jpg');">
+                            <a href="#" class="play-button" data-bs-toggle="modal" data-bs-target="#videoModal" data-bs-video="https://www.youtube.com/embed/xeIlv6YW8k0?si=XgskqAxSbsn67rFc">
+                                <span class="visually-hidden">play</span>
+                                <i class="fa-solid fa-circle-play"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="focus-info">
+                            <span class="tag">焦點</span>
+                            <h2>腦筋急轉彎2</h2>
+                            <h6>INSIDE OUT 2</h6>
+                            <p class="d-none d-md-block">
+                                13歲的萊莉步入青春期，內在的情感更加複雜豐富，大腦總部不再只有樂樂、憂憂、怒怒、驚驚、厭厭，還多出了其他新成員：焦焦、羞羞、倦倦、慕慕，新舊共有9個情緒！一場「腦內革命」再度無可避免地爆發，新來的情緒甚至想要喧賓奪主，可能導致萊莉發生一場大災難……
+                            </p>
+                            <a class="btn btn-primary" href="/home/MovieContent?MID=b3f20064-49ee-4662-b602-34ec456d1bf2&DT=2024/06/13">詳細介紹</a>
+                            <a class="btn btn-secondary" href="/home/MovieContent?MID=b3f20064-49ee-4662-b602-34ec456d1bf2&DT=2024/06/13#search-bar-page">上映場次</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Carousel Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#focusCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#focusCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+
+        <!-- Carousel Indicators -->
+        <div class="carousel-indicators d-lg-none">
+            <button type="button" data-bs-target="#focusCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#focusCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        </div>
+
+    </div>
+</section>
+<!-- Focus Section End -->
+<!-- Modal -->
+<div class="modal fade"
+     id="videoModal"
+     tabindex="-1"
+     aria-labelledby="videoModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <iframe width="100%"
+                        height="400"
+                        src=""
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                    </iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+      document.addEventListener("DOMContentLoaded", (event) => {
+            const videoModal = document.getElementById("videoModal");
+            console.log("Video modal element:", videoModal);
+
+            videoModal.addEventListener("show.bs.modal", (event) => {
+                const button = event.relatedTarget;
+                console.log("Button clicked:", button);
+
+                const videoUrl = button.getAttribute("data-bs-video");
+                console.log("Video URL:", videoUrl);
+
+                const iframe = videoModal.querySelector("iframe");
+                console.log("iframe element:", iframe);
+
+                iframe.src = videoUrl;
+                console.log("iframe src set to:", iframe.src);
+            });
+
+            videoModal.addEventListener("hide.bs.modal", (event) => {
+                const iframe = videoModal.querySelector("iframe");
+                iframe.src = "";
+                console.log("iframe src cleared");
+            });
+        });
+
+    </script>

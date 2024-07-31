@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Register Confirmation";
+}
+
+<style>
+    .confirmation-container {
+        padding-top: 120px;
+        padding-bottom: 60px;
+        min-height: calc(100vh - 200px); /* Adjust based on your footer height */
+    }
+
+    .confirmation-card {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+    }
+
+    .confirmation-title {
+        color: #343a40;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .confirmation-message {
+        font-size: 18px;
+        line-height: 1.6;
+        color: #495057;
+    }
+</style>
+
+<div class="container confirmation-container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="confirmation-card">
+                <h2 class="text-center confirmation-title">@ViewData["Title"]</h2>
+                <div class="confirmation-message">
+                    @Html.Raw(ViewBag.Message)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

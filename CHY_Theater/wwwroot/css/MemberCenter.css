@@ -1,0 +1,26 @@
+﻿.member-center-nav .list-group-item {
+    background-color: transparent;
+    color: #fff;
+    border: none;
+    border-radius: 0;
+}
+
+    .member-center-nav .list-group-item:hover,
+    .member-center-nav .list-group-item.active {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+.member-center-content {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    padding: 20px;
+}
+
+    .member-center-content .card {
+        background-color: rgba(255, 255, 255, 0.05);
+        border: none;
+    }
+
+    .member-center-content .card-body {
+        color: #fff;
+    }
