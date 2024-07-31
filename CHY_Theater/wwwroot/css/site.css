@@ -20,3 +20,6 @@ html {
 body {
   margin-bottom: 60px;
 }
+global-container {
+    padding-top: 100px; /* Adjust based on your navbar height */
+}

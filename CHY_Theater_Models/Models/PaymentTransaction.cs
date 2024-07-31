@@ -24,20 +24,20 @@ public partial class PaymentTransaction
     public string RtnMsg { get; set; }
 
     [StringLength(50)]
-    public string TradeNo { get; set; }
+    public string? TradeNo { get; set; }
 
     public int? TradeAmt { get; set; }
 
     public DateTime? PaymentDate { get; set; }
 
     [StringLength(50)]
-    public string PaymentType { get; set; }
+    public string? PaymentType { get; set; }
 
     [StringLength(50)]
-    public string PaymentTypeChargeFee { get; set; }
+    public string? PaymentTypeChargeFee { get; set; }
 
     [StringLength(50)]
-    public string TradeDate { get; set; }
+    public string? TradeDate { get; set; }
 
     public int? SimulatePaid { get; set; }
 

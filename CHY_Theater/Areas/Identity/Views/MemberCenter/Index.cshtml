@@ -2,74 +2,93 @@
 @{
     ViewData["Title"] = "會員中心";
 }
-@* @section Styles{
+
+@section Styles {
     <style>
-    .member-center-nav .list-group-item {
-        background-color: transparent;
-        color: #fff;
-        border: none;
-        border-radius: 0;
-    }
-
-        .member-center-nav .list-group-item:hover,
-        .member-center-nav .list-group-item.active {
-            background-color: rgba(255, 255, 255, 0.1) !important;
+        .center-container {
+            padding-top: 120px; /* Adjusted for navbar height */
         }
 
-    .member-center-content {
-        background-color: rgba(255, 255, 255, 0.1);
-        border-radius: 5px;
-        padding: 20px;
-    }
+        .list-group-item.active {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
 
-        .member-center-content .card {
-            background-color: rgba(255, 255, 255, 0.05);
+        .list-group-item:hover {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .card {
             border: none;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
         }
 
-        .member-center-content .card-body {
-            color: #fff;
+        .card-title {
+            color: #dc3545;
         }
 
+        dt {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        dd {
+            color: #6c757d;
+        }
     </style>
-} *@
-<div class="container-xl mt-5">
+}
+
+<div class="container-xl center-container">
     <div class="row">
         <!-- Left Navigation Bar -->
-        <div class="col-md-3">
+        <div class="col-md-3 mb-4">
             <div class="list-group">
-                <a href="#" class="list-group-item list-group-item-action active">我的帳戶</a>
-                <a href="#" class="list-group-item list-group-item-action">更新個人資訊</a>
-                <a href="#" class="list-group-item list-group-item-action">更改密碼</a>
-                <a href="@Url.Action("OrderInquiry", "MemberCenter")" class="list-group-item list-group-item-action active">訂單查詢</a>
-                <a href="#" class="list-group-item list-group-item-action">收件地址管理</a>
-                <a href="#" class="list-group-item list-group-item-action">專屬優惠券</a>
-                <a href="#" class="list-group-item list-group-item-action">紅利點數</a>
-                <a href="#" class="list-group-item list-group-item-action">收藏清單</a>
-                <a href="#" class="list-group-item list-group-item-action">詢問紀錄</a>
+                <a href="#" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-user-circle me-2"></i>我的帳戶
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fas fa-edit me-2"></i>更新個人資訊
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fas fa-key me-2"></i>更改密碼
+                </a>
+                <a href="@Url.Action("OrderInquiry", "MemberCenter")" class="list-group-item list-group-item-action">
+                    <i class="fas fa-shopping-cart me-2"></i>訂單查詢
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fas fa-map-marker-alt me-2"></i>收件地址管理
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fas fa-ticket-alt me-2"></i>專屬優惠券
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fas fa-coins me-2"></i>紅利點數
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fas fa-heart me-2"></i>收藏清單
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fas fa-question-circle me-2"></i>詢問紀錄
+                </a>
             </div>
         </div>
-
         <!-- Right Content Area -->
         <div class="col-md-9">
-            <h2>會員中心</h2>
+            <h2 class="mb-4 text-light">會員中心</h2>
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">個人資訊</h4>
+                    <h4 class="card-title mb-4">個人資訊</h4>
                     <hr />
                     <dl class="row">
-                        <dt class="col-sm-3">用戶名稱:</dt>
+                        <dt class="col-sm-3"><i class="fas fa-user me-2"></i>用戶名稱:</dt>
                         <dd class="col-sm-9">@Model.UserName</dd>
-
-                        <dt class="col-sm-3">電子郵件:</dt>
+                        <dt class="col-sm-3"><i class="fas fa-envelope me-2"></i>電子郵件:</dt>
                         <dd class="col-sm-9">@Model.Email</dd>
-
-                        <dt class="col-sm-3">電子郵件已驗證:</dt>
+                        <dt class="col-sm-3"><i class="fas fa-check-circle me-2"></i>電子郵件已驗證:</dt>
                         <dd class="col-sm-9">@(Model.EmailConfirmed ? "是" : "否")</dd>
-
-                        <dt class="col-sm-3">電話號碼:</dt>
+                        <dt class="col-sm-3"><i class="fas fa-phone me-2"></i>電話號碼:</dt>
                         <dd class="col-sm-9">@Model.PhoneNumber</dd>
-
                         <!-- Add any additional properties specific to your ApplicationUser here -->
                     </dl>
                 </div>

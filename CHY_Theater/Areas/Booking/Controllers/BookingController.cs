@@ -4,6 +4,7 @@ using FUEN104_2_FinalProject.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace CHY_Theater.Areas.Booking.Controllers
 {
@@ -35,6 +36,7 @@ namespace CHY_Theater.Areas.Booking.Controllers
                     BookingDate = DateTime.Now,
                     BookingStatus = "Pending", // Or whatever initial status you want
                     MerchantTradeNo = model.MerchantTradeNo
+
                 };
                 _context.Bookings.Add(booking);
                 await _context.SaveChangesAsync();
@@ -86,6 +88,21 @@ namespace CHY_Theater.Areas.Booking.Controllers
                     await _context.SaveChangesAsync();
 
                 }
+                //Add PaymentTransaction
+                var paymentTransaction = new PaymentTransaction
+                {
+                    BookingId = booking.BookingId,
+                    MerchantTradeNo= model.MerchantTradeNo,
+                    RtnMsg="付款進行中",
+                    TradeAmt=model.MovieTotalPrice,
+                    MemberID= userId,
+                    PaymentType="現場取票付款"               
+
+
+
+                };
+                _context.PaymentTransactions.Add(paymentTransaction);
+                await _context.SaveChangesAsync();
                 // Add BookingSnacks if any
                 if (model.SelectedSnacks != null)
                 {

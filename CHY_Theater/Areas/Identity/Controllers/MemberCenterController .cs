@@ -80,7 +80,7 @@ namespace CHY_Theater.Areas.Identity.Controllers
                 .ToList(),
                 TicketTypes = b.BookingTicketTypesDetails.Select(bttd => $"{bttd.TicketType.TypeName} 內函 {bttd.TicketType.TicketDescription}").ToList(),
                 Snacks = b.BookingSnacks.Select(bs => $"{bs.Snack.SnackName} x{bs.Quantity}").ToList(),
-                TotalAmount = b.PaymentTransactions.Sum(pt => pt.TransactionId),
+                TotalAmount = b.PaymentTransactions.Sum(pt => pt.TradeAmt),
                 PaymentTypes=b.PaymentTransactions.Select(pt =>pt.PaymentType).FirstOrDefault()
             }).ToList();
 
