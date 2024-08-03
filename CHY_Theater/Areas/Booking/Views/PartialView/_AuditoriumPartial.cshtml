@@ -30,6 +30,13 @@
                         })
                 })
         });
+    IEnumerable<DateTime> GetNextFiveDays()
+    {
+        var today = DateTime.Today;
+        return Enumerable.Range(0, 5)
+            .Select(i => today.AddDays(i))
+            .Where(date => showsByDateAndMovie.Any(g => g.Date == date));
+    }
 }
 
 @functions {
@@ -41,25 +48,33 @@
         }
         return "~/img/Class/index_icon_default.png";
     }
+    string GetChineseDayOfWeek(DateTime date)
+    {
+        string[] chineseDaysOfWeek = { "日", "一", "二", "三", "四", "五", "六" };
+        return chineseDaysOfWeek[(int)date.DayOfWeek];
+    }
 }
 
 
 <div class="container">
     <!-- Tab Links -->
     <div class="tab-links">
-        @foreach (var dateGroup in showsByDateAndMovie)
+        @foreach (var date in GetNextFiveDays())
         {
-            <button class="tab-link" data-target="#date-@dateGroup.Date.ToString("yyyy-MM-dd")">
-                @dateGroup.Date.ToString("MMM dd")
+            <button class="tab-link" data-target="#date-@date.ToString("yyyy-MM-dd")">
+                @date.ToString("M月dd日") (@("星期" + GetChineseDayOfWeek(date)))
             </button>
         }
     </div>
 
     <!-- Tab Content -->
-    @foreach (var dateGroup in showsByDateAndMovie)
+    @foreach (var date in GetNextFiveDays())
     {
-        <div id="date-@dateGroup.Date.ToString("yyyy-MM-dd")" class="tab-content">
-            @foreach (var movie in dateGroup.Movies)
+        var dateGroup = showsByDateAndMovie.FirstOrDefault(g => g.Date == date);
+        if (dateGroup != null)
+        {
+            <div id="date-@date.ToString("yyyy-MM-dd")" class="tab-content">
+                @foreach (var movie in dateGroup.Movies)
             {
                 <div class="card mb-4">
                     <div class="card-header">
@@ -105,7 +120,7 @@
                 </div>
             }
         </div>
-    }
+    }}
 </div>
 
 @section Scripts {

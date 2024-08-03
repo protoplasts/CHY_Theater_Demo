@@ -78,7 +78,7 @@ namespace CHY_Theater.Areas.Identity.Controllers
                     ? $"{bsd.ShowSeat.Seat.SeatRow}{bsd.ShowSeat.Seat.SeatNumber}"
                     : "N/A")
                 .ToList(),
-                TicketTypes = b.BookingTicketTypesDetails.Select(bttd => $"{bttd.TicketType.TypeName} 內函 {bttd.TicketType.TicketDescription}").ToList(),
+                TicketTypes = b.BookingTicketTypesDetails.Select(bttd => $"{bttd.TicketType.TypeName}").ToList(),
                 Snacks = b.BookingSnacks.Select(bs => $"{bs.Snack.SnackName} x{bs.Quantity}").ToList(),
                 TotalAmount = b.PaymentTransactions.Sum(pt => pt.TradeAmt),
                 PaymentTypes=b.PaymentTransactions.Select(pt =>pt.PaymentType).FirstOrDefault()

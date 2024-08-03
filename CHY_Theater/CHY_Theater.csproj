@@ -26,6 +26,7 @@
     <ProjectReference Include="..\CHY_Theater_DataAcess\CHY_Theater_DataAcess.csproj" />
     <ProjectReference Include="..\CHY_Theater_Models\CHY_Theater_Models.csproj" />
     <ProjectReference Include="..\CHY_Theater_Utitly\CHY_Theater_Utitly.csproj" />
+    <ProjectReference Include="..\CHY_Theater_WebAPI\CHY_Theater_WebAPI.csproj" />
   </ItemGroup>
 
   <ItemGroup>

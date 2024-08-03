@@ -1,0 +1,23 @@
+﻿@model BookingViewModel
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title mb-3">訂單編號: @Model.MerchantTradeNo</h5>
+        <div class="card-text">
+            <p><i class="far fa-calendar-alt me-2"></i><strong>訂單日期:</strong> @Model.BookingDate.ToString("yyyy/MM/dd HH:mm")</p>
+            <p><i class="fas fa-film me-2"></i><strong>電影:</strong> @Model.MovieTitle</p>
+            <p><i class="fas fa-building me-2"></i><strong>影城:</strong> @Model.TheaterName</p>
+            <p><i class="fas fa-door-open me-2"></i><strong>影廳:</strong> @Model.AuditoriumName</p>
+            <p><i class="far fa-clock me-2"></i><strong>放映時間:</strong> @Model.ShowTime.ToString("yyyy/MM/dd HH:mm")</p>
+            <p><i class="fas fa-chair me-2"></i><strong>座位:</strong> @string.Join(", ", Model.SeatDetails)</p>
+            <p><i class="fas fa-ticket-alt me-2"></i><strong>票種:</strong> @string.Join(", ", Model.TicketTypes)</p>
+            @if (Model.Snacks.Any())
+            {
+                <p><i class="fas fa-utensils me-2"></i><strong>小吃:</strong> @string.Join(", ", Model.Snacks)</p>
+            }
+            <p><i class="fas fa-dollar-sign me-2"></i><strong>總金額:</strong> NT$ @Model.TotalAmount</p>
+            <p><i class="fas fa-credit-card me-2"></i><strong>付款方式:</strong> @Model.PaymentTypes</p>
+            <p><i class="fas fa-info-circle me-2"></i><strong>訂單狀態:</strong> @Model.BookingStatus</p>
+        </div>
+    </div>
+</div>

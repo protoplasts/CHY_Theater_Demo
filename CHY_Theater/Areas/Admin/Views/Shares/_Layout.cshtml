@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - FinalDemo</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/Footer.css" asp-append-version="true" />
+  <link rel="stylesheet" href="~/FinalDemo.styles.css" asp-append-version="true" />
+   
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+          integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer" />
+  
+
+    @RenderSection("Styles", required: false)
+
+</head>
+<body>
+    <h2>haha</h2>
+    @* <div class="container">
+        <main role="main" class="pb-3">
+
+		</main>
+    </div> *@
+	@RenderBody()
+
+  
+
+    <!-- Footer Start -->
+    <!-- Footer End -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+
+        window.onscroll = function () {
+            myFunction();
+        };
+
+        var navbar_sticky = document.getElementById("navbar_sticky");
+        var sticky = navbar_sticky.offsetTop;
+        var navbar_height = document.querySelector(".navbar").offsetHeight;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky + navbar_height) {
+                navbar_sticky.classList.add("sticky");
+                document.body.style.paddingTop = navbar_height + "px";
+            } else {
+                navbar_sticky.classList.remove("sticky");
+                document.body.style.paddingTop = "0";
+            }
+        }
+   
+
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

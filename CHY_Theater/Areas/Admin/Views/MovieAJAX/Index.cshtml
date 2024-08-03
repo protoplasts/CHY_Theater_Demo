@@ -1,0 +1,233 @@
+﻿@model IEnumerable<CHY_Theater_Models.Models.Movie>
+@{
+    ViewData["Title"] = "Movies Management";
+    Layout = "~/Areas/Admin/Views/Shares/_Layout.cshtml";
+}
+<div class="container mt-4 bg-light">
+    <h2>Movies Management</h2>
+
+    <button id="createMovieBtn" class="btn btn-primary mb-3">Create New Movie</button>
+
+    <div class="table-responsive">
+        <table id="movieTable" class="table table-striped table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Movie Name</th>
+                    <th>English Name</th>
+                    <th>Release Date</th>
+                    <th>Runtime</th>
+                    <th>Level</th>
+                    <th>Language</th>
+                    <th>Director</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal for Create/Edit -->
+<div class="modal fade" id="movieModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="movieModalLabel">Movie</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="movieForm">
+                    <input type="hidden" id="movieId">
+                    <div class="mb-3">
+                        <label for="movieName" class="form-label">Movie Name</label>
+                        <input type="text" class="form-control" id="movieName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="movieEnglishName" class="form-label">English Name</label>
+                        <input type="text" class="form-control" id="movieEnglishName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="movieDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="movieDescription" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="releaseDate" class="form-label">Release Date</label>
+                        <input type="date" class="form-control" id="releaseDate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="runtime" class="form-label">Runtime (minutes)</label>
+                        <input type="number" class="form-control" id="runtime" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="level" class="form-label">Level</label>
+                        <input type="number" class="form-control" id="level" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="language" class="form-label">Language</label>
+                        <input type="text" class="form-control" id="language" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="movieImage" class="form-label">Movie Image URL</label>
+                        <input type="text" class="form-control" id="movieImage">
+                    </div>
+                    <div class="mb-3">
+                        <label for="movieVideo" class="form-label">Movie Video URL</label>
+                        <input type="text" class="form-control" id="movieVideo">
+                    </div>
+                    <div class="mb-3">
+                        <label for="directorName" class="form-label">Director Name</label>
+                        <input type="text" class="form-control" id="directorName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="movieState" class="form-label">Movie State</label>
+                        <input type="number" class="form-control" id="movieState">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveMovie">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+
+<script>
+        const apiBaseUrl = "https://localhost:7207/api/movies";
+
+    $(document).ready(function () {
+
+        loadMovies();
+
+        $('#createMovieBtn').click(function () {
+            $('#movieModalLabel').text('Create Movie');
+            $('#movieId').val('');
+            $('#movieForm')[0].reset();
+            $('#movieModal').modal('show');
+        });
+
+        $('#saveMovie').click(function () {
+            var movie = {
+                movieId: $('#movieId').val(),
+                movieName: $('#movieName').val(),
+                movieEnglishName: $('#movieEnglishName').val(),
+                movieDescription: $('#movieDescription').val(),
+                releaseDate: $('#releaseDate').val(),
+                runtime: parseInt($('#runtime').val()),
+                level: parseInt($('#level').val()),
+                language: $('#language').val(),
+                movieImage: $('#movieImage').val(),
+                movieVideo: $('#movieVideo').val(),
+                directorName: $('#directorName').val(),
+                movieState: parseInt($('#movieState').val())
+            };
+
+            if (movie.movieId) {
+                updateMovie(movie);
+            } else {
+                createMovie(movie);
+            }
+        });
+
+        $(document).on('click', '.edit-movie', function () {
+            var id = $(this).data('id');
+            getMovie(id);
+        });
+
+        $(document).on('click', '.delete-movie', function () {
+            var id = $(this).data('id');
+            if (confirm('Are you sure you want to delete this movie?')) {
+                deleteMovie(id);
+            }
+        });
+    });
+
+    function loadMovies() {
+        $.ajax({
+            url: apiBaseUrl,
+            method: 'GET',
+            success: function (data) {
+                var tbody = $('#movieTable tbody');
+                tbody.empty();
+                $.each(data, function (i, movie) {
+                    tbody.append(`
+                                <tr>
+                                    <td>${movie.movieName}</td>
+                                    <td>${movie.movieEnglishName}</td>
+                                    <td>${new Date(movie.releaseDate).toLocaleDateString()}</td>
+                                    <td>${movie.runtime}</td>
+                                    <td>${movie.level}</td>
+                                    <td>${movie.language}</td>
+                                    <td>${movie.directorName}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary edit-movie" data-id="${movie.movieId}">Edit</button>
+                                        <button class="btn btn-sm btn-danger delete-movie" data-id="${movie.movieId}">Delete</button>
+                                    </td>
+                                </tr>
+                            `);
+                });
+            }
+        });
+    }
+
+    function getMovie(id) {
+        $.ajax({
+            url: `/api/Movies/${id}`,
+            method: 'GET',
+            success: function (movie) {
+                $('#movieModalLabel').text('Edit Movie');
+                $('#movieId').val(movie.movieId);
+                $('#movieName').val(movie.movieName);
+                $('#movieEnglishName').val(movie.movieEnglishName);
+                $('#movieDescription').val(movie.movieDescription);
+                $('#releaseDate').val(movie.releaseDate.split('T')[0]);
+                $('#runtime').val(movie.runtime);
+                $('#level').val(movie.level);
+                $('#language').val(movie.language);
+                $('#movieImage').val(movie.movieImage);
+                $('#movieVideo').val(movie.movieVideo);
+                $('#directorName').val(movie.directorName);
+                $('#movieState').val(movie.movieState);
+                $('#movieModal').modal('show');
+            }
+        });
+    }
+
+    function createMovie(movie) {
+        $.ajax({
+            url: '/api/Movies',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(movie),
+            success: function () {
+                $('#movieModal').modal('hide');
+                loadMovies();
+            }
+        });
+    }
+
+    function updateMovie(movie) {
+        $.ajax({
+            url: `/api/Movies/${movie.movieId}`,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(movie),
+            success: function () {
+                $('#movieModal').modal('hide');
+                loadMovies();
+            }
+        });
+    }
+
+    function deleteMovie(id) {
+        $.ajax({
+            url: `/api/Movies/${id}`,
+            method: 'DELETE',
+            success: function () {
+                loadMovies();
+            }
+        });
+    }
+</script>}

@@ -1,3 +1,4 @@
+using CHY_Theater.Areas.Admin.Service;
 using CHY_Theater.Areas.Identity.Authorize;
 using CHY_Theater.Areas.Identity.Services;
 using CHY_Theater_DataAcess.Data;
@@ -12,7 +13,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
+//Add API Service Called
+builder.Services.AddHttpClient<MovieService>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<Theater_ProjectDbContext>(options =>
