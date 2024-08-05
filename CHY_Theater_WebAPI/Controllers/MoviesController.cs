@@ -7,11 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CHY_Theater_DataAcess.Data;
 using CHY_Theater_Models.Models;
+using Microsoft.AspNetCore.Authorization;
+using CHY_Theater_Utitly;
 
 namespace CHY_Theater_WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class MoviesController : ControllerBase
     {
         private readonly Theater_ProjectDbContext _context;
@@ -23,7 +26,9 @@ namespace CHY_Theater_WebAPI.Controllers
 
         // GET: api/Movies
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
+		[Authorize(Roles = $"{SD.User}")]
+
+		public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
         {
             return await _context.Movies.ToListAsync();
         }
@@ -101,6 +106,12 @@ namespace CHY_Theater_WebAPI.Controllers
         private bool MovieExists(int id)
         {
             return _context.Movies.Any(e => e.MovieId == id);
+        }
+        [HttpOptions]
+        [AllowAnonymous]
+        public IActionResult Options()
+        {
+            return Ok();
         }
     }
 }

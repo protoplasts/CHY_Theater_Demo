@@ -184,6 +184,8 @@ namespace CHY_Theater.Areas.Identity.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogOff()
         {
+            Response.Cookies.Delete("AdminJwtToken");
+
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home", new { area = "Customer" });
         }
@@ -212,6 +214,29 @@ namespace CHY_Theater.Areas.Identity.Controllers
 
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.FindByEmailAsync(model.Email);
+
+                    // Generate JWT token for all authenticated users
+                    var jwtToken = await _jwtTokenService.GenerateJwtToken(user);
+
+                    // Store JWT in HttpOnly cookie
+                    Response.Cookies.Append("AdminJwtToken", jwtToken, new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Secure = true, // Use only if your site uses HTTPS
+                        SameSite = SameSiteMode.Strict
+                    });
+
+                    if (await _userManager.IsInRoleAsync(user, "管理員"))
+                    {
+                        // Additional logic for admin users if needed
+                        return LocalRedirect(returnurl); // Or wherever you want admins to go
+                    }
+                    else if (await _userManager.IsInRoleAsync(user, "使用者"))
+                    {
+                        // Additional logic for regular users if needed
+                        return LocalRedirect(returnurl);
+                    }
                     //The User property is a member of the Controller class, and it provides access to the current authenticated user.
                     //When a user logs in successfully, the ClaimsPrincipal (User) is set up by the authentication middleware. 
                     //var user = await _userManager.GetUserAsync(User);

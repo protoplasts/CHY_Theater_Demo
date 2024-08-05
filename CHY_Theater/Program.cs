@@ -1,6 +1,7 @@
 using CHY_Theater.Areas.Admin.Service;
 using CHY_Theater.Areas.Identity.Authorize;
 using CHY_Theater.Areas.Identity.Services;
+using CHY_Theater.Views.Shared.Filters;
 using CHY_Theater_DataAcess.Data;
 using CHY_Theater_Models.Models;
 using CHY_Theater_Utitly;
@@ -64,6 +65,11 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
+});
+//Register the Exception Filter
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add(new ApiExceptionFilter());
 });
 var app = builder.Build();
 

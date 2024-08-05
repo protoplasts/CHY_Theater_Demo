@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.7">
       <PrivateAssets>all</PrivateAssets>
@@ -18,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CHY_Theater_DataAcess\CHY_Theater_DataAcess.csproj" />
+    <ProjectReference Include="..\CHY_Theater_Utitly\CHY_Theater_Utitly.csproj" />
   </ItemGroup>
 
 </Project>

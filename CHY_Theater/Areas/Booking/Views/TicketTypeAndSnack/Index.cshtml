@@ -120,6 +120,7 @@
             margin: 0;
             padding: 0;
             list-style-type: none;
+            border-radius: 6px;
         }
 
             #selected-tickets-list span,
@@ -195,6 +196,14 @@
             }
         }
 
+        #selected-tickets-detail {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            border-radius: 6px;
+        }
         
     </style>
 }
@@ -221,30 +230,27 @@
                     </li>
                     <li class="mb-3">
                         <span class="fs-5 text-white">開演時間:</span>
-                        <span class="fs-5 ms-2">@Model.Show.ShowDateTime.ToString("yyyy年M月d日 H點")</span>
+                        <span class="fs-5 ms-2 text-white">@Model.Show.ShowDateTime.ToString("yyyy年M月d日 H點")</span>
                     </li>
                     <li class="selected-tickets mt-4 pt-3 border-top">
                         <div class="row">
                             <div class="col-md-6">
                                 <h3 class="fw-bold fs-5 text-white mb-3">票種</h3>
-                                <div id="selected-tickets-list" class="mb-3"></div>
+                                <div id="selected-tickets-list" class="mb-3 text-dark"></div>
                                 <h3 class="fw-bold fs-5 text-white mb-3">明細</h3>
-                                <div id="selected-tickets-detail"></div>
+                                <div id="selected-tickets-detail" class="mb-3 text-dark"></div>
                             </div>
                             <div class="col-md-6">
                                 <h3 class="fw-bold fs-5 text-white mb-3">加購</h3>
-                                <div id="selected-snacks-list"></div>
+                                <div id="selected-snacks-list" class="mb-3 text-dark"></div>
                             </div>
                         </div>
                     </li>
                     <li class="mb-3">
-                        <span class="fs-5 text-black">總座位數:</span>
-                        <span id="total-seats" class="fs-5 ms-2"></span>
+                        <span class="fs-5 text-white">總座位數:</span>
+                        <span id="total-seats" class="fs-5 ms-2 text-muted"></span>
                     </li>
-                    <li>
-                        <h3 class="fw-bold fs-5 text-black mb-3">配對活動</h3>
-                        <!-- Add content for "特別活動" here -->
-                    </li>
+                   
                 </ul>
             </div>
 
@@ -256,8 +262,8 @@
         </ul>
         </div> *@
         <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
-            <h3 class="mb-0">總計:</h3>
-            <h3 class="mb-0">$<span id="grand-total">0.00</span></h3>
+            <h3 class="mb-0 text-white">總計:</h3>
+            <h3 class="mb-0 text-white">$<span id="grand-total">0.00</span></h3>
         </div>
     </div>
     
@@ -472,6 +478,10 @@
 
                 if (details.length === 0) {
                     container.html(`<span>${emptyMessage}</span>`);
+                    $('#selected-tickets-detail').empty().css('background-color', 'transparent');
+                    $('#selected-tickets-detail').empty().css('box-shadow', 'none');
+                    $('#selected-tickets-list').empty().css('background-color', 'transparent');
+                    $('#selected-tickets-list').empty().css('box-shadow', 'none');
                 } else {
                     var combinedItems = {};
                     details.forEach(function (detail) {
@@ -491,6 +501,8 @@
                     var combinedDescription = Object.entries(combinedItems).map(([key, value]) => `${key}:${value}`).join(';');
                     var span = $('<span></span>').text(`${combinedDescription}`);
                     container.append(span);
+                    container.css('background-color', 'paleturquoise').css('padding', '8px');
+                    container.css('box-shadow', '0 2px 4px rgba(0, 0, 0, 0.05)');
                 }
             }
 
@@ -500,6 +512,8 @@
 
                 if (items.length === 0) {
                     container.html(`<span>${emptyMessage}</span>`);
+                    $('#selected-snacks-list').empty().css('background-color', 'transparent');
+                    $('#selected-snacks-list').empty().css('box-shadow', 'none');
                 } else {
                     items.forEach(function (item, index) {
                         var span = $('<span></span>').text(item);
@@ -508,6 +522,8 @@
                             container.append('<span class="comma">, </span>');
                         }
                     });
+                    container.css('background-color', 'paleturquoise').css('padding', '8px');
+                    container.css('box-shadow', '0 2px 4px rgba(0, 0, 0, 0.05)');
                 }
             }
 
@@ -543,6 +559,31 @@
 
             // Initial calculation
             calculateTotalSeats();
+            function clearSelections() {
+                // Reset all quantity selects to 0
+                $('.quantity-select').val(0);
+                // Clear selected tickets and snacks lists and reset their backgrounds
+                $('#selected-tickets-list').empty().css('background-color', 'transparent').css('padding', '0');
+                $('#selected-snacks-list').empty().css('background-color', 'transparent').css('padding', '0');
+                $('#selected-tickets-detail').empty().css('background-color', 'transparent').css('padding', '0');
+
+                // Clear selected tickets and snacks lists
+                $('#selected-tickets-list').empty();
+                $('#selected-snacks-list').empty();
+                $('#selected-tickets-detail').empty();
+
+                // Reset totals
+                $('.ticket-total').text('0.00');
+                $('.snack-total').text('0.00');
+                $('#grand-total').text('0.00');
+                $('#total-seats').text('0');
+
+                // Hide proceed button
+                $('#proceed-button').hide().removeClass('animateBtn');
+
+                // Update the form (if needed)
+                updateTotal();
+            }
 
 
             $('form').submit(function (e) {
