@@ -27,8 +27,9 @@ public partial class Movie
 
     public string DirectorName { get; set; } = null!;
 
+ 
     public int? MovieState { get; set; }
-
+    public int? OnFous { get; set; }
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
     public virtual ICollection<MovieActor> MovieActors { get; set; } = new List<MovieActor>();

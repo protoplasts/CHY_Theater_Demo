@@ -20,8 +20,9 @@ public partial class Theater_ProjectDbContext : IdentityDbContext<IdentityUser>
     }
     public DbSet<EcpayOrder> EcpayOrders { get; set; }
 
-    public virtual DbSet<News> News { get; set; }
+    public virtual DbSet<CarouselItem> CarouselItems { get; set; }
 
+    public virtual DbSet<News> News { get; set; }
     public virtual DbSet<Event> Events { get; set; }
     public DbSet<ApplicationUser> ApplicationUser { get; set; }
     public DbSet<Test> Test { get; set; }

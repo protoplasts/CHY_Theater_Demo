@@ -86,5 +86,53 @@ namespace CHY_Theater.Areas.Identity.Controllers
 
             return View(viewModels);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> UpdatePersonalInfo()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdatePersonalInfo(ApplicationUser model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                user.Name = model.Name;
+                user.Email = model.Email;
+                // Update other user properties as needed
+
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    // Add any additional logic, such as logging the update or redirecting to a confirmation page
+                    return RedirectToAction("Index", "Home"); // or any other appropriate action
+                }
+
+                AddErrors(result);
+            }
+
+            return View(model);
+        }
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+        }
     }
 }

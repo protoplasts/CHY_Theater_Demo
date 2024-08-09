@@ -18,7 +18,7 @@ namespace CHY_Theater.Areas.Customer.Controllers
 		public IActionResult Index()
 		{
 			var onShowMovies = _context.Movies.Where(m => m.MovieState == 1).ToList();
-			var comingSoonMovies = _context.Movies.Where(m => m.MovieState == 0).ToList();
+			var comingSoonMovies = _context.Movies.Where(m => m.MovieState == 2).ToList();
 
 			var viewModel = new MovieViewModel
 			{

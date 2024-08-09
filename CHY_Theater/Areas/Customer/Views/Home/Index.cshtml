@@ -5,74 +5,56 @@
 }
 
 <link href="~/css/test.css" rel="stylesheet" />
+@section Styles {
+    <style>
+        /* Style for custom nav-tabs */
+        .custom-nav-tabs {
+            border-bottom: 2px solid #ddd; /* Adjust the border color as needed */
+        }
+
+        /* Style for custom nav-item */
+        .custom-nav-item {
+            margin-bottom: -1px; /* Aligns the tabs with the content */
+        }
+
+        /* Style for custom nav-link */
+        .custom-nav-link {
+            color: #4CAF50; /* Tab text color */
+            background-color: #f8f9fa; /* Tab background color */
+            border: 1px solid transparent;
+            border-top-left-radius: 0.25rem;
+            border-top-right-radius: 0.25rem;
+            padding: 10px 20px; /* Adjust padding as needed */
+            transition: color 0.3s ease, background-color 0.3s ease;
+        }
+
+        /* Active state for custom nav-link */
+        .custom-nav-tabs .nav-item.show .custom-nav-link,
+        .custom-nav-tabs .custom-nav-link.active {
+            color: aquamarine; /* Active tab text color */
+            background-color: darkslateblue; /* Active tab background color */
+            border-color: none !important; /* Adjust border colors as needed */
+        }
+
+        /* Hover state for custom nav-link */
+        .custom-nav-link:hover {
+            color: #9CCC65; /* Tab text color on hover */
+            background-color: #e9ecef; /* Tab background color on hover */
+            border-color: #dee2e6 #dee2e6 #fff; /* Adjust border colors as needed */
+        }
+
+    </style>
+}
+
 @Html.Partial("~/Views/Shared/Partial View/_carousel.cshtml")
 
 <!-- test -->
-<section id="post" style="position: relative; padding: 2rem; overflow: hidden;">
-    <img src="~/img/test3.jpg" alt="Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;" />
-    <div class="container post-box">
-        <div class="row mb-4">
-            <div class="col-12 col-md-6 mb-4">
-                <a href="/home/EventContent?ID=747" class="img-box">
-                    <img src="~/img/活動/ticket giveaway2.png" class="img-fluid" alt="">
-                </a>
-            </div>
-            <div class="col-12 col-md-6 custom-rihgt-width mb-4 haha ">
-                <span class="badge bg-primary mb-4">最新活動</span>
-                <h4 class="text-white">【A dummy love story】隨票贈活動</h4>
-                <p class="text-white-50">購買6/7-6/13期間【A dummy love story】電影票1張，即可兌換「角色海報」1張，數量有限,送完為止</p>
-                <a class="btn btn-outline-primary mt-5" href="#">詳細內容</a>
-            </div>
-        </div>
+@* @Html.Partial("~/Views/Shared/Partial View/_OnShow.cshtml")
 
-        <div class="row mb-4 ">
-            <div class="col-12 col-md-6 mb-4 haha custom-rihgt-width offset-md-1">
-                <span class="badge bg-warning text-dark mb-4">預售活動</span>
-                <h4 class="text-white">【腦筋急轉彎2】預購贈活動</h4>
-                <p class="text-white-50">全台國賓5/30開放預購，預購電影票1張即可獲得「A5資料夾」1個(隨機提供，恕不挑款，數量有限，送完為止)</p>
-                <a class="btn btn-outline-primary mt-5" href="/home/EventContent?ID=741">詳細內容</a>
-            </div>
-            <div class="col-12 col-md-6 mb-4  ">
-                <a href="/home/EventContent?ID=741" class="img-box">
-                    <img src="./IMG/活動/pre_order2.png" class="img-fluid" alt="">
-                </a>
-            </div>
+@Html.Partial("~/Views/Shared/Partial View/_Focus.cshtml") *@
 
-        </div>
-        <div class="row mb-4 ">
-            <div class="col-12 col-md-6 mb-4 ">
-                <a href="/home/EventContent?ID=690" class="img-box">
-                    <img src="./IMG/活動/Join Member.png" class="img-fluid" alt="">
-                </a>
-            </div>
-            <div class="col-12 col-md-6 custom-rihgt-width mb-4 haha">
-                <span class="badge bg-success">會員專屬</span>
-                <h4 class="text-white">國賓續訂好禮</h4>
-                <p class="text-white-50">訂閱會員 專屬訂閱禮</p>
-                <a class="btn btn-outline-primary mt-5" href="/home/EventContent?ID=690">詳細內容</a>
-            </div>
-        </div>
-        <div class="row mb-4">
-            <div class="col-12 col-md-6 custom-rihgt-width mb-4 haha offset-md-1">
-                <span class="badge bg-info text-dark ">最新優惠</span>
-                <h4 class="text-white">看電影APP會員訂票 加購餐點 直接取餐超方便</h4>
-                <p class="text-white-50">立即下載看電影APP線上入會</p>
-                <a class="btn btn-outline-primary mt-5" href="/home/EventContent?ID=575">詳細內容</a>
-            </div>
-            <div class="col-12 col-md-6 mb-4 ">
-                <a href="/home/EventContent?ID=575" class="img-box">
-                    <img src="./IMG/活動/Movie_App_2.png" class="img-fluid" alt="">
-                </a>
-            </div>
+@await Component.InvokeAsync("Events")
 
-        </div>
-        <div class="text-center mt-4">
-            <a href="/home/EventList" class="btn btn-outline-primary">更多優惠</a>
-        </div>
-    </div>
-</section>
-@Html.Partial("~/Views/Shared/Partial View/_OnShow.cshtml")
-
-@Html.Partial("~/Views/Shared/Partial View/_Focus.cshtml")
-
-
+@await Component.InvokeAsync("MovieTrailers")
+@await Component.InvokeAsync("Focus")
+@await Component.InvokeAsync("News")

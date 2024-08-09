@@ -26,7 +26,7 @@ namespace CHY_Theater_WebAPI.Controllers
 
         // GET: api/Movies
         [HttpGet]
-		[Authorize(Roles = $"{SD.User}")]
+		[Authorize(Roles = $"{SD.Admin}")]
 
 		public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
         {

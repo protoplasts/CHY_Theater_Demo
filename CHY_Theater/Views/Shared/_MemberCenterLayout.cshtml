@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - FinalDemo</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/Footer.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/FinalDemo.styles.css" asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+          integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="~/css/HomePage.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/OnShow.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Focus.css" asp-append-version="true" />
+
+    @RenderSection("Styles", required: false)
+
+</head>
+<body>
+    div class="container-xl center-container">
+    <div class="row row-body mb-4">
+        <!-- Left Navigation Bar -->
+        <div class="col-md-3 mb-4">
+            <div class="list-group mt-5">
+                <a href="#" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-user-circle me-2"></i>我的帳戶
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fas fa-edit me-2"></i>更新個人資訊
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fas fa-key me-2"></i>更改密碼
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fas fa-key me-2"></i>登入設定
+                </a>
+                <a href="@Url.Action("OrderInquiry", "MemberCenter")" class="list-group-item list-group-item-action">
+                    <i class="fas fa-shopping-cart me-2"></i>訂單查詢
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fas fa-map-marker-alt me-2"></i>收件地址管理
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fas fa-ticket-alt me-2"></i>專屬優惠券
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fas fa-coins me-2"></i>紅利點數
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fas fa-heart me-2"></i>收藏清單
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fas fa-question-circle me-2"></i>詢問紀錄
+                </a>
+            </div>
+        </div>
+        <!-- Right Content Area -->
+        <div class="col-md-9">
+			@RenderBody()
+
+        </div>
+    </div>
+    </div>    
+
+
+
+    <!-- Footer Start -->
+    <footer class="text-center text-lg-start text-muted gradient-bg">
+
+        <!-- Section: Social Media -->
+        <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+
+            <!-- Left: Social Media Text -->
+            <div class="me-5 d-none d-lg-block">
+                <span>Get connected with us on social networks:</span>
+            </div>
+            <!-- Left End -->
+            <!-- Right: Social Media Icons -->
+            <div>
+                <a href="#" class="me-4 text-reset">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="me-4 text-reset">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="me-4 text-reset">
+                    <i class="fab fa-google"></i>
+                </a>
+                <a href="#" class="me-4 text-reset">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="me-4 text-reset">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="#" class="me-4 text-reset">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+            <!-- Right End -->
+
+        </section>
+        <!-- Section: Social Media End -->
+        <!-- Section: Links -->
+        <section>
+            <div class="container text-center text-md-start mt-5">
+
+                <!-- Grid Row -->
+                <div class="row mt-3">
+
+                    <!-- Grid Column: Company Info -->
+                    <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                        <h6 class="text-uppercase fw-bold mb-4">
+                            <i class="fa-brands fa-youtube me-1"></i> 如影隨形
+                        </h6>
+                        <p>
+                            如影隨形 is your go-to platform for the latest movies, events, and news. Stay connected with us for the best cinematic experience.
+                        </p>
+                    </div>
+                    <!-- Grid Column: Company Info End -->
+                    <!-- Grid Column: Navigation Links -->
+                    <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                        <h6 class="text-uppercase fw-bold mb-4">Navigation</h6>
+                        <p><a href="index.html" class="text-reset">首頁</a></p>
+                        <p><a href="about.html" class="text-reset">影城</a></p>
+                        <p><a href="about.html" class="text-reset">電影</a></p>
+                        <p><a href="team.html" class="text-reset">活動</a></p>
+                        <p><a href="team.html" class="text-reset">消息</a></p>
+                        <p><a href="contact.html" class="text-reset">聯絡我們</a></p>
+                    </div>
+                    <!-- Grid Column: Navigation Links End -->
+                    <!-- Grid Column: Useful Links -->
+                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                        <h6 class="text-uppercase fw-bold mb-4">Useful Links</h6>
+                        <p><a href="./Regesiter.html" class="text-reset">加入會員</a></p>
+                        <p><a href="#!" class="text-reset">Pricing</a></p>
+                        <p><a href="#!" class="text-reset">Settings</a></p>
+                        <p><a href="#!" class="text-reset">Orders</a></p>
+                        <p><a href="#!" class="text-reset">Help</a></p>
+                    </div>
+                    <!-- Grid Column: Useful Links End -->
+                    <!-- Grid Column: Contact -->
+                    <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                        <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+                        <p><i class="fas fa-home me-3"></i> New York, NY 10012, US</p>
+                        <p><i class="fas fa-envelope me-3"></i> info@example.com</p>
+                        <p><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
+                        <p><i class="fas fa-print me-3"></i> + 01 234 567 89</p>
+                    </div>
+                    <!-- Grid Column: Contact End -->
+
+                </div>
+                <!-- Grid Row End -->
+
+            </div>
+        </section>
+        <!-- Section: Links End -->
+        <!-- Copyright -->
+        <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+            © 2024 Copyright:
+            <a class="text-reset fw-bold" href="index.html">如影隨形</a>
+        </div>
+        <!-- Copyright End -->
+
+    </footer>
+    <!-- Footer End -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+
+        window.onscroll = function () {
+            myFunction();
+        };
+
+        var navbar_sticky = document.getElementById("navbar_sticky");
+        var sticky = navbar_sticky.offsetTop;
+        var navbar_height = document.querySelector(".navbar").offsetHeight;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky + navbar_height) {
+                navbar_sticky.classList.add("sticky");
+                document.body.style.paddingTop = navbar_height + "px";
+            } else {
+                navbar_sticky.classList.remove("sticky");
+                document.body.style.paddingTop = "0";
+            }
+        }
+
+
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,63 @@
+﻿@model IEnumerable<CHY_Theater_Models.Models.Event>
+
+<section id="post" style="position: relative; padding: 2rem; overflow: hidden;">
+    <img src="~/img/test3.jpg" alt="Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;" />
+    <div class="container post-box">
+        @{
+            var eventList = Model.ToList();
+            for (int i = 0; i < eventList.Count; i++)
+            {
+                var eventItem = eventList[i];
+                var isEven = i % 2 == 0;
+
+                <div class="row mb-4">
+                    @if (isEven)
+                    {
+                        <div class="col-12 col-md-6 mb-4">
+                            <a href="@Url.Action("Details", "Events", new { ID = eventItem.EventId })" class="img-box">
+                                <img src="@Url.Content(eventItem.EventImage)" class="img-fluid" alt="@eventItem.EventTitle">
+                            </a>
+                        </div>
+                        <div class="col-12 col-md-6 custom-rihgt-width mb-4 haha">
+                            <span class="badge bg-@GetBadgeColor(eventItem.EventType) mb-4">@eventItem.EventType</span>
+                            <h4 class="text-white">@eventItem.EventTitle</h4>
+                            <p class="text-white-50">@eventItem.EventDescription</p>
+                            <a class="btn btnDetail mt-5" href="@Url.Action("Details", "Events", new { ID = eventItem.EventId })">詳細內容</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-12 col-md-6 mb-4 haha custom-rihgt-width offset-md-1">
+                            <span class="badge bg-@GetBadgeColor(eventItem.EventType) mb-4">@eventItem.EventType</span>
+                            <h4 class="text-white">@eventItem.EventTitle</h4>
+                            <p class="text-white-50">@eventItem.EventDescription</p>
+                            <a class="btn btnDetail mt-5" href="@Url.Action("Details", "Events", new { ID = eventItem.EventId })">詳細內容</a>
+                        </div>
+                        <div class="col-12 col-md-6 mb-4">
+                            <a href="@Url.Action("Details", "Events", new { ID = eventItem.EventId })" class="img-box">
+                                <img src="@Url.Content(eventItem.EventImage)" class="img-fluid" alt="@eventItem.EventTitle">
+                            </a>
+                        </div>
+                    }
+                </div>
+            }
+        }
+        <div class="text-center mt-4">
+            <a href="@Url.Action("Index", "Events")" class="btn btnDetail">更多優惠</a>
+        </div>
+    </div>
+</section>
+
+@functions {
+    string GetBadgeColor(string eventType)
+    {
+        return eventType switch
+        {
+            "特別活動" => "danger",
+            "預售活動" => "warning text-dark",
+            "會員專屬" => "success",
+            "周年紀念" => "info text-dark",
+            _ => "secondary"
+        };
+    }
+}

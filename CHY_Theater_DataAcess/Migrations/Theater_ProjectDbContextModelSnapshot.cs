@@ -217,6 +217,28 @@ namespace CHY_Theater_DataAcess.Migrations
                     b.ToTable("BookingTicketTypes_Detail", (string)null);
                 });
 
+            modelBuilder.Entity("CHY_Theater_Models.Models.CarouselItem", b =>
+                {
+                    b.Property<int>("CarouselItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CarouselItemId"));
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CarouselItemId");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("CarouselItems");
+                });
+
             modelBuilder.Entity("CHY_Theater_Models.Models.Class", b =>
                 {
                     b.Property<int>("ClassId")
@@ -530,6 +552,9 @@ namespace CHY_Theater_DataAcess.Migrations
                     b.Property<string>("Movievideo")
                         .IsUnicode(false)
                         .HasColumnType("varchar(max)");
+
+                    b.Property<int?>("OnFous")
+                        .HasColumnType("int");
 
                     b.Property<DateOnly>("ReleaseDate")
                         .HasColumnType("date");
@@ -1377,6 +1402,17 @@ namespace CHY_Theater_DataAcess.Migrations
                     b.Navigation("Booking");
 
                     b.Navigation("TicketType");
+                });
+
+            modelBuilder.Entity("CHY_Theater_Models.Models.CarouselItem", b =>
+                {
+                    b.HasOne("CHY_Theater_Models.Models.Movie", "Movie")
+                        .WithMany()
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Movie");
                 });
 
             modelBuilder.Entity("CHY_Theater_Models.Models.Comment", b =>

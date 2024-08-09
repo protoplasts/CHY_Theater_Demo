@@ -4,7 +4,10 @@ namespace CHY_Theater.Areas.Customer.Models.ViewModels
 {
 	public class MovieViewModel
 	{
-		public List<Movie> OnShowMovies { get; set; }
-		public List<Movie> ComingSoonMovies { get; set; }
-	}
+        public List<Movie> OnShowMovies { get; set; }
+        public List<Movie> ComingSoonMovies { get; set; }
+        public List<Movie> OnFocusMovies { get; set; }
+
+        public string CurrentType { get; set; }
+    }
 }

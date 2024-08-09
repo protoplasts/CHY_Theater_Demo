@@ -1,0 +1,38 @@
+﻿@model List<CHY_Theater_Models.News>
+<link rel="stylesheet" href="~/css/News.css" asp-append-version="true" />
+
+<div id="news" class="news-box container my-5">
+    <div class="row g-4">
+        @if (Model.Any())
+        {
+            <div class="col-lg-6">
+                <div class="news-image position-relative">
+                    <a asp-controller="News" asp-action="Details" asp-route-id="@Model[0].NewsId" class="d-block">
+                        <img src="@(string.IsNullOrEmpty(Model[0].NewsPoster) ? "~/img/default-news.jpg" : Model[0].NewsPoster)" alt="@Model[0].NewsTitle" class="img-fluid">
+                        <div class="news-image-overlay d-none d-lg-block">
+                            <span class="info-text">@Model[0].NewsNotice</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        }
+        <div class="col-lg-6">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="news-title m-0">最新消息</h3>
+                <a asp-controller="News" asp-action="Index" class="more d-none d-lg-block text-decoration-none">更多消息</a>
+            </div>
+            <dl class="news-list">
+                @foreach (var news in Model.Skip(1))
+                {
+                    <dt class="news-list-title">@news.NewsType</dt>
+                    <dd>
+                        <a asp-controller="News" asp-action="Details" asp-route-id="@news.NewsId">@news.NewsTitle</a>
+                    </dd>
+                }
+            </dl>
+            <div class="d-lg-none text-center mt-3">
+                <a class="btn btn-outline-secondary" href="@Url.Action("NewsList", "Home")">更多消息</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,123 @@
+﻿@using CHY_Theater.Areas.Customer.Models.ViewModels
+@model MovieViewModel
+
+<div class="container-xl">
+    <section id="stream" class="p_3 mb-5 pb-5 mt-4">
+        <div class="container-xl pb-5" style="overflow: visible">
+            <ul class="nav nav-tabs custom-nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item custom-nav-item" role="presentation">
+                    <button class="nav-link custom-nav-link active" id="on-show-movies-tab" data-bs-toggle="tab" data-bs-target="#on-show-movies" type="button" role="tab" aria-controls="on-show-movies" aria-selected="true">現正熱映</button>
+                </li>
+                <li class="nav-item custom-nav-item" role="presentation">
+                    <button class="nav-link custom-nav-link" id="coming-soon-movies-tab" data-bs-toggle="tab" data-bs-target="#coming-soon-movies" type="button" role="tab" aria-controls="coming-soon-movies" aria-selected="false">即將上映</button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="on-show-movies" role="tabpanel" aria-labelledby="on-show-movies-tab">
+                    @* On Show Movies Carousel *@
+                    <div class="row stream_2 mt-4">
+                        <div class="col-md-12">
+                            <div id="onShowMoviesCarousel" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    @for (int i = 0; i < Model.OnShowMovies.Count; i += 4)
+                                    {
+                                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                                            <div class="row">
+                                                @for (int j = i; j < Math.Min(i + 4, Model.OnShowMovies.Count); j++)
+                                                {
+                                                    var movie = Model.OnShowMovies[j];
+                                                    <div class="col-md-3 col-6">
+                                                        <div class="movie-card-wrapper">
+                                                            <div class="card bg-dark text-white movie-card">
+                                                                <img src="@movie.MovieImage" asp-append-version="true" class="card-img-top" alt="@movie.MovieName Poster" />
+                                                                <div class="card-body">
+                                                                    <div class="movie-titles">
+                                                                        <h5 class="card-title mb-2">@movie.MovieName</h5>
+                                                                        <h6 class="card-subtitle mb-2 text-muted">@movie.MovieEnglishName</h6>
+                                                                    </div>
+                                                                    <div class="card-buttons">
+                                                                        <a href="#" class="btn btn-dark">場次</a>
+                                                                        <a href="#" class="btn btn-dark">預告</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                               
+                                <button class="carousel-control-prev" type="button" data-bs-target="#onShowMoviesCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#onShowMoviesCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                                
+
+                            </div>
+                            <div>
+                                <a asp-controller="Movies" asp-action="Index" class="btn btn-danger">更多電影123</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="coming-soon-movies" role="tabpanel" aria-labelledby="coming-soon-movies-tab">
+                    @* Coming Soon Movies Carousel *@
+                    <div class="row stream_2 mt-4">
+                        <div class="col-md-12">
+                            <div id="comingSoonMoviesCarousel" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    @for (int i = 0; i < Model.ComingSoonMovies.Count; i += 4)
+                                    {
+                                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                                            <div class="row">
+                                                @for (int j = i; j < Math.Min(i + 4, Model.ComingSoonMovies.Count); j++)
+                                                {
+                                                    var movie = Model.ComingSoonMovies[j];
+                                                    <div class="col-md-3 col-6">
+                                                        <div class="movie-card-wrapper">
+                                                            <div class="card bg-dark text-white movie-card">
+                                                                <img src="@movie.MovieImage" asp-append-version="true" class="card-img-top" alt="@movie.MovieName Poster" />
+                                                                <div class="card-body">
+                                                                    <div class="movie-titles">
+                                                                        <h5 class="card-title mb-2">@movie.MovieName</h5>
+                                                                        <h6 class="card-subtitle mb-2 text-muted">@movie.MovieEnglishName</h6>
+                                                                    </div>
+                                                                    <div class="card-buttons">
+                                                                        <a href="#" class="btn btn-dark">場次</a>
+                                                                        <a href="#" class="btn btn-dark">預告</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <div>
+                                    <a href="@Url.Action("Index", "Movies")" class="btn btn-danger">更多電影</a>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#comingSoonMoviesCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#comingSoonMoviesCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

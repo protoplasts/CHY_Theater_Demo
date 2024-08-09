@@ -45,8 +45,6 @@ namespace CHY_Theater.Areas.Identity.Controllers
                 await _roleManager.CreateAsync(new IdentityRole(SD.Admin));
                 await _roleManager.CreateAsync(new IdentityRole(SD.User));
             }
-
-
             ViewData["ReturnUrl"] = returnurl;
             RegisterViewModel registerViewModel = new()
             {
@@ -78,7 +76,6 @@ namespace CHY_Theater.Areas.Identity.Controllers
 				if (result.Succeeded)
 				{
 					//將選取的角色塞入資料庫
-
 					if (model.RoleSelected != null)
 					{
 						await _userManager.AddToRoleAsync(user, model.RoleSelected);
@@ -185,7 +182,6 @@ namespace CHY_Theater.Areas.Identity.Controllers
         public async Task<IActionResult> LogOff()
         {
             Response.Cookies.Delete("AdminJwtToken");
-
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home", new { area = "Customer" });
         }
@@ -205,13 +201,11 @@ namespace CHY_Theater.Areas.Identity.Controllers
             ViewData["ReturnUrl"] = returnurl;
             //If returnurl is null, it defaults to the home page URL(~/).
             returnurl = returnurl ?? Url.Content("~/");
-
             if (ModelState.IsValid)
             {
                 //第一/二個:The user name and password to sign in. 第三個:whether the sign-in cookie should persist after the browser is closed.
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe,
                     lockoutOnFailure: true);
-
                 if (result.Succeeded)
                 {
                     var user = await _userManager.FindByEmailAsync(model.Email);
@@ -228,9 +222,8 @@ namespace CHY_Theater.Areas.Identity.Controllers
                     });
 
                     if (await _userManager.IsInRoleAsync(user, "管理員"))
-                    {
-                        // Additional logic for admin users if needed
-                        return LocalRedirect(returnurl); // Or wherever you want admins to go
+                    {                        
+                        return LocalRedirect("~/Admin"); //管理員之後要挑到Admin page
                     }
                     else if (await _userManager.IsInRoleAsync(user, "使用者"))
                     {

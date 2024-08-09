@@ -1,0 +1,104 @@
+﻿@using CHY_Theater.Areas.Customer.Models.ViewModels
+@model MovieViewModel
+<!-- Focus Section Start -->
+<section id="focus" class="focus-box container mb-3">
+    <div class="carousel slide " id="focusCarousel" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            @foreach (var movie in Model.OnFocusMovies.Select((value, index) => new { Value = value, Index = index }))
+            {
+                <div class="carousel-item @(movie.Index == 0 ? "active" : "") mb-3 mt-3">
+                    <div class="row align-items-center">
+                        <div class="col-12 col-md-6">
+                            <div class="focus-img-box" style="background-image: url('@movie.Value.MovieImage');">
+                                <a href="#" class="play-button" data-bs-toggle="modal" data-bs-target="#videoModal" data-bs-video="@movie.Value.Movievideo">
+                                    <span class="visually-hidden">play</span>
+                                    <i class="fa-solid fa-circle-play"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="focus-info">
+                                <span class="tag">焦點</span>
+                                <h2>@movie.Value.MovieName</h2>
+                                <h6>@movie.Value.MovieEnglishName</h6>
+                                <p class="d-none d-md-block">
+                                    @movie.Value.MovieDescription
+                                </p>
+                                <a class="btn btn-primary" asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Value.MovieId">詳細介紹</a>
+                                <a class="btn btn-secondary" asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Value.MovieId" asp-fragment="show-times">上映場次</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <!-- Carousel Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#focusCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#focusCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+
+        <!-- Carousel Indicators -->
+        <div class="carousel-indicators d-lg-none">
+            @for (int i = 0; i < Model.OnFocusMovies.Count; i++)
+            {
+                <button type="button" data-bs-target="#focusCarousel" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")" aria-current="@(i == 0 ? "true" : "false")" aria-label="Slide @(i + 1)"></button>
+            }
+        </div>
+
+    </div>
+</section>
+<!-- Focus Section End -->
+<!-- Modal -->
+<div class="modal fade"
+     id="videoModal"
+     tabindex="-1"
+     aria-labelledby="videoModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <iframe width="100%"
+                        height="400"
+                        src=""
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", (event) => {
+        const videoModal = document.getElementById("videoModal");
+        console.log("Video modal element:", videoModal);
+
+        videoModal.addEventListener("show.bs.modal", (event) => {
+            const button = event.relatedTarget;
+            console.log("Button clicked:", button);
+
+            const videoUrl = button.getAttribute("data-bs-video");
+            console.log("Video URL:", videoUrl);
+
+            const iframe = videoModal.querySelector("iframe");
+            console.log("iframe element:", iframe);
+
+            iframe.src = videoUrl;
+            console.log("iframe src set to:", iframe.src);
+        });
+
+        videoModal.addEventListener("hide.bs.modal", (event) => {
+            const iframe = videoModal.querySelector("iframe");
+            iframe.src = "";
+            console.log("iframe src cleared");
+        });
+    });
+
+</script>

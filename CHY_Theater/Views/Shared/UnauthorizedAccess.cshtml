@@ -1,4 +1,24 @@
 ﻿@model ErrorViewModel
-<h1>Unauthorized Access</h1>
+@{
+    Layout = "_Layout";
+}
+@section Styles {
+<style>
+		.top-container {
+			padding-top: 70px; /* Adjust this value based on your navbar height */
+		}
+</style>
+}
+
+<div class=" mb-2 top-container">
+
+	<div class="bg-light container">
+<h1>未授權的請求</h1>
 <p>@Model.Details</p>
-<a href="@Url.Action("Index", "Home")" class="btn btn-primary">Return to Home</a>
+<a asp-action="Index" asp-controller="Home" asp-area="customer" class="btn btn-primary mb-5">Return to Home</a>
+	</div>
+</div>
+<script src="~/assets/js/core/jquery-3.7.1.min.js"></script>
+<script src="~/assets/js/core/popper.min.js"></script>
+<script src="~/assets/js/core/bootstrap.min.js"></script>
+<script src="~/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>

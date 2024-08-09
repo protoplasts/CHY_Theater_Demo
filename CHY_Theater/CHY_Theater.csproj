@@ -34,6 +34,14 @@
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Booking\Data\" />
     <Folder Include="Areas\Identity\Data\" />
+    <Folder Include="wwwroot\img\焦點電影\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Shared\_MemberCenterLayout.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

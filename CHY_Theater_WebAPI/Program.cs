@@ -33,6 +33,7 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
+    //handle the token from cookies
     options.Events = new JwtBearerEvents
     {
         OnMessageReceived = context =>
