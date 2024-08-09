@@ -5,9 +5,9 @@
     {
         if (level >= 1 && level <= 5)
         {
-            return $"/img/index_icon_0{level}.jpg";
+            return $"/img/class/index_icon_0{level}.jpg";
         }
-        return "~/img/index_icon_default.png";
+        return "~/img/class/index_icon_default.png";
     }
 }
 @section Styles {
@@ -31,8 +31,29 @@
     }
 
         .movie-information {
-            background-color: #1a1a1a;
+            background-image: url('/img/test3.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: repeat;
+            position: relative;
+            
         }
+
+            .movie-information::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                background-color: rgba(0, 0, 0, 0.5); /* Adjust the last value (0.5) for opacity */
+                z-index: 0;
+            }
+
+            .movie-information > * {
+                position: relative;
+                z-index: 1;
+            }
         /* movie-details End */
 
         .table td {
@@ -207,10 +228,12 @@
         
     </style>
 }
+<section class="movie-information">
 
-<div class="container mt-4 shadow-lg p-5 movie-information rounded main-content">
 
-    <div class="  border rounded-3 p-3 shadow-sm">
+<div class="container mt-4 shadow-lg p-5  rounded main-content">
+
+    <div class="bg-white border rounded-3 p-3 shadow-sm mt-1">
         <div class="row">
             <div class="col-md-4 d-flex justify-content-center align-items-start">
                 <div class="movie-poster-wrapper">
@@ -221,33 +244,33 @@
             <div class="col-md-8">
                 <ul class="movie-details mb-4 list-unstyled">
                     <li class="mb-3">
-                        <h1 class="fw-bold text-white">@Model.Movie.MovieName</h1>
+                        <h1 class="fw-bold text-dark">@Model.Movie.MovieName</h1>
                         <h2 class="fs-4 text-muted">@Model.Movie.MovieEnglishName</h2>
                     </li>
                     <li class="mb-3">
-                        <span class="fs-5 text-white">級別:</span>
+                        <span class="fs-5 text-dark">級別:</span>
                         <img src="@GetLevelImagePath(Model.Movie.Level)" alt="Level @Model.Movie.Level" class="ms-2" style="height:40px" />
                     </li>
                     <li class="mb-3">
-                        <span class="fs-5 text-white">開演時間:</span>
-                        <span class="fs-5 ms-2 text-white">@Model.Show.ShowDateTime.ToString("yyyy年M月d日 H點")</span>
+                        <span class="fs-5 text-dark">開演時間:</span>
+                        <span class="fs-5 ms-2 text-dark">@Model.Show.ShowDateTime.ToString("yyyy年M月d日 H點")</span>
                     </li>
                     <li class="selected-tickets mt-4 pt-3 border-top">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="fw-bold fs-5 text-white mb-3">票種</h3>
+                                <h3 class="fw-bold fs-5 text-dark mb-3">票種</h3>
                                 <div id="selected-tickets-list" class="mb-3 text-dark"></div>
                                 <h3 class="fw-bold fs-5 text-white mb-3">明細</h3>
                                 <div id="selected-tickets-detail" class="mb-3 text-dark"></div>
                             </div>
                             <div class="col-md-6">
-                                <h3 class="fw-bold fs-5 text-white mb-3">加購</h3>
+                                <h3 class="fw-bold fs-5 text-dark mb-3">加購</h3>
                                 <div id="selected-snacks-list" class="mb-3 text-dark"></div>
                             </div>
                         </div>
                     </li>
                     <li class="mb-3">
-                        <span class="fs-5 text-white">總座位數:</span>
+                        <span class="fs-5 text-dark">總座位數:</span>
                         <span id="total-seats" class="fs-5 ms-2 text-muted"></span>
                     </li>
                    
@@ -266,10 +289,7 @@
             <h3 class="mb-0 text-white">$<span id="grand-total">0.00</span></h3>
         </div>
     </div>
-    
-    
-    
-    <div class="bg-white rounded-3 p-3">
+    <div class="bg-white rounded-3 p-3 mt-1">
 
     <form asp-action="ProcessSelection" method="post">
         <div class="d-flex justify-content-between align-items-center my-4">
@@ -381,7 +401,7 @@
     </form>
 	</div>
 </div>
-
+</section>
 @section Scripts {
     <script>
         $(document).ready(function () {
@@ -501,7 +521,7 @@
                     var combinedDescription = Object.entries(combinedItems).map(([key, value]) => `${key}:${value}`).join(';');
                     var span = $('<span></span>').text(`${combinedDescription}`);
                     container.append(span);
-                    container.css('background-color', 'paleturquoise').css('padding', '8px');
+                    container.css('background-color', 'ivory').css('padding', '8px');
                     container.css('box-shadow', '0 2px 4px rgba(0, 0, 0, 0.05)');
                 }
             }
@@ -522,7 +542,7 @@
                             container.append('<span class="comma">, </span>');
                         }
                     });
-                    container.css('background-color', 'paleturquoise').css('padding', '8px');
+                    container.css('background-color', 'ivory').css('padding', '8px');
                     container.css('box-shadow', '0 2px 4px rgba(0, 0, 0, 0.05)');
                 }
             }

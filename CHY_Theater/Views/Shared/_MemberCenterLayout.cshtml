@@ -16,20 +16,82 @@
     <link rel="stylesheet" href="~/css/HomePage.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/OnShow.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Focus.css" asp-append-version="true" />
-
+   
     @RenderSection("Styles", required: false)
 
 </head>
 <body>
-    div class="container-xl center-container">
-    <div class="row row-body mb-4">
+    <section class="center-container">
+
+   
+    <div class="main clearfix position-static">
+        <div class="main_1 clearfix position-absolute top-0 w-100">
+            <section id="header">
+                <nav class="navbar navbar-expand-md navbar-light border-bottom box-shadow mb-3" id="navbar_sticky">
+                    <div class="container-xl">
+                        <a class="navbar-brand fs-2 p-0 fw-bold text-light m-0 me-5" asp-area="" asp-controller="Home" asp-action="Index">
+                            <i class="fa fa-film me-1"></i> 如影隨形
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav mb-0">
+                                
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="Customer" asp-controller="Movies" asp-action="Index">電影</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Theaters" asp-action="Index">影城</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Events" asp-action="Index">活動</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="News" asp-action="Index">最新消息</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="Booking" asp-controller="ChooseTheaterAuditorium" asp-action="Index">快速訂票</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="Identity" asp-controller="Account" asp-action="Index">Test</a>
+                                </li>
+                            </ul>
+                            @*  <ul class="navbar-nav mb-0 ms-auto">
+                            <li class="nav-item me-2">
+                            <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">
+                            <i class="fa fa-sign-in-alt fs-4 align-middle me-1 lh-1 col_red"></i>
+                            會員登入
+                            </a>
+                            </li>
+                            <li class="nav-item">
+                            <a class="nav-link" asp-area="Identity" asp-controller="Account" asp-action="Register">
+                            <i class="fa fa-user-plus fs-4 align-middle me-1 lh-1 col_red"></i>
+                            加入會員
+                            </a>
+                            </li>
+                            </ul> *@
+                            <ul class="navbar-nav mb-0 ms-auto">
+                                @await Html.PartialAsync("~/Areas/Identity/Views/Shared/_LoginPartialCustom.cshtml")
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </section>
+        </div>
+
+
+    </div>
+		<div class="container-xl ">
+    <div class="row row-body mb-4 bg-light rounded-2">
         <!-- Left Navigation Bar -->
-        <div class="col-md-3 mb-4">
+        <div class="col-md-3 mb-4 ">
             <div class="list-group mt-5">
                 <a href="#" class="list-group-item list-group-item-action active">
                     <i class="fas fa-user-circle me-2"></i>我的帳戶
                 </a>
-                <a href="#" class="list-group-item list-group-item-action">
+                        <a href="@Url.Action("UpdatePersonalInfo", "MemberCenter")" class="list-group-item list-group-item-action">
                     <i class="fas fa-edit me-2"></i>更新個人資訊
                 </a>
                 <a href="#" class="list-group-item list-group-item-action">
@@ -59,13 +121,11 @@
             </div>
         </div>
         <!-- Right Content Area -->
-        <div class="col-md-9">
 			@RenderBody()
 
-        </div>
     </div>
-    </div>    
-
+    </div>
+	</section>
 
 
     <!-- Footer Start -->

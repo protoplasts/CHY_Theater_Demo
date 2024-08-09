@@ -20,7 +20,12 @@ namespace CHY_Theater_Models.Models
         [NotMapped]
         public string UserClaim { get; set; }
         public DateTime DateCreated { get; set; }
-
+        // New properties
+        public string MembershipLevel { get; set; }
+        public int MemberPoints { get; set; }
+        public DateTime? LastTicketPurchase { get; set; }
+        public decimal TotalSpent { get; set; }
+        public DateTime? LastLoginTime { get; set; }
     }
 
 }

@@ -1,0 +1,97 @@
+﻿@model ApplicationUser
+@{
+    ViewData["Title"] = "Update Personal Information"; 
+    Layout = "_MemberCenterLayout";
+
+}
+@section Styles {
+    <style>
+
+
+        .center-container {
+            padding-top: 120px; /* Adjusted for navbar height */
+            background-image: url('/img/test3.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: repeat;
+            position: relative;
+        }
+
+            .center-container::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                background-color: rgba(0, 0, 0, 0.5); /* Adjust the last value (0.5) for opacity */
+                z-index: 0;
+            }
+
+            .center-container > * {
+                position: relative;
+                z-index: 1;
+            }
+
+        .list-group-item.active {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .list-group-item:hover {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        .card-title {
+            color: #dc3545;
+        }
+
+        dt {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        dd {
+            color: #6c757d;
+        }
+
+        .row-body {
+            background-color: currentcolor;
+        }
+    </style>
+}        <div class="col-md-9">
+
+<h1>Update Personal Information</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="UpdatePersonalInfo" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateCreated" class="control-label"></label>
+                <input asp-for="DateCreated" class="form-control" disabled />
+            </div>
+            <!-- Add any other form fields as needed -->
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+</div>

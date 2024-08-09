@@ -1,14 +1,37 @@
 ﻿@model CHY_Theater_Models.Models.ApplicationUser
 @{
     ViewData["Title"] = "會員中心";
+    Layout = "_MemberCenterLayout";
 }
 
 @section Styles {
-    <style>
+    <style>      
+       
+  
         .center-container {
             padding-top: 120px; /* Adjusted for navbar height */
+            background-image: url('/img/test3.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: repeat;
+            position: relative;
         }
 
+            .center-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.5); /* Adjust the last value (0.5) for opacity */
+            z-index: 0;
+        }
+
+            .center-container > * {
+            position: relative;
+            z-index: 1;
+        }
         .list-group-item.active {
             background-color: #dc3545;
             border-color: #dc3545;
@@ -43,63 +66,65 @@
     </style>
 }
 
-<div class="container-xl center-container">
-    <div class="row row-body mb-4">
-        <!-- Left Navigation Bar -->
-        <div class="col-md-3 mb-4">
-            <div class="list-group mt-5">
-                <a href="#" class="list-group-item list-group-item-action active">
-                    <i class="fas fa-user-circle me-2"></i>我的帳戶
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-edit me-2"></i>更新個人資訊
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-key me-2"></i>更改密碼
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-key me-2"></i>登入設定
-                </a>
-                <a href="@Url.Action("OrderInquiry", "MemberCenter")" class="list-group-item list-group-item-action">
-                    <i class="fas fa-shopping-cart me-2"></i>訂單查詢
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-map-marker-alt me-2"></i>收件地址管理
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-ticket-alt me-2"></i>專屬優惠券
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-coins me-2"></i>紅利點數
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-heart me-2"></i>收藏清單
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-question-circle me-2"></i>詢問紀錄
-                </a>
-            </div>
-        </div>
+
         <!-- Right Content Area -->
-        <div class="col-md-9">
-            <h2 class="mb-4 text-light mt-5">會員中心</h2>
-            <div class="card">
-                <div class="card-body">
+<div class="col-md-9">
+    <h2 class="mb-4 text-dark mt-5">會員中心</h2>
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <!-- 個人資訊 (4/12) -->
+                <div class="col-md-4">
                     <h4 class="card-title mb-4">個人資訊</h4>
                     <hr />
+                    <dl>
+                        <dt><i class="fas fa-user me-2"></i>用戶名稱:</dt>
+                        <dd>@Model.UserName</dd>
+                        <dt><i class="fas fa-envelope me-2"></i>電子郵件:</dt>
+                        <dd>@Model.Email</dd>
+                        <dt><i class="fas fa-check-circle me-2"></i>電子郵件已驗證:</dt>
+                        <dd>@(Model.EmailConfirmed ? "是" : "否")</dd>
+                        <dt><i class="fas fa-phone me-2"></i>電話號碼:</dt>
+                        <dd>@Model.PhoneNumber</dd>
+                    </dl>
+                </div>
+
+                <!-- 會員資訊 (8/12) -->
+                <div class="col-md-8">
+                    <h4 class="card-title mb-4">會員資訊</h4>
+                    <hr />
                     <dl class="row">
-                        <dt class="col-sm-3"><i class="fas fa-user me-2"></i>用戶名稱:</dt>
-                        <dd class="col-sm-9">@Model.UserName</dd>
-                        <dt class="col-sm-3"><i class="fas fa-envelope me-2"></i>電子郵件:</dt>
-                        <dd class="col-sm-9">@Model.Email</dd>
-                        <dt class="col-sm-3"><i class="fas fa-check-circle me-2"></i>電子郵件已驗證:</dt>
-                        <dd class="col-sm-9">@(Model.EmailConfirmed ? "是" : "否")</dd>
-                        <dt class="col-sm-3"><i class="fas fa-phone me-2"></i>電話號碼:</dt>
-                        <dd class="col-sm-9">@Model.PhoneNumber</dd>
-                        <!-- Add any additional properties specific to your ApplicationUser here -->
+                        <dt class="col-sm-4"><i class="fas fa-star me-2"></i>會員等級:</dt>
+                        <dd class="col-sm-8">@Model.MembershipLevel</dd>
+                        <dt class="col-sm-4"><i class="fas fa-coins me-2"></i>會員點數:</dt>
+                        <dd class="col-sm-8">@Model.MemberPoints</dd>
+                        <dt class="col-sm-4"><i class="fas fa-barcode me-2"></i>會員條碼:</dt>
+                        <dd class="col-sm-8">
+                            <img src="@Url.Action("GenerateBarcode", "Member", new { id = Model.Id })" alt="會員條碼" />
+                        </dd>
+                        <dt class="col-sm-4"><i class="fas fa-calendar-alt me-2"></i>註冊日期:</dt>
+                        <dd class="col-sm-8">@Model.DateCreated.ToString("yyyy/MM/dd")</dd>
+                        <dt class="col-sm-4"><i class="fas fa-shopping-cart me-2"></i>最近購票:</dt>
+                        <dd class="col-sm-8">@(Model.LastTicketPurchase?.ToString("yyyy/MM/dd") ?? "無記錄")</dd>
+                        <dt class="col-sm-4"><i class="fas fa-dollar-sign me-2"></i>累計消費金額:</dt>
+                        <dd class="col-sm-8">$@Model.TotalSpent.ToString("N0")</dd>
+                        <dt class="col-sm-4"><i class="fas fa-clock me-2"></i>最近登入時間:</dt>
+                        <dd class="col-sm-8">@(Model.LastLoginTime?.ToString("yyyy/MM/dd HH:mm") ?? "無記錄")</dd>
                     </dl>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title mb-4">最近活動</h4>
+            <hr />
+            <ul class="list-group">
+                <li class="list-group-item">最近購票: @Model.LastTicketPurchase?.ToString("yyyy/MM/dd")</li>
+                <li class="list-group-item">累計消費金額: $@Model.TotalSpent.ToString("N0")</li>
+                <li class="list-group-item">最近登入時間: @Model.LastLoginTime?.ToString("yyyy/MM/dd HH:mm")</li>
+            </ul>
         </div>
     </div>
 </div>
