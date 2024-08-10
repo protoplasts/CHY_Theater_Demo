@@ -14,37 +14,39 @@
 
 @section Styles {
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+            body {
+                font-family: 'Roboto', sans-serif;
+                background-color: #f5f5f5;
+                color: #333;
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+            }
 
-        .seat-selection-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
+            .seat-selection-container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #fff;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+                margin-top: 85px !important;
+                margin-bottom: 10px !important;
+            }
 
-        .movie-details {
-            display: flex;
-            gap: 40px;
-            background-color: #f9f9f9;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            margin-top: 30px;
-        }
+            .movie-details {
+                display: flex;
+                gap: 40px;
+                background-color: #f9f9f9;
+                border-radius: 12px;
+                padding: 30px;
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+                margin-top: 30px;
+            }
 
-        .movie-poster {
-            flex: 0 0 300px;
-        }
+            .movie-poster {
+                flex: 0 0 300px;
+            }
 
             .movie-poster img {
                 width: 100%;
@@ -54,13 +56,10 @@
                 transition: transform 0.3s ease;
             }
 
-                .movie-poster img:hover {
-                    transform: scale(1.05);
-                }
 
-        .movie-info {
-            flex: 1;
-        }
+            .movie-info {
+                flex: 1;
+            }
 
             .movie-info h3 {
                 font-size: 28px;
@@ -89,24 +88,20 @@
             .movie-info li {
                 margin-bottom: 10px;
                 padding: 8px;
-                background-color: #fff;
+                background-color: ivory;
                 border-radius: 6px;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             }
 
-                .movie-info li:hover {
-                    background-color: #f0f0f0;
-                }
+            #timeLeft {
+                font-weight: bold;
+                color: #e53935;
+            }
 
-        #timeLeft {
-            font-weight: bold;
-            color: #e53935;
-        }
-
-        #selectedSeatInfo {
-            font-weight: bold;
-            color: #4caf50;
-        }
+            #selectedSeatInfo {
+                font-weight: bold;
+                color: #4caf50;
+            }
 
         .seat-map {
             display: grid;
@@ -118,8 +113,17 @@
         .seat-row {
             display: flex;
             gap: 8px;
+            align-items:center
         }
 
+        .seat, .seat-placeholder {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+        }
         .seat {
             display: flex;
             justify-content: center;
@@ -149,7 +153,27 @@
                 transform: scale(1.1);
                 background-color: #20c997;
             }
+            /* row lable */
+            .row-label {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 30px;
+                height: 30px;
+                font-weight: bold;
+            }
 
+            .row-label.left {
+                margin-right: 8px;
+            }
+
+            .row-label.right {
+                margin-left: 8px;
+            }
+
+            .row-label.aisle {
+                margin: 0 20px;
+            }
         .screen {
             width: 80%;
             height: 60px;
@@ -166,8 +190,9 @@
         .legend {
             display: flex;
             justify-content: center;
+            align-items: center;
             margin-top: 20px;
-        }
+        }       
 
             .legend .seat {
                 width: 25px;
@@ -175,6 +200,21 @@
                 margin-right: 15px;
             }
 
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+            .legend-item .seat {
+                width: 20px;
+                height: 20px;
+                margin-right: 5px;
+            }
+
+        .legend-text {
+            font-size: 14px;
+        }
         .animateBtn {
             animation: pulse 2s infinite;
         }
@@ -218,83 +258,250 @@
                 background-color: #ffcccb;
             }
 
-        .legend {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
+        .goBackBtn {
+            background-color: red;
+            border-color: green;
+            color: white;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
         }
 
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin-right: 20px;
+        .movie-chooseseat {
+            background-image: url('/img/test3.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: repeat;
+            position: relative;
         }
 
-            .legend-item .seat {
-                width: 20px;
-                height: 20px;
-                margin-right: 5px;
+        .movie-chooseseat::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                background-color: rgba(0, 0, 0, 0.5); /* Adjust the last value (0.5) for opacity */
+                z-index: 0;
             }
 
-        .legend-text {
-            font-size: 14px;
+        .movie-chooseseat > * {
+                position: relative;
+                z-index: 1;
+            }
+
+        @@media (max-width: 1220px) {
+            .seat-map {
+                overflow-x: auto;
+            }
+
+            .seat-map-container {
+                overflow-x: auto;
+                width: 100%;
+                padding-bottom: 15px; /* Add some padding to ensure the scrollbar doesn't cover content */
+            }
+
+            .seat-map {
+                display: inline-block; /* Change from grid to inline-block */
+                white-space: nowrap; /* Prevent wrapping of seat rows */
+                min-width: max-content; /* Ensure the container is at least as wide as its content */
+            }
+
+            .seat-row {
+                margin: 10px;
+                white-space: nowrap; /* Prevent wrapping within the row */
+            }
+
+            .seat-selection-container {
+                max-width: 100%;
+                padding: 15px;
+            }
+        }
+
+        @@media (max-width: 992px) {
+            .movie-details {
+                grid-template-columns: 1fr;
+            }
+
+            .movie-poster {
+                margin-bottom: 20px;
+                max-width: 200px;
+            }
+
+                .movie-poster img {
+                    max-width: 250px;
+                }
+
+            .movie-info h3 {
+                font-size: 24px;
+            }
+
+            .seat-map {
+                overflow-x: auto;
+            }
+
+            .seat-selection-container {
+                padding: 10px;
+            }
+        }
+
+        @@media (max-width: 768px) {
+            .seat-map {
+                overflow-x: auto;
+            }
+
+            .seat, .seat-placeholder {
+                width: 25px;
+                height: 25px;
+                font-size: 12px;
+            }
+
+            .row-label {
+                width: 25px;
+                height: 25px;
+                font-size: 12px;
+            }
+
+            .screen {
+                width: 90%;
+                height: 40px;
+                line-height: 40px;
+                font-size: 14px;
+            }
+
+            .legend-item {
+                margin-right: 10px;
+            }
+
+            .legend-text {
+                font-size: 12px;
+            }
+
+            .movie-details {
+                padding: 20px;
+            }
+
+            .movie-info p {
+                font-size: 14px;
+            }
+        }
+
+        @@media (max-width: 576px) {
+            .seat-selection-container {
+                padding: 10px;
+            }
+
+            .movie-poster {
+                display: none
+            }
+
+            .movie-details {
+                padding: 15px;
+            }
+
+            .movie-poster img {
+                max-width: 200px;
+            }
+
+            .movie-info h3 {
+                font-size: 20px;
+            }
+
+            .movie-info li {
+                font-size: 13px;
+            }
+
+            .seat, .seat-placeholder {
+                width: 20px;
+                height: 20px;
+                font-size: 10px;
+            }
+
+            .row-label {
+                width: 20px;
+                height: 20px;
+                font-size: 10px;
+            }
+
+            .row.my-4 {
+                flex-direction: column;
+            }
+
+            .col-6 {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            #quantityButton {
+                font-size: 14px;
+            }
+
+            .goBackBtn {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
         }
     </style>
 }
 
-<section>
-    <img src="~/img/test3.jpg" alt="Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;" />
-
-<div class="seat-selection-container my-3">
-    <div class="movie-details">
-        <div class="movie-poster">
-            <img src="@Model.MovieImag" alt="Movie Poster">
+<section class="movie-chooseseat">
+	<div class="seat-selection-container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <button onclick="goBackToIndex()" class="btn goBackBtn fs-5">
+                <i class="fas fa-arrow-left me-2"></i>返回選擇影城
+            </button>
         </div>
-        <div class="movie-info">
-            <h3>@Model.MovieName (@Model.MovieEnglishName)</h3>
-            <p>
-                <strong class="fw-bold fs-4 text-muted">級別:</strong> @* @Model.Movie.Level *@
-                <img src="@GetLevelImagePath(Model.Level)" alt="Level @Model.Level" class="" style="height:50px" />
 
-            </p>
-            <p><strong>開演時間 :</strong> @Model.ShowDateTime.ToString("yyyy/MM/dd HH:mm") <span id="timeLeft"></span></p>
-            <p><strong>地點:</strong> @Model.AuditoriumName-@Model.Auditoriumtype</p>
-            <p><strong>票種:</strong></p>
-            <ul>
-                @foreach (var ticketType in Model.TicketTypes)
-                {
-                    <p>@ticketType.TypeName - @ticketType.Quantity 張 </p>
-                }
-            </ul>
-            <p><strong>明細:</strong> </p>
-            <ul>
+        <div class="movie-details"> 
+            <div class="movie-poster">
+                <img src="@Model.MovieImag" alt="Movie Poster">
+            </div>
+                <div class=" col-md-8">
+                    <div class="movie-info">
+                    <h3>@Model.MovieName (@Model.MovieEnglishName)</h3>
+                    <p>
+                        <strong class="fw-bold fs-4 text-muted">級別:</strong> @* @Model.Movie.Level *@
+                        <img src="@GetLevelImagePath(Model.Level)" alt="Level @Model.Level" class="" style="height:50px" />
 
-                <li>@Model.GetCombinedTicketDescription()</li>
+                    </p>
+                    <p><strong>開演時間 :</strong> @Model.ShowDateTime.ToString("yyyy/MM/dd HH:mm") <span id="timeLeft"></span></p>
+                    <p><strong>地點:</strong> @Model.AuditoriumName-@Model.Auditoriumtype</p>
+                    <p><strong>票種:</strong></p>
+                    <ul>
+                        @foreach (var ticketType in Model.TicketTypes)
+                        {
+                            <p>@ticketType.TypeName - @ticketType.Quantity 張 </p>
+                        }
+                    </ul>
+                    <p><strong>明細:</strong> </p>
+                    <ul>
 
-
-            </ul>
-            <p><strong>加購品項:</strong> </p>
-
-            <ul>
-
-                @foreach (var ticketType in Model.SelectedSnacks)
-                {
-                    <li>
-
-                        @ticketType.SnackName x @ticketType.Quantity
-
-                    </li>
-                }
-            </ul>
-            <p><strong>座位:</strong> <span id="selectedSeatInfo"></span></p>
-            <p><strong>總計:</strong> @Model.BookingSelection.TotalPrice</p>
+                        <li>@Model.GetCombinedTicketDescription()</li>
 
 
-        </div>
-    </div>
+                    </ul>
+                    <p><strong>加購品項:</strong> </p>
 
-    <div class="row my-4 bg-light rounded shadow-sm">
+                    <ul>
+
+                        @foreach (var ticketType in Model.SelectedSnacks)
+                        {
+                            <li>
+
+                                @ticketType.SnackName x @ticketType.Quantity
+
+                            </li>
+                        }
+                    </ul>
+                    <p><strong>座位:</strong> <span id="selectedSeatInfo"></span></p>
+                    <p><strong>總計:</strong> @Model.BookingSelection.TotalPrice</p>
+
+
+                </div>
+                </div>
+     </div>
+
+    <div class="row my-4">
         <div class="col-6 text-center d-flex align-items-center justify-content-center">
             <h3 class="mb-0 text-primary">選取座位</h3>
         </div>
@@ -306,23 +513,41 @@
     </div>
 
     <div class="screen">銀幕</div>
+        <div class="seat-map-container">
 
-    <div id="seatMap" class="seat-map">
-        @foreach (var row in Model.SeatList.GroupBy(s => s.SeatRow).OrderBy(g => g.Key))
-        {
-            <div class="seat-row">
-                @foreach (var seat in row.OrderBy(s => s.SeatNumber))
-                {
-                    var seatStatus = seat.SeatStatus == "Available" ? "available" : "booked";
-                    <div class="seat @seatStatus"
-                         data-seat-id="@seat.SeatID"
-                         onclick="changeSeat('@seat.SeatID', '@seat.SeatNumber', '@seatStatus', '@seat.SeatRow')">
-                        @seat.SeatNumber
-                    </div>
-                }
-            </div>
-        }
-    </div>
+        <div id="seatMap" class="seat-map">
+            @foreach (var row in Model.SeatList.GroupBy(s => s.SeatRow).OrderBy(g => g.Key))
+            {
+                <div class="seat-row">
+                    <div class="row-label left">@row.Key</div>
+                    @foreach (var seat in row.OrderBy(s => s.SeatNumber))
+                    {
+                        @if (seat.SeatStatus != "NotInUse")
+                        {
+                            var showSeatStatus = seat.ShowSeatStatus == "Available" ? "available" : "booked";
+                            var isAisle = seat.SeatNumber == 7 || seat.SeatNumber == 8 || seat.SeatNumber == 18 || seat.SeatNumber == 19;
+
+                            <div class="seat @showSeatStatus @(isAisle ? "aisle" : "")"
+                                 data-seat-id="@seat.SeatID"
+                                 onclick="changeSeat('@seat.SeatID', '@seat.SeatNumber', '@showSeatStatus', '@seat.SeatRow')">
+                                @seat.SeatNumber
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="seat-placeholder"></div>
+                        }
+
+                        @if (seat.SeatNumber == 7 || seat.SeatNumber == 18)
+                        {
+                            <div class="row-label aisle">@row.Key</div>
+                        }
+                    }
+                    <div class="row-label right">@row.Key</div>
+                </div>
+            }
+        </div>
+        </div>
 
     <div class="legend mt-3">
         <div class="legend-item">
@@ -341,6 +566,7 @@
 
 
 </div>
+</section>
 
 <div id="notificationDialog" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog">
@@ -356,7 +582,6 @@
         </div>
     </div>
 </div>
-</section>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -440,6 +665,8 @@
             cancelButtonText: '取消'
         }).then((result) => {
             if (result.isConfirmed) {
+                // Set isConfirming to true to prevent the onbeforeunload warning
+                isConfirming = true;
                 // Implement your payment logic here
                 console.log('Proceeding to payment with seats:', selectedSeats);
 
@@ -590,4 +817,68 @@
     }
     setInterval(updateTimeLeft, 1000);
     updateTimeLeft();
+</script>
+
+<script>
+    (function (global) {
+        if (typeof (global) === "undefined") {
+            throw new Error("window is undefined");
+        }
+
+        var _hash = "!";
+        var noBackPlease = function () {
+            if (global.location.hash !== _hash) {
+                global.location.hash = _hash;
+            }
+        };
+
+        global.onhashchange = function () {
+            if (global.location.hash !== _hash) {
+                global.location.hash = _hash;
+            }
+        };
+
+        global.onload = function () {
+            noBackPlease();
+            setInterval(noBackPlease, 50);
+
+            // Disables backspace on page except on input fields and textarea
+            document.body.onkeydown = function (e) {
+                var elm = e.target.nodeName.toLowerCase();
+                if (e.which === 8 && (elm !== 'input' && elm !== 'textarea')) {
+                    e.preventDefault();
+                }
+                e.stopPropagation();
+            };
+        };
+    })(window);
+
+    let isConfirming = false;
+
+    window.onbeforeunload = function (e) {
+        if (!isConfirming) {
+            return "您確定要離開此頁面嗎？您的座位選擇將會遺失。";
+        }
+    }
+
+    // Custom back button function
+    function goBackToIndex() {
+        Swal.fire({
+            title: '警告',
+            html: '<div class="custom-swal-text">要離開此頁面嗎？<br>您的先前的選擇將會遺失!</div>',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '確定',
+            cancelButtonText: '放棄'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Remove any onbeforeunload handler before navigating
+                window.onbeforeunload = null;
+                // Navigate to the index page
+                window.location.href = '/Booking/ChooseTheaterAuditorium';
+            }
+        });
+    }
 </script>

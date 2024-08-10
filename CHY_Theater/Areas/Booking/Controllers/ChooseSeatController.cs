@@ -74,7 +74,8 @@ namespace CHY_Theater.Areas.Booking.Controllers
                     SeatRow = s.SeatRow,
                     SeatNumber = s.SeatNumber,
                     SeatType = s.SeatType,
-                    SeatStatus = bookSeats.FirstOrDefault(ss => ss.SeatId == s.SeatId)?.ShowSeatStatus ?? "Available"
+                    ShowSeatStatus = bookSeats.FirstOrDefault(ss => ss.SeatId == s.SeatId)?.ShowSeatStatus ?? "Available",
+                    SeatStatus = s.SeatStatus,
 
                 }).ToList(),
                 SelectedSnacks = selectedSnacks.Select(s => new SelectedSnack

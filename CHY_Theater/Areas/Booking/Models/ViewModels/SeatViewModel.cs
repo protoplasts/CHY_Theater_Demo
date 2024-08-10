@@ -32,6 +32,7 @@ namespace FUEN104_2_FinalProject.Models.ViewModels
             public string SeatRow { get; set; }
             public string SeatType { get; set; }
             public string SeatStatus { get; set; }
+            public string ShowSeatStatus { get; set; }
         }
 
         public class TicketTypeInfo
