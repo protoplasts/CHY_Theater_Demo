@@ -3,6 +3,8 @@
     ViewData["Title"] = "訂單查詢";
     var currentDate = DateTime.Now;
     var currentOrders = Model.Where(b => b.ShowTime > currentDate).ToList();
+    var paidOnSowOrders = currentOrders.Where(b => b.BookingStatus == "現場付款").ToList();
+
     var unpaidOrders = currentOrders.Where(b => b.BookingStatus == "尚未付款").ToList();
     var paidOrders = currentOrders.Where(b => b.BookingStatus == "已付款").ToList();
     var historicalOrders = Model.Where(b => b.ShowTime <= currentDate).ToList();
@@ -11,8 +13,29 @@
 @section Styles {
     <style>
         .center-container {
-            padding-top: 120px;
+            padding-top: 120px; /* Adjusted for navbar height */
+            background-image: url('/img/test3.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: repeat;
+            position: relative;
         }
+
+            .center-container::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                background-color: rgba(0, 0, 0, 0.5); /* Adjust the last value (0.5) for opacity */
+                z-index: 0;
+            }
+
+            .center-container > * {
+                position: relative;
+                z-index: 1;
+            }
 
         .list-group-item.active {
             background-color: #dc3545;
@@ -83,7 +106,7 @@
             </div>
         </div>
         <!-- Right Content Area -->
-        <div class="col-md-9">
+        <div class="col-md-9 bg-white">
             <h2 class="mb-4">訂單查詢</h2>
 
             <div class="btn-group" role="group" aria-label="Order types">

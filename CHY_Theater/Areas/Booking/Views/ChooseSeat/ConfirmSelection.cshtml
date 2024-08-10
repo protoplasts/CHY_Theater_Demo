@@ -298,20 +298,20 @@
                 showConfirmButton: false,
                 timer: 1000
             }).then(() => {
-                var totalAmount = Math.round(currentTotalPrice);
+                var TotalPrice = Math.round(currentTotalPrice);
                 var merchantTradeNo = '@Model.MerchantTradeNo';
                 // Hide the payLater button
                 $('#payLaterBtn').hide();
                 // Instead of redirecting, load the EC Pay form
-                loadECPayForm(totalAmount, merchantTradeNo);
+                loadECPayForm(TotalPrice, merchantTradeNo);
             });
         }
 
-        function loadECPayForm(totalAmount, merchantTradeNo) {
+        function loadECPayForm(TotalPrice, merchantTradeNo) {
             $.ajax({
-                url: '/ECP/GetPaymentForm',
+                url: '/Booking/ECP/GetPaymentForm',
                 type: 'GET',
-                data: { totalAmount: totalAmount, merchantTradeNo: merchantTradeNo },
+                data: { TotalPrice: TotalPrice, merchantTradeNo: merchantTradeNo },
                 success: function (response) {
                     $('#ECPayContent').html(response);
                     $('#ECPayContent').show();

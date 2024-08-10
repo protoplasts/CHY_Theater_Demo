@@ -50,11 +50,11 @@
         <div class="row gx-lg-5 align-items-center mb-5">
             <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
                 <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
-                    Create your account <br />
-                    <span style="color: hsl(218, 81%, 75%)">and join our community</span>
+                    歡迎加入 <br />
+                    <span style="color: hsl(218, 81%, 75%)">如影隨形的大家庭</span>
                 </h1>
                 <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
-                    Register now to access all features and become a part of our growing network.
+                   加入我們即享會員特別福利與優惠
                 </p>
             </div>
 
@@ -71,7 +71,7 @@
                                 <div class="col-md-6 mb-4">
                                     <div class="form-outline" data-mdb-input-init>
                                         <input asp-for="Name" id="form3Example1" class="form-control" />
-                                        <label asp-for="Name" class="form-label" for="form3Example1">Name</label>
+                                        <label asp-for="Name" class="form-label" for="form3Example1">姓名</label>
                                     </div>
                                     <span asp-validation-for="Name" class="text-danger"></span>
 
@@ -89,13 +89,13 @@
 
                             <div class="form-outline mb-4" data-mdb-input-init>
                                 <input asp-for="Password" id="form3Example4" class="form-control" />
-                                <label asp-for="Password" class="form-label" for="form3Example4">Password</label>
+                                <label asp-for="Password" class="form-label" for="form3Example4">密碼</label>
                                 <span asp-validation-for="Password" class="text-danger"></span>
                             </div>
 
                             <div class="form-outline mb-4" data-mdb-input-init>
                                 <input asp-for="ConfirmPassword" id="form3Example5" class="form-control" />
-                                <label asp-for="ConfirmPassword" class="form-label" for="form3Example5">Confirm Password</label>
+                                <label asp-for="ConfirmPassword" class="form-label" for="form3Example5">確認您的密碼</label>
                                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                             </div>
                             @* //form-select與form-outline在MDB不能通用會相衝我讓AI 生成的程式把兩個混用了 *@

@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h1 class="card-title text-center mb-4">付款確認</h1>
+                    <div class="mb-4">
+                        <h3 class="text-muted">交易編號：</h3>
+                        <p id="merchantTradeNo" class="lead">@Html.Raw(ViewData["MerchantTradeNo"])</p>
+                    </div>
+                    <div class="mb-4">
+                        <h3 class="text-muted">交易訊息：</h3>
+                        <p id="rtnMsg" class="lead">@Html.Raw(ViewData["RtnMsg"])</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">載入中...</span>
+                        </div>
+                        <p class="mt-2">正在跳轉到首頁...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                title: '付款成功',
+                html:
+                    '<p><strong>交易編號：</strong> ' + document.getElementById('merchantTradeNo').textContent + '</p>' +
+                    '<p><strong>交易訊息：</strong> ' + document.getElementById('rtnMsg').textContent + '</p>',
+                icon: 'success',
+                confirmButtonText: '確認',
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '@Url.Action("Index", "Home")';
+                }
+            });
+        });
+    </script>
+}

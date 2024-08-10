@@ -369,23 +369,24 @@ $.extend( $.validator, {
 	},
 
 	messages: {
-		required: "This field is required.",
-		remote: "Please fix this field.",
-		email: "Please enter a valid email address.",
-		url: "Please enter a valid URL.",
-		date: "Please enter a valid date.",
-		dateISO: "Please enter a valid date (ISO).",
-		number: "Please enter a valid number.",
-		digits: "Please enter only digits.",
-		equalTo: "Please enter the same value again.",
-		maxlength: $.validator.format( "Please enter no more than {0} characters." ),
-		minlength: $.validator.format( "Please enter at least {0} characters." ),
-		rangelength: $.validator.format( "Please enter a value between {0} and {1} characters long." ),
-		range: $.validator.format( "Please enter a value between {0} and {1}." ),
-		max: $.validator.format( "Please enter a value less than or equal to {0}." ),
-		min: $.validator.format( "Please enter a value greater than or equal to {0}." ),
-		step: $.validator.format( "Please enter a multiple of {0}." )
+		required: "此欄位為必填項。",
+		remote: "請修正此欄位。",
+		email: "請輸入有效的電子郵件地址。",
+		url: "請輸入有效的網址。",
+		date: "請輸入有效的日期。",
+		dateISO: "請輸入有效的日期（ISO）。",
+		number: "請輸入有效的數字。",
+		digits: "只能輸入數字。",
+		equalTo: "請再次輸入相同的值。",
+		maxlength: $.validator.format("請輸入不超過 {0} 個字元。"),
+		minlength: $.validator.format("請輸入不少於 {0} 個字元。"),
+		rangelength: $.validator.format("請輸入長度在 {0} 到 {1} 之間的值。"),
+		range: $.validator.format("請輸入介於 {0} 和 {1} 之間的值。"),
+		max: $.validator.format("請輸入不大於 {0} 的值。"),
+		min: $.validator.format("請輸入不小於 {0} 的值。"),
+		step: $.validator.format("請輸入 {0} 的倍數。")
 	},
+
 
 	autoCreateRanges: false,
 

@@ -71,7 +71,12 @@ namespace CHY_Theater.Areas.Identity.Controllers
 					UserName = model.Email,
 					Email = model.Email,
 					Name = model.Name,
-				};
+                    DateCreated = DateTime.UtcNow,
+                    MembershipLevel = "普通", 
+                    MemberPoints = 0, 
+                    TotalSpent = 0, 
+                    LastLoginTime = DateTime.UtcNow // Set initial login time
+                };
 				var result = await _userManager.CreateAsync(user, model.Password);
 				if (result.Succeeded)
 				{

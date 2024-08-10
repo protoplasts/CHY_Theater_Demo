@@ -26,6 +26,12 @@ namespace CHY_Theater_Models.Models
         public DateTime? LastTicketPurchase { get; set; }
         public decimal TotalSpent { get; set; }
         public DateTime? LastLoginTime { get; set; }
+
+        //detail infor
+
+        public string? Address { get; set; }
+        public string? PhoneNumber { get; set; }
+        public DateTime? Birthday { get; set; }
     }
 
 }

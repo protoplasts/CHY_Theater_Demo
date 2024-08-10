@@ -64,7 +64,7 @@
             };
 
             $.ajax({
-                url: '@Url.Content("~/ECP/SendToNewebPay")',
+                url: '@Url.Content("~/Booking/ECP/SendToNewebPay")',
                 method: 'POST',
                 dataType: 'json',
                 data: { inModel: postData, __RequestVerificationToken: $('@Html.AntiForgeryToken()').val() },

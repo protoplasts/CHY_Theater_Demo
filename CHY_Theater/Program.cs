@@ -24,6 +24,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFramework
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 //// Add JwtToken service configuration section
 builder.Services.AddScoped<JwtTokenService>();
+builder.Services.AddScoped<BarcodeService>();
 
 //客製化的一些密碼限制
 builder.Services.Configure<IdentityOptions>(options =>

@@ -7,7 +7,14 @@ using CHY_Theater_DataAcess.Data;
 using CHY_Theater.Areas.Identity.Models.ViewModels;
 using CHY_Theater.Models;
 using System.Diagnostics;
-using Microsoft.EntityFrameworkCore; // Make sure to include the correct namespace for ApplicationUser
+using Microsoft.EntityFrameworkCore;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using ZXing;
+using ZXing.QrCode;
+using CHY_Theater.Areas.Identity.Services;
+// Make sure to include the correct namespace for ApplicationUser
 
 namespace CHY_Theater.Areas.Identity.Controllers
 {
@@ -17,14 +24,19 @@ namespace CHY_Theater.Areas.Identity.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly Theater_ProjectDbContext _context;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+		private readonly BarcodeService _barcodeService;
 
-        public MemberCenterController(UserManager<ApplicationUser> userManager, Theater_ProjectDbContext context)
+		public MemberCenterController(UserManager<ApplicationUser> userManager, Theater_ProjectDbContext context, SignInManager<ApplicationUser> signInManager, BarcodeService barcodeService)
         {
             _userManager = userManager;
             _context = context;
-        }
+            _signInManager = signInManager;
+			_barcodeService = barcodeService;
 
-        public async Task<IActionResult> Index()
+		}
+
+		public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -98,34 +110,88 @@ namespace CHY_Theater.Areas.Identity.Controllers
 
             return View(user);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdatePersonalInfo(ApplicationUser model)
         {
-            if (ModelState.IsValid)
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
             {
-                var user = await _userManager.GetUserAsync(User);
-                if (user == null)
-                {
-                    return NotFound();
-                }
+                return NotFound();
+            }
 
-                user.Name = model.Name;
-                user.Email = model.Email;
-                // Update other user properties as needed
+            user.Name = model.Name;
+            user.Email = model.Email;
+            user.Address = model.Address;
+            user.PhoneNumber = model.PhoneNumber;
+            user.Birthday = model.Birthday;
 
-                var result = await _userManager.UpdateAsync(user);
-                if (result.Succeeded)
-                {
-                    // Add any additional logic, such as logging the update or redirecting to a confirmation page
-                    return RedirectToAction("Index", "Home"); // or any other appropriate action
-                }
+            // Check if all detailed info is filled
+            if (!string.IsNullOrEmpty(user.Address) &&
+                !string.IsNullOrEmpty(user.PhoneNumber) &&
+                user.Birthday.HasValue)
+            {
+                user.MembershipLevel = "Advanced";
+            }
 
-                AddErrors(result);
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                TempData["StatusMessage"] = "Your profile has been updated successfully.";
+                return RedirectToAction("Index", "MemberCenter");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
             }
 
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Check if the new password is the same as the old one
+            var isSamePassword = await _userManager.CheckPasswordAsync(user, model.NewPassword);
+            if (isSamePassword)
+            {
+                ModelState.AddModelError(string.Empty, "新密碼不能與目前密碼相同。");
+                return View(model);
+            }
+
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+            if (!changePasswordResult.Succeeded)
+            {
+                foreach (var error in changePasswordResult.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return View(model);
+            }
+
+            await _signInManager.RefreshSignInAsync(user);
+            TempData["StatusMessage"] = "您的密碼已成功更改。";
+
+            return RedirectToAction("Index", "MemberCenter");
         }
         private void AddErrors(IdentityResult result)
         {
@@ -134,5 +200,16 @@ namespace CHY_Theater.Areas.Identity.Controllers
                 ModelState.AddModelError(string.Empty, error.Description);
             }
         }
-    }
+		public async Task<IActionResult> GetUserBarcode()
+		{
+			var user = await _userManager.GetUserAsync(User);
+			if (user == null)
+			{
+				return NotFound();
+			}
+
+			var barcodeImage = _barcodeService.GenerateUserIdBarcode(user.Id);
+			return File(barcodeImage, "image/png");
+		}
+	}
 }

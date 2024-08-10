@@ -1,34 +1,34 @@
-﻿﻿@using Microsoft.AspNetCore.Identity
-
+﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<CHY_Theater_Models.Models.ApplicationUser> SignInManager
 @inject UserManager<CHY_Theater_Models.Models.ApplicationUser> UserManager
 
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
 
-
-    @if (SignInManager.IsSignedIn(User))
-    {
+@if (SignInManager.IsSignedIn(User))
+{
     <li class="nav-item">
-        <a class="nav-link" asp-area="Identity" asp-controller="MemberCenter" asp-action="Index">Hello @UserManager.GetUserName(User)</a>
+        <a class="nav-link" asp-area="Identity" asp-controller="MemberCenter" asp-action="Index">@(user?.Name ?? "Member") 您好</a>
     </li>
-        <li class="nav-item">
-            <form id="logoutForm" method="post" class="form-inline" asp-area="Identity" asp-controller="Account" asp-action="LogOff">
-                <button type="submit" class="btn nav-link">Logout</button>
-            </form>
-        </li>
-    }
-    else
-    {
-            <li class="nav-item me-2">
+    <li class="nav-item">
+        <form id="logoutForm" method="post" class="form-inline" asp-area="Identity" asp-controller="Account" asp-action="LogOff">
+            <button type="submit" class="btn nav-link">登出</button>
+        </form>
+    </li>
+}
+else
+{
+    <li class="nav-item me-2">
         <a class="nav-link" asp-area="Identity" asp-controller="Account" asp-action="Login">
-                    <i class="fa fa-sign-in-alt fs-4 align-middle me-1 lh-1 col_red"></i>
-                    會員登入
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" asp-area="Identity" asp-controller="Account" asp-action="Register">
-                    <i class="fa fa-user-plus fs-4 align-middle me-1 lh-1 col_red"></i>
-                    加入會員
-                </a>
-            </li>
-      
-    }
+            <i class="fa fa-sign-in-alt fs-4 align-middle me-1 lh-1 col_red"></i>
+            會員登入
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Identity" asp-controller="Account" asp-action="Register">
+            <i class="fa fa-user-plus fs-4 align-middle me-1 lh-1 col_red"></i>
+            加入會員
+        </a>
+    </li>
+}
