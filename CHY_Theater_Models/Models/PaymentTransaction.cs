@@ -40,6 +40,9 @@ public partial class PaymentTransaction
     public string? TradeDate { get; set; }
 
     public int? SimulatePaid { get; set; }
+    public int? Points { get; set; }
+    public ICollection<RewardPoint> RewardPoints { get; set; }
+
 
     public virtual Booking? Booking { get; set; }
 }

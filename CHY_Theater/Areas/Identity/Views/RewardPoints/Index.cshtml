@@ -1,0 +1,198 @@
+﻿@model RewardPointsViewModel
+@{
+    ViewData["Title"] = "會員中心";
+    Layout = "_MemberCenterLayout";
+}
+@section Styles {
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+
+    <style>
+
+        .center-container {
+            padding-top: 120px; /* Adjusted for navbar height */
+            background-image: url('/img/test3.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: repeat;
+            position: relative;
+        }
+
+            .center-container::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                background-color: rgba(0, 0, 0, 0.5); /* Adjust the last value (0.5) for opacity */
+                z-index: 0;
+            }
+
+            .center-container > * {
+                position: relative;
+                z-index: 1;
+            }
+
+        .list-group-item.active {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .list-group-item:hover {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        .card-title {
+            color: #dc3545;
+        }
+
+        dt {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        dd {
+            color: #6c757d;
+        }
+
+        .row-body {
+            background-color: currentcolor;
+        }
+
+        .barcode-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .barcode-image {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 5px;
+        }
+
+        .barcode-id {
+            font-size: 0.9em;
+            color: #6c757d;
+            font-style: italic;
+        }
+    </style>
+}
+<div class="col-md-9">
+
+
+<div class="card mb-4 mt-2">
+		<div class="card-body">
+
+            <h5 class="card-title">總點數（過去12個月）： @Model.TotalPoints</h5>
+            <h6 class="card-subtitle mb-2 text-muted">可用點數： @Model.AvailablePoints</h6>
+        <h6 class="card-subtitle mb-2 text-muted">Latest Transaction: @Model.LatestPoints points</h6>
+        @if (Model.LatestTransactionDate.HasValue)
+        {
+            <p class="card-text">Last updated: @Model.LatestTransactionDate.Value.ToString("g")</p>
+        }
+        else
+        {
+                <p class="card-text">過去12個月沒有交易記錄。</p>
+        }
+    </div>
+</div>
+    <ul class="nav nav-tabs mb-3">
+        <li class="nav-item">
+            <a class="nav-link @(Model.CurrentTab == "available" ? "active" : "")" href="@Url.Action("Index", new { tab = "available" })">可用積分</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(Model.CurrentTab == "unavailable" ? "active" : "")" href="@Url.Action("Index", new { tab = "unavailable" })">不可用積分</a>
+        </li>
+    </ul>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>積分</th>
+                <th>獲得日期</th>
+                <th>到期日期</th>
+                @if (Model.CurrentTab == "unavailable")
+                {
+                    <th>狀態</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var point in Model.PointDetails)
+            {
+                <tr>
+                    <td>@point.Points</td>
+                    <td>@point.EarnedDate.ToString("yyyy/MM/dd HH:mm")</td>
+                    <td>@point.ExpiryDate.ToString("yyyy/MM/dd HH:mm")</td>
+                    @if (Model.CurrentTab == "unavailable")
+                    {
+                        <td>@(point.UnavailableReason == "Used" ? "已使用" : "已過期")</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+@{
+    var prevDisabled = !Model.PointDetails.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.PointDetails.HasNextPage ? "disabled" : "";
+}
+
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <li class="page-item @prevDisabled">
+            <a class="page-link" href="@Url.Action("Index", new { tab = Model.CurrentTab, pageIndex = Model.PointDetails.PageIndex - 1 })">Previous</a>
+        </li>
+        <li class="page-item @nextDisabled">
+            <a class="page-link" href="@Url.Action("Index", new { tab = Model.CurrentTab, pageIndex = Model.PointDetails.PageIndex + 1 })">Next</a>
+        </li>
+    </ul>
+</nav>
+
+    @* <h3>Transaction History (Last 12 Months)</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Points</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var transaction in Model.Transactions)
+            {
+                <tr>
+                    <td>@transaction.PaymentDate</td>
+                    <td>@transaction.Points</td>
+                    <td>@transaction.TradeAmt</td>
+                </tr>
+            }
+        </tbody>
+    </table> *@
+</div>
+@section Scripts {
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#pointsTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Chinese-traditional.json"
+                },
+                "pageLength": 10,
+                "ordering": true,
+                "info": true,
+                "lengthChange": false
+            });
+        });
+    </script>
+}

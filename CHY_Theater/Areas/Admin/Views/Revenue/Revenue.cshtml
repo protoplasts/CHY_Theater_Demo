@@ -1,0 +1,111 @@
+﻿@{
+    ViewData["Title"] = "收入儀表板";
+    Layout = "_Layout";
+}
+<h2>收入儀表板</h2>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">總收入</h5>
+                <p class="card-text">$@ViewBag.TotalRevenue.ToString("N2")</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">年度收入</h5>
+                <canvas id="yearlyRevenueChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">月度收入</h5>
+                <canvas id="monthlyRevenueChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">每日收入</h5>
+                <canvas id="dailyRevenueChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.29.3/locale/zh-TW/index.js"></script>
+    <script>
+        alert('腳本正在運行');
+        try {
+            var yearlyData = @Html.Raw(ViewBag.YearlyRevenue);
+            var monthlyData = @Html.Raw(ViewBag.MonthlyRevenue);
+            var dailyData = @Html.Raw(ViewBag.DailyRevenue);
+            alert('年度收入數據: ' + JSON.stringify(yearlyData));
+            alert('月度收入數據: ' + JSON.stringify(monthlyData));
+            alert('每日收入數據: ' + JSON.stringify(dailyData));
+
+            function createChart(canvasId, label, data, timeUnit) {
+                var ctx = document.getElementById(canvasId);
+                if (!ctx) {
+                    alert('找不到畫布元素 ' + canvasId);
+                    throw new Error('找不到畫布元素 ' + canvasId);
+                }
+                return new Chart(ctx.getContext('2d'), {
+                    type: 'bar',  // Changed from 'line' to 'bar'
+                    data: {
+                        labels: data.map(item => item.Date),
+                        datasets: [{
+                            label: label,
+                            data: data.map(item => item.Revenue),
+                            backgroundColor: 'rgba(75, 192, 192, 0.6)',  // Added for bar color
+                            borderColor: 'rgb(75, 192, 192)',
+                            borderWidth: 1  // Added for bar border
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                type: 'time',
+                                time: {
+                                    unit: timeUnit,
+                                    parser: timeUnit === 'year' ? 'yyyy' :
+                                        timeUnit === 'month' ? 'yyyy-MM' : 'yyyy-MM-dd',
+                                    displayFormats: {
+                                        year: 'yyyy年',
+                                        month: 'yyyy年MM月',
+                                        day: 'MM月dd日'
+                                    }
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: '收入 ($)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            createChart('yearlyRevenueChart', '年度收入', yearlyData, 'year');
+            createChart('monthlyRevenueChart', '月度收入', monthlyData, 'month');
+            createChart('dailyRevenueChart', '每日收入', dailyData, 'day');
+            alert('圖表創建成功');
+        } catch (error) {
+            alert('創建圖表時出錯: ' + error.message);
+        }
+    </script>
+}

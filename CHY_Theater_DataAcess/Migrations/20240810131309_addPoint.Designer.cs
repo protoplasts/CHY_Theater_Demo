@@ -4,6 +4,7 @@ using CHY_Theater_DataAcess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CHY_Theater_DataAcess.Migrations
 {
     [DbContext(typeof(Theater_ProjectDbContext))]
-    partial class Theater_ProjectDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240810131309_addPoint")]
+    partial class addPoint
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -696,42 +699,6 @@ namespace CHY_Theater_DataAcess.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Rating", (string)null);
-                });
-
-            modelBuilder.Entity("CHY_Theater_Models.Models.RewardPoint", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("EarnedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ExpiryDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsUsed")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Points")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TransactionId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TransactionId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RewardPoints");
                 });
 
             modelBuilder.Entity("CHY_Theater_Models.Models.Seat", b =>
@@ -1584,23 +1551,6 @@ namespace CHY_Theater_DataAcess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("CHY_Theater_Models.Models.RewardPoint", b =>
-                {
-                    b.HasOne("CHY_Theater_Models.Models.PaymentTransaction", "Transaction")
-                        .WithMany("RewardPoints")
-                        .HasForeignKey("TransactionId");
-
-                    b.HasOne("CHY_Theater_Models.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Transaction");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("CHY_Theater_Models.Models.Seat", b =>
                 {
                     b.HasOne("CHY_Theater_Models.Models.Auditorium", "Auditorium")
@@ -1805,11 +1755,6 @@ namespace CHY_Theater_DataAcess.Migrations
                     b.Navigation("Ratings");
 
                     b.Navigation("Shows");
-                });
-
-            modelBuilder.Entity("CHY_Theater_Models.Models.PaymentTransaction", b =>
-                {
-                    b.Navigation("RewardPoints");
                 });
 
             modelBuilder.Entity("CHY_Theater_Models.Models.Seat", b =>

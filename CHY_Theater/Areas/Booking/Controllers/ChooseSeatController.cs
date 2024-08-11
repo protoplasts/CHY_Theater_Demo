@@ -1,9 +1,13 @@
 ﻿using CHY_Theater.Areas.Booking.Models.ViewModels;
+using CHY_Theater.Areas.Identity.Services;
+
 using CHY_Theater_DataAcess.Data;
 using CHY_Theater_Models.Models;
 using FUEN104_2_FinalProject.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Security.Claims;
 using static FUEN104_2_FinalProject.Models.ViewModels.ConfirmSelectionViewModel;
 using static FUEN104_2_FinalProject.Models.ViewModels.SeatViewModel;
 
@@ -14,10 +18,13 @@ namespace CHY_Theater.Areas.Booking.Controllers
     public class ChooseSeatController : Controller
     {
         private readonly Theater_ProjectDbContext _context;
+        private readonly IRewardPointService _rewardPointService;
 
-        public ChooseSeatController(Theater_ProjectDbContext context)
+        public ChooseSeatController(Theater_ProjectDbContext context, IRewardPointService rewardPointService)
         {
-            _context = context;
+            _context = context; 
+            _rewardPointService = rewardPointService;
+
         }
         public IActionResult ChooseSeat()
         {
@@ -103,7 +110,7 @@ namespace CHY_Theater.Areas.Booking.Controllers
 
         }
 
-        public IActionResult ConfirmSelection([FromForm] ConfirmSelectionViewModel model)
+        public async Task<IActionResult> ConfirmSelection([FromForm] ConfirmSelectionViewModel model)
         {
 
             if (model == null)
@@ -132,6 +139,14 @@ namespace CHY_Theater.Areas.Booking.Controllers
                     });
                 }
             }
+            // Get the current user's ID
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Fetch available points
+            var availablePoints = await _rewardPointService.GetTotalPointsAsync(userId);
+
+            // Pass the available points to the view using ViewBag
+            ViewBag.AvailablePoints = availablePoints;
             //model.MovieImg.Add(movie.MovieImage);
             // Process the rest of the submitted data
             return View(model);

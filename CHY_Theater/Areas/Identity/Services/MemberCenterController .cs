@@ -13,10 +13,9 @@ using System.Drawing.Imaging;
 using System.IO;
 using ZXing;
 using ZXing.QrCode;
-using CHY_Theater.Areas.Identity.Services;
 // Make sure to include the correct namespace for ApplicationUser
 
-namespace CHY_Theater.Areas.Identity.Controllers
+namespace CHY_Theater.Areas.Identity.Services
 {
     [Authorize]
     [Area("Identity")]
@@ -25,18 +24,18 @@ namespace CHY_Theater.Areas.Identity.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly Theater_ProjectDbContext _context;
         private readonly SignInManager<ApplicationUser> _signInManager;
-		private readonly BarcodeService _barcodeService;
+        private readonly BarcodeService _barcodeService;
 
-		public MemberCenterController(UserManager<ApplicationUser> userManager, Theater_ProjectDbContext context, SignInManager<ApplicationUser> signInManager, BarcodeService barcodeService)
+        public MemberCenterController(UserManager<ApplicationUser> userManager, Theater_ProjectDbContext context, SignInManager<ApplicationUser> signInManager, BarcodeService barcodeService)
         {
             _userManager = userManager;
             _context = context;
             _signInManager = signInManager;
-			_barcodeService = barcodeService;
+            _barcodeService = barcodeService;
 
-		}
+        }
 
-		public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -93,7 +92,7 @@ namespace CHY_Theater.Areas.Identity.Controllers
                 TicketTypes = b.BookingTicketTypesDetails.Select(bttd => $"{bttd.TicketType.TypeName}").ToList(),
                 Snacks = b.BookingSnacks.Select(bs => $"{bs.Snack.SnackName} x{bs.Quantity}").ToList(),
                 TotalAmount = b.PaymentTransactions.Sum(pt => pt.TradeAmt),
-                PaymentTypes=b.PaymentTransactions.Select(pt =>pt.PaymentType).FirstOrDefault()
+                PaymentTypes = b.PaymentTransactions.Select(pt => pt.PaymentType).FirstOrDefault()
             }).ToList();
 
             return View(viewModels);
@@ -200,16 +199,16 @@ namespace CHY_Theater.Areas.Identity.Controllers
                 ModelState.AddModelError(string.Empty, error.Description);
             }
         }
-		public async Task<IActionResult> GetUserBarcode()
-		{
-			var user = await _userManager.GetUserAsync(User);
-			if (user == null)
-			{
-				return NotFound();
-			}
+        public async Task<IActionResult> GetUserBarcode()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
 
-			var barcodeImage = _barcodeService.GenerateUserIdBarcode(user.Id);
-			return File(barcodeImage, "image/png");
-		}
-	}
+            var barcodeImage = _barcodeService.GenerateUserIdBarcode(user.Id);
+            return File(barcodeImage, "image/png");
+        }
+    }
 }

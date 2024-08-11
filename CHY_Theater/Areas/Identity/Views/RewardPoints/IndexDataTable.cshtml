@@ -1,0 +1,103 @@
+﻿@model RewardPointsViewModel
+@{
+    ViewData["Title"] = "會員中心";
+    Layout = "_MemberCenterLayout";
+}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+
+<div class="col-md-9">
+
+    <h2>您的獎勵積分</h2>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">總積分（過去12個月）：@Model.TotalPoints</h5>
+            <h6 class="card-subtitle mb-2 text-muted">可用積分：@Model.AvailablePoints</h6>
+            <h6 class="card-subtitle mb-2 text-muted">最新交易：@Model.LatestPoints 積分</h6>
+            @if (Model.LatestTransactionDate.HasValue)
+            {
+                <p class="card-text">最後更新：@Model.LatestTransactionDate.Value.ToString("g")</p>
+            }
+            else
+            {
+                <p class="card-text">過去12個月沒有交易記錄。</p>
+            }
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs mb-3">
+        <li class="nav-item">
+            <a class="nav-link @(Model.CurrentTab == "available" ? "active" : "")" href="@Url.Action("Index", new { tab = "available" })">可用積分</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(Model.CurrentTab == "unavailable" ? "active" : "")" href="@Url.Action("Index", new { tab = "unavailable" })">不可用積分</a>
+        </li>
+    </ul>
+
+    <table id="pointsTable" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>積分</th>
+                <th>獲得日期</th>
+                <th>到期日期</th>
+                @if (Model.CurrentTab == "unavailable")
+                {
+                    <th>狀態</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var point in Model.PointDetails)
+            {
+                <tr>
+                    <td>@point.Points</td>
+                    <td>@point.EarnedDate.ToString("yyyy/MM/dd HH:mm")</td>
+                    <td>@point.ExpiryDate.ToString("yyyy/MM/dd HH:mm")</td>
+                    @if (Model.CurrentTab == "unavailable")
+                    {
+                        <td>@(point.UnavailableReason == "Used" ? "已使用" : "已過期")</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+
+    <form asp-action="UsePoints" method="post">
+        <div class="form-group">
+            <label for="pointsToUse">使用積分：</label>
+            <input type="number" class="form-control" id="pointsToUse" name="pointsToUse" min="1" max="@Model.AvailablePoints" required>
+        </div>
+        <button type="submit" class="btn btn-primary">使用積分</button>
+    </form>
+</div>
+@section Scripts {
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#pointsTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Chinese-traditional.json"
+                },
+                "pageLength": 10,
+                "ordering": true,
+                "info": true,
+                "lengthChange": false
+            });
+        });
+    </script>
+}
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}

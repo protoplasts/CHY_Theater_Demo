@@ -197,12 +197,16 @@ namespace CHY_Theater.Areas.Booking.Services
             }
 
             var ecpayOrder = _context.PaymentTransactions.Where(m => m.MerchantTradeNo == temp).FirstOrDefault();
+            // 假設 ecpayOrder.TradeAmt 是一個數值（例如 decimal 或 double）
+            var point = (int)(Math.Round((ecpayOrder.TradeAmt ?? 0) / 100m));
+
             if (ecpayOrder != null)
             {
                 ecpayOrder.RtnCode = int.Parse(form["RtnCode"]);
                 if (form["RtnMsg"] == "Succeeded") ecpayOrder.RtnMsg = "已付款";
                 ecpayOrder.PaymentDate = Convert.ToDateTime(form["PaymentDate"]);
                 ecpayOrder.SimulatePaid = int.Parse(form["SimulatePaid"]);
+                ecpayOrder.Points = point;
                 _context.SaveChanges();
 
             };

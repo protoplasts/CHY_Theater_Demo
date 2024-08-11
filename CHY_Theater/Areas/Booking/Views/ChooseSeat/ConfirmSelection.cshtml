@@ -146,6 +146,10 @@
                 <small id="couponMessage" class="form-text text-muted"></small>
             </div>
 
+            <div class="reward-points-section mt-3">
+                <p>You have <span id="availablePoints">@ViewBag.AvailablePoints</span> reward points available.</p>
+                <button id="usePointsBtn" class="btn btn-outline-secondary">Use Reward Points</button>
+            </div>
             <button class="btn btn-primary btn-block animateBtn mt-4" onclick="proceedToPayment()">確認訂單</button>
         </div>
     </div>

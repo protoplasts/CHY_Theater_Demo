@@ -1,6 +1,8 @@
-﻿using CHY_Theater_DataAcess.Data;
+﻿using CHY_Theater.Areas.Identity.Services;
+using CHY_Theater_DataAcess.Data;
 using CHY_Theater_Models.Models;
 using FUEN104_2_FinalProject.Models.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -13,13 +15,17 @@ namespace CHY_Theater.Areas.Booking.Controllers
     public class BookingController : Controller
     {
         private readonly Theater_ProjectDbContext _context;
+		private readonly UserManager<ApplicationUser> _userManager;
+		private readonly IRewardPointService _rewardPointService;
 
-        public BookingController(Theater_ProjectDbContext context)
+		public BookingController(UserManager<ApplicationUser> userManager, Theater_ProjectDbContext context, IRewardPointService rewardPointService)
         {
-            _context = context;
+            _context = context; 
+            _userManager = userManager;
+			_rewardPointService = rewardPointService;
 
-        }
-        [HttpPost]
+		}
+		[HttpPost]
         [ValidateAntiForgeryToken]
 
         public async Task<IActionResult> ProcessPayment([FromBody] ConfirmSelectionViewModel model)
@@ -149,9 +155,32 @@ namespace CHY_Theater.Areas.Booking.Controllers
 
 
         }
+		[HttpPost]
+		public async Task<IActionResult> UsePoints(int pointsToUse)
+		{
+			var user = await _userManager.GetUserAsync(User);
+			if (user == null)
+			{
+				return NotFound();
+			}
 
-        // Method to get the current user's ID
-        private string GetCurrentUserId()
+			var success = await _rewardPointService.UsePointsAsync(user.Id, pointsToUse);
+
+			if (success)
+			{
+				// Apply discount to the order
+				// This part depends on how your ordering system works
+				TempData["SuccessMessage"] = $"Successfully used {pointsToUse} points for a ${pointsToUse} discount.";
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Not enough points available.";
+			}
+
+			return RedirectToAction("Index");
+		}
+		// Method to get the current user's ID
+		private string GetCurrentUserId()
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
