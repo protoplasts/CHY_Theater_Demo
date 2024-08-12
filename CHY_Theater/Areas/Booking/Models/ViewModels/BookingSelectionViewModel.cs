@@ -14,6 +14,7 @@
         public int TotalHowManySeat { get; set; }
 
         public int TotalPrice { get; set; }
+
         public class SnackSelection
         {
             public int SnackId { get; set; }

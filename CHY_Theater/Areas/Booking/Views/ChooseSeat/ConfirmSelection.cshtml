@@ -143,12 +143,15 @@
                         <button id="cancelCouponBtn" class="btn btn-outline-danger" type="button" onclick="cancelCoupon()" style="display: none;">取消使用</button>
                     </div>
                 </div>
-                <small id="couponMessage" class="form-text text-muted"></small>
+                <small id="couponMessage" class="form-text text-dark"></small>
             </div>
 
             <div class="reward-points-section mt-3">
                 <p>You have <span id="availablePoints">@ViewBag.AvailablePoints</span> reward points available.</p>
-                <button id="usePointsBtn" class="btn btn-outline-secondary">Use Reward Points</button>
+                <p>已使用點數: <span id="appliedPoints">0</span></p>
+                <p>點數折抵金額: $<span id="pointsDiscount">0.00</span></p>
+                <button id="usePointsBtn" class="btn btn-outline-secondary">使用紅利折抵</button>
+                <button id="cancelPointsBtn" class="btn btn-outline-danger" style="display: none;">取消使用</button>
             </div>
             <button class="btn btn-primary btn-block animateBtn mt-4" onclick="proceedToPayment()">確認訂單</button>
         </div>
@@ -167,15 +170,168 @@
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        var currentTotalPrice = parseFloat('@Model.MovieTotalPrice'.replace(/[^0-9.-]+/g, ""));
-        var originalTotalPrice = currentTotalPrice;
-        var appliedCouponCode = '';
+        var priceAfterCooupon;
+        var currentTotalPrice=parseFloat('@Model.MovieTotalPrice'.replace(/[^0-9.-]+/g, "")); // Declare this at the top of your script, outside any function
+        $(document).ready(function () {
+            let appliedPoints = 0;
+            let originalTotal = parseFloat('@Model.MovieTotalPrice'.replace(/[^0-9.-]+/g, ""));
+            let currentTotal = originalTotal;
 
+            $('#usePointsBtn').click(function () {
+                alert(priceAfterCooupon);
+
+                var availablePoints = parseInt($('#availablePoints').text());
+
+                Swal.fire({
+                    title: '使用紅利點數',
+                    input: 'number',
+                    inputAttributes: {
+                        min: 0,
+                        max: availablePoints,
+                        step: 1
+                    },
+                    inputValue: appliedPoints,
+                    showCancelButton: true,
+                    confirmButtonText: '確認',
+                    cancelButtonText: '取消',
+                    showLoaderOnConfirm: true,
+                    preConfirm: (pointsToUse) => {
+                        pointsToUse = parseInt(pointsToUse);
+                        let discount = pointsToUse; // Assuming 100 points = $1 discount
+                        let newTotal = originalTotal - discount;
+
+                        return {
+                            pointsToUse: pointsToUse,
+                            newTotal: newTotal,
+                            discount: discount
+                        };
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        appliedPoints = result.value.pointsToUse;
+                        currentTotal = result.value.newTotal;
+                        updateDisplay();
+
+                        Swal.fire({
+                            title: '已套用點數',
+                            text: `已使用 ${appliedPoints} 點，折抵 $${result.value.discount.toFixed(2)}`,
+                            icon: 'success'
+                        });
+
+                        // Show cancel button and disable use points button
+                        $('#cancelPointsBtn').show();
+                        $('#usePointsBtn').prop('disabled', true);
+                    }
+                });
+            });
+
+            $('#cancelPointsBtn').click(function () {
+                appliedPoints = 0;
+                currentTotal = originalTotal;
+                updateDisplay();
+
+                // Hide cancel button and enable use points button
+                $('#cancelPointsBtn').hide();
+                $('#usePointsBtn').prop('disabled', false);
+
+                Swal.fire({
+                    title: '已取消使用點數',
+                    text: '您的訂單已恢復原價',
+                    icon: 'info'
+                });
+            });
+
+            function updateDisplay() {
+                currentTotalPrice = parseFloat((originalTotal - appliedPoints).toFixed(2));
+
+                $('#totalPrice').text(currentTotal.toFixed(2));
+                $('#appliedPoints').text(appliedPoints);
+                $('#pointsDiscount').text((originalTotal - currentTotal).toFixed(2));
+            }
+            window.proceedToPayment = function () {
+                // Implement your payment logic here
+                Swal.fire({
+                    title: '進行支付',
+                    text: '正在進行支付...',
+                    icon: 'info',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+
+                var bookingData = {
+                    MerchantTradeNo: "@Model.MerchantTradeNo",
+                    Auditoriumid: @Model.Auditoriumid,
+                    Showid: @Model.Showid,
+                    MovieName: '@Model.MovieName',
+                    MovieEnglishName: '@Model.MovieEnglishName',
+                    Level: '@Model.Level',
+                    ShowDateTime: '@Model.ShowDateTime.ToString("yyyy-MM-ddTHH:mm:ss")',
+                    AuditoriumName: '@Model.AuditoriumName',
+                    SelectedSeats: @Html.Raw(Json.Serialize(Model.SelectedSeats)),
+                    SelectedSnacks: @Html.Raw(Json.Serialize(Model.SelectedSnacks)),
+                    SelectedTickets: @Html.Raw(Json.Serialize(Model.SelectedTickets)),
+                    CouponCode: appliedCouponCode,
+                    MovieTotalPrice: Math.round(currentTotalPrice), // or parseInt(currentTotalPrice)
+                    AppliedPoints: appliedPoints,
+
+                };
+
+                // Send an AJAX request to save the booking
+                $.ajax({
+                    url: '/Booking/Booking/ProcessPayment', // Adjust this to include the area
+                    type: 'POST',
+                    contentType: 'application/json',
+                    headers: {
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    data: JSON.stringify(bookingData),
+                    success: function (response) {
+                        if (response.success) {
+                            Swal.fire({
+                                title: '成功',
+                                text: '訂票成功。請選擇支付方式。',
+                                icon: 'success',
+                                showConfirmButton: true
+                            }).then(() => {
+                                // Show payment options instead of redirecting
+                                $('#paymentOptions').show();
+                                // Hide the original button and coupon section
+                                $('.animateBtn').hide();
+                                $('.coupon-section').hide(); 
+                                $('.reward - points - section').hide();
+                            });
+                        } else {
+                            Swal.fire({
+                                title: '失敗',
+                                text: '訂票失敗。請重試。',
+                                icon: 'error',
+                                showConfirmButton: true
+                            });
+                        }
+                    },
+                    error: function () {
+                        Swal.fire({
+                            title: '錯誤',
+                            text: '發生錯誤。請重試。',
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                });
+            };
+           
+        });
+
+
+        
+        var appliedCouponCode = '';
+   
         function applyCoupon() {
             var couponCode = $('#couponCode').val();
-
+            alert(currentTotalPrice);
             $.ajax({
-                url: '/Booking/ValidateCoupon',
+                url: '/Booking/ChooseSeat/ValidateCoupon',
                 type: 'POST',
                 data: JSON.stringify({
                     couponCode: couponCode,
@@ -191,6 +347,8 @@
                         appliedCouponCode = couponCode;
                         $('#totalPrice').text(response.newTotalFormatted);
                         $('#couponMessage').text('優惠碼已成功應用！').removeClass('text-danger').addClass('text-success');
+                        priceAfterCooupon = response.newTotal;
+                        alert(priceAfterCooupon);
 
                         // Disable the coupon input and apply button, show cancel button
                         $('#couponCode, #applyCouponBtn').prop('disabled', true);
@@ -207,9 +365,10 @@
         }
 
         function cancelCoupon() {
+            alert("test");
+            currentTotalPrice = parseFloat('@Model.MovieTotalPrice'.replace(/[^0-9.-]+/g, ""));
             // Reset to original price
-            currentTotalPrice = originalTotalPrice;
-            $('#totalPrice').text(originalTotalPrice.toFixed(2));
+            $('#totalPrice').text(@Model.MovieTotalPrice)
 
             // Clear coupon code and message
             $('#couponCode').val('').prop('disabled', false);
@@ -218,81 +377,11 @@
             // Reset button states
             $('#applyCouponBtn').prop('disabled', false).show();
             $('#cancelCouponBtn').hide();
-
+            priceAfterCooupon = parseFloat('@Model.MovieTotalPrice'.replace(/[^0-9.-]+/g, ""));
             appliedCouponCode = '';
         }
 
-        function proceedToPayment() {
-            // Implement your payment logic here
-            Swal.fire({
-                title: '進行支付',
-                text: '正在進行支付...',
-                icon: 'info',
-                showConfirmButton: false,
-                timer: 2000
-            });
-
-            var bookingData = {
-                MerchantTradeNo: "@Model.MerchantTradeNo",
-                Auditoriumid: @Model.Auditoriumid,
-                Showid: @Model.Showid,
-                MovieName: '@Model.MovieName',
-                MovieEnglishName: '@Model.MovieEnglishName',
-                Level: '@Model.Level',
-                ShowDateTime: '@Model.ShowDateTime.ToString("yyyy-MM-ddTHH:mm:ss")',
-                AuditoriumName: '@Model.AuditoriumName',
-                SelectedSeats: @Html.Raw(Json.Serialize(Model.SelectedSeats)),
-                SelectedSnacks: @Html.Raw(Json.Serialize(Model.SelectedSnacks)),
-                SelectedTickets: @Html.Raw(Json.Serialize(Model.SelectedTickets)),
-                CouponCode: appliedCouponCode,
-                MovieTotalPrice: Math.round(currentTotalPrice), // or parseInt(currentTotalPrice)
-
-
-            };
-
-            // Send an AJAX request to save the booking
-            $.ajax({
-                url: '/Booking/Booking/ProcessPayment', // Adjust this to include the area
-                type: 'POST',
-                contentType: 'application/json',
-                headers: {
-                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
-                },
-                data: JSON.stringify(bookingData),
-                success: function (response) {
-                    if (response.success) {
-                        Swal.fire({
-                            title: '成功',
-                            text: '訂票成功。請選擇支付方式。',
-                            icon: 'success',
-                            showConfirmButton: true
-                        }).then(() => {
-                            // Show payment options instead of redirecting
-                            $('#paymentOptions').show();
-                            // Hide the original button and coupon section
-                            $('.animateBtn').hide();
-                            $('.coupon-section').hide();
-                        });
-                    } else {
-                        Swal.fire({
-                            title: '失敗',
-                            text: '訂票失敗。請重試。',
-                            icon: 'error',
-                            showConfirmButton: true
-                        });
-                    }
-                },
-                error: function () {
-                    Swal.fire({
-                        title: '錯誤',
-                        text: '發生錯誤。請重試。',
-                        icon: 'error',
-                        showConfirmButton: true
-                    });
-                }
-            });
-
-        }
+        
 
         function useECPay() {
             Swal.fire({

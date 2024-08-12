@@ -119,7 +119,20 @@ a {
     overflow: hidden;
     transition: color 0.3s ease, background-color 0.3s ease;
 }
-
+.btnDetail {
+    color: aquamarine;
+    border: 3px solid transparent;
+    padding: 10px 20px;
+    position: relative;
+    z-index: 1;
+    background-color: darkslateblue;
+    overflow: hidden;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+    .btnDetail:hover {
+        animation: borderAnimationClockwise2 0.5s forwards; /* Trigger the animation on hover */
+        color: wheat;
+    }
 @keyframes borderAnimationClockwise2 {
     0% {
         border-top: 3px solid red;

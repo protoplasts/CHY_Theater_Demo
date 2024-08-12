@@ -17,6 +17,7 @@ namespace FUEN104_2_FinalProject.Models.ViewModels
         public int AuditoriumId { get; set; }
         public int ShowId { get; set; }
         public int SelectedTicketTypeId { get; set; }
+
         public List<SelectedSnack> SelectedSnacks { get; set; }
        
 

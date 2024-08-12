@@ -133,11 +133,11 @@
             {
                 <tr>
                     <td>@point.Points</td>
-                    <td>@point.EarnedDate.ToString("yyyy/MM/dd HH:mm")</td>
-                    <td>@point.ExpiryDate.ToString("yyyy/MM/dd HH:mm")</td>
+                    <td>@point.EarnedDate.ToString("yyyy/MM/dd")</td>
+                    <td>@point.ExpiryDate.ToString("yyyy/MM/dd")</td>
                     @if (Model.CurrentTab == "unavailable")
                     {
-                        <td>@(point.UnavailableReason == "Used" ? "已使用" : "已過期")</td>
+                        <td>@(point.UnavailableReason == "已使用" ? "已使用" : "已過期")</td>
                     }
                 </tr>
             }

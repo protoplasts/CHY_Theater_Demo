@@ -1,0 +1,180 @@
+﻿/*﻿*/ /* Container for the image and content */
+/*.yao {
+    position: relative;
+    overflow: hidden;
+    height: 800px;*/ /* Match this with the max-height of the image */
+/*}*/
+
+/* Image styling */
+/*.carousel-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}*/
+
+/* Full-width background overlay */
+/*.background-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;*/ /* Adjust this value to control how much of the image is covered */
+    /*background: linear-gradient(to top, rgba(245, 222, 179, 0.5) 50%,*/ /* Wheat color, more opaque at bottom */
+    /*rgba(245, 222, 179, 0.3) 75%,*/ /* Slightly more transparent in middle */
+    /*rgba(245, 222, 179, 0.1) 100%*/ /* Most transparent at top */
+    /*);
+}*/
+/* Content overlay */
+/*.content-overlay {
+    position: absolute;
+    bottom: 0;
+    right: 10%;*/ /* Change this from left: 10% to right: 10% */
+    /*width: 50%;*/ /* Reduce the width to prevent overflow */
+    /*padding: 30px;
+    color: white;
+    z-index: 1;
+    text-align: right;*/ /* Align text to the right */
+/*}*/
+
+    /* Adjust the title alignment */
+    /*.content-overlay h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        text-align: right;*/ /* Ensure the title is right-aligned */
+    /*}*/
+
+    /* Adjust the button alignment */
+    /*.content-overlay h5 {
+        text-align: right;*/ /* Align the button to the right */
+    /*}*/
+
+/* Adjust the button itself */
+/*.button {
+    display: inline-block;
+    background: black;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    float: right;*/ /* Float the button to the right */
+    /*clear: both;*/ /* Ensure it clears other floated elements */
+/*}
+
+    .button:hover {
+        background: linear-gradient(to right, #462820, #644028);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }*/
+
+/* Carousel control buttons */
+/*.carousel-control-edge {
+    width: 5%;*/ /* Reduce width to move buttons closer to edge */
+    /*opacity: 0.8;*/ /* Make buttons slightly more visible */
+/*}
+
+.carousel-control-prev.carousel-control-edge {
+    left: -5%;*/ /* Move left button outside the carousel */
+/*}
+
+.carousel-control-next.carousel-control-edge {
+    right: -5%;*/ /* Move right button outside the carousel */
+/*}*/
+
+/* Add hover effect for better user experience */
+/*.carousel-control-edge:hover {
+    opacity: 1;
+}*/
+
+/* Ensure the carousel container allows for the buttons to be outside */
+/*#onShowMoviesCarousel {
+    overflow: visible;
+}*/
+
+/* Adjust for smaller screens */
+/*@media (max-width: 768px) {
+    .carousel-control-edge {
+        width: 10%;*/ /* Slightly wider on small screens for easier tapping */
+    /*}
+
+    .carousel-control-prev.carousel-control-edge {
+        left: -2%;*/ /* Don't move as far on small screens */
+    /*}
+
+    .carousel-control-next.carousel-control-edge {
+        right: -2%;*/ /* Don't move as far on small screens */
+    /*}
+}
+
+p.mt-2.text-dark {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 245, 220, 0.9));
+    border-left: 5px solid #FFD700;*/ /* Gold border on the left */
+    /*border-radius: 0 15px 15px 0;*/ /* Rounded corners on the right side */
+    /*padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-style: italic;
+    line-height: 1.6;
+    max-width: 900px;*/ /* Adjust as needed */
+    /*margin-left: 20px;*/ /* Space for the left border */
+    /*position: relative;
+    overflow: hidden;
+}
+
+    p.mt-2.text-dark::before {
+        content: '"';
+        font-size: 5em;
+        color: rgba(255, 215, 0, 0.2);*/ /* Semi-transparent gold */
+        /*position: absolute;
+        top: -20px;
+        left: 10px;
+        font-family: Georgia, serif;
+    }
+
+    p.mt-2.text-dark::after {
+        content: '"';
+        font-size: 5em;
+        color: rgba(255, 215, 0, 0.2);*/ /* Semi-transparent gold */
+        /*position: absolute;
+        bottom: -70px;
+        right: 10px;
+        font-family: Georgia, serif;
+    }
+
+.movie-details {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 245, 220, 0.9));
+    border-left: 5px solid #FFD700;*/ /* Gold border on the left */
+    /*border-radius: 0 15px 15px 0;*/ /* Rounded corners on the right side */
+    /*padding: 15px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 800px;*/ /* Adjust as needed */
+    /*margin-left: 20px;*/ /* Space for the left border */
+    /*display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+    .movie-details .rating {
+        color: black;
+        padding: 8px 12px;
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    .movie-details .col_green {
+        font-weight: bold;
+    }
+
+    .movie-details .year {
+        font-style: italic;
+        color: #555;
+    }
+
+    .movie-details .col_red {
+        color: #dc3545;
+        font-weight: bold;
+    }
+}*/

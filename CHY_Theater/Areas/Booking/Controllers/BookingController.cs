@@ -1,4 +1,5 @@
-﻿using CHY_Theater.Areas.Identity.Services;
+﻿using CHY_Theater.Areas.Identity.Models.ViewModels;
+using CHY_Theater.Areas.Identity.Services;
 using CHY_Theater_DataAcess.Data;
 using CHY_Theater_Models.Models;
 using FUEN104_2_FinalProject.Models.ViewModels;
@@ -30,7 +31,6 @@ namespace CHY_Theater.Areas.Booking.Controllers
 
         public async Task<IActionResult> ProcessPayment([FromBody] ConfirmSelectionViewModel model)
         {
-
             try
             {
                 // Get the current user's ID
@@ -125,7 +125,21 @@ namespace CHY_Theater.Areas.Booking.Controllers
 
                     }
                 }
-                //
+                // Apply points discount
+                if (model.AppliedPoints > 0)
+                {
+                    var success = await _rewardPointService.UsePointsAsync(userId, model.AppliedPoints);
+
+                    if (success)
+                    {
+                        var discount = model.AppliedPoints / 100;
+                        model.MovieTotalPrice -= discount;
+                    }
+                    else
+                    {
+                        return Json(new { success = false, message = "Failed to apply points. Please try again." });
+                    }
+                }
                 // If a coupon was applied, update its usage count
                 if (!string.IsNullOrEmpty(model.CouponCode))
                 {
@@ -155,32 +169,47 @@ namespace CHY_Theater.Areas.Booking.Controllers
 
 
         }
-		[HttpPost]
-		public async Task<IActionResult> UsePoints(int pointsToUse)
-		{
-			var user = await _userManager.GetUserAsync(User);
-			if (user == null)
-			{
-				return NotFound();
-			}
+        [HttpPost]
+        public async Task<IActionResult> UsePoints([FromBody] UsePointsViewModel model)
+        {
+            if (model == null)
+            {
+                return Json(new { success = false, message = "Invalid data received. Model is null." });
+            }
 
-			var success = await _rewardPointService.UsePointsAsync(user.Id, pointsToUse);
+            var debugMessage = $"Received PointsToUse: {model.PointsToUse}, CurrentTotal: {model.CurrentTotal}";
 
-			if (success)
-			{
-				// Apply discount to the order
-				// This part depends on how your ordering system works
-				TempData["SuccessMessage"] = $"Successfully used {pointsToUse} points for a ${pointsToUse} discount.";
-			}
-			else
-			{
-				TempData["ErrorMessage"] = "Not enough points available.";
-			}
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var pointsToUse = model.PointsToUse;
+            var currentTotal = model.CurrentTotal;
 
-			return RedirectToAction("Index");
-		}
-		// Method to get the current user's ID
-		private string GetCurrentUserId()
+            var success = await _rewardPointService.UsePointsAsync(userId, pointsToUse);
+
+            if (success)
+            {
+                var discount = pointsToUse ; // Assuming 100 points = $1 discount
+                var newTotal = currentTotal - discount;
+
+                return Json(new
+                {
+                    success = true,
+                    newTotal = newTotal,
+                    newTotalFormatted = newTotal.ToString("C"),
+                    message = $"Successfully used {pointsToUse} points for a ${discount} discount.",
+                    remainingPoints = await _rewardPointService.GetTotalPointsAsync(userId)
+                });
+            }
+            else
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = $"Not enough points available. Debug: {debugMessage}"
+                });
+            }
+        }
+        // Method to get the current user's ID
+        private string GetCurrentUserId()
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier);
         }

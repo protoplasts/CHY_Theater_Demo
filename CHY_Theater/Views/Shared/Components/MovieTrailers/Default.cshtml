@@ -30,6 +30,7 @@
                                                     <div class="col-md-3 col-6">
                                                         <div class="movie-card-wrapper">
                                                             <div class="card bg-dark text-white movie-card">
+
                                                                 <img src="@movie.MovieImage" asp-append-version="true" class="card-img-top" alt="@movie.MovieName Poster" />
                                                                 <div class="card-body">
                                                                     <div class="movie-titles">
@@ -37,8 +38,8 @@
                                                                         <h6 class="card-subtitle mb-2 text-muted">@movie.MovieEnglishName</h6>
                                                                     </div>
                                                                     <div class="card-buttons">
-                                                                        <a href="#" class="btn btn-dark">場次</a>
-                                                                        <a href="#" class="btn btn-dark">預告</a>
+                                                                        <a href="@Url.Action("Details", "Movies", new { ID = movie.MovieId })#show-times" class="btn btn-dark">場次</a>
+                                                                        <a href="@Url.Action("Details", "Movies", new { ID = movie.MovieId })#trailer" class="btn btn-dark">預告</a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -49,19 +50,19 @@
                                         </div>
                                     }
                                 </div>
-                               
-                                <button class="carousel-control-prev" type="button" data-bs-target="#onShowMoviesCarousel" data-bs-slide="prev">
+
+                                <button class="carousel-control-prev carousel-control-edge" type="button" data-bs-target="#onShowMoviesCarousel" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
                                 </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#onShowMoviesCarousel" data-bs-slide="next">
+                                <button class="carousel-control-next carousel-control-edge" type="button" data-bs-target="#onShowMoviesCarousel" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Next</span>
                                 </button>
                                 
 
                             </div>
-                            <div>
+                            <div class="d-flex justify-content-center mt-3">
                                 <a asp-controller="Movies" asp-action="Index" class="btn btn-danger">更多電影123</a>
                             </div>
                         </div>
@@ -105,11 +106,11 @@
                                 <div>
                                     <a href="@Url.Action("Index", "Movies")" class="btn btn-danger">更多電影</a>
                                 </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#comingSoonMoviesCarousel" data-bs-slide="prev">
+                                <button class="carousel-control-prev carousel-control-edge" type="button" data-bs-target="#onShowMoviesCarousel" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
                                 </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#comingSoonMoviesCarousel" data-bs-slide="next">
+                                <button class="carousel-control-next carousel-control-edge" type="button" data-bs-target="#onShowMoviesCarousel" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Next</span>
                                 </button>

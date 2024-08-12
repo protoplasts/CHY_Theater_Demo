@@ -18,6 +18,7 @@ namespace FUEN104_2_FinalProject.Models.ViewModels
         public string Level { get; set; }
         public string MovieImg { get; set; }
 
+        public int AppliedPoints { get; set; }
 
         public DateTime ShowDateTime { get; set; }
         public string AuditoriumName { get; set; }
