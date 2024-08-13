@@ -45,7 +45,7 @@
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = '@Url.Action("Index", "Home")';
+                    window.location.href = window.location.origin + '/';
                 }
             });
         });

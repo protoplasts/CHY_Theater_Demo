@@ -245,7 +245,7 @@
                 <ul class="movie-details mb-4 list-unstyled">
                     <li class="mb-3">
                         <h1 class="fw-bold text-dark">@Model.Movie.MovieName</h1>
-                        <h2 class="fs-4 text-muted">@Model.Movie.MovieEnglishName</h2>
+                            <h2 class="fs-4 text-dark">@Model.Movie.MovieEnglishName</h2>
                     </li>
                     <li class="mb-3">
                         <span class="fs-5 text-dark">級別:</span>
@@ -260,7 +260,7 @@
                             <div class="col-md-6">
                                 <h3 class="fw-bold fs-5 text-dark mb-3">票種</h3>
                                 <div id="selected-tickets-list" class="mb-3 text-dark"></div>
-                                <h3 class="fw-bold fs-5 text-white mb-3">明細</h3>
+                                    <h3 class="fw-bold fs-5 text-dark mb-3">明細</h3>
                                 <div id="selected-tickets-detail" class="mb-3 text-dark"></div>
                             </div>
                             <div class="col-md-6">
@@ -269,8 +269,8 @@
                             </div>
                         </div>
                     </li>
-                    <li class="mb-3">
-                        <span class="fs-5 text-dark">總座位數:</span>
+                    <li class="mb-3" style="display:none">
+                            <span class="fs-5 text-dark">總座位數:</span>
                         <span id="total-seats" class="fs-5 ms-2 text-muted"></span>
                     </li>
                    
@@ -285,8 +285,8 @@
         </ul>
         </div> *@
         <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
-            <h3 class="mb-0 text-white">總計:</h3>
-            <h3 class="mb-0 text-white">$<span id="grand-total">0.00</span></h3>
+            <h3 class="mb-0 text-dark">總計:</h3>
+                <h3 class="mb-0 text-dark">$<span id="grand-total">0.00</span></h3>
         </div>
     </div>
     <div class="bg-white rounded-3 p-3 mt-1">
@@ -324,7 +324,7 @@
                                 @ticketType.TypeName <br />
                                 <div style="font-size: smaller; color: gray;" class="mt-2">@ticketType.TicketDescription</div>
                             </td>
-                            <td class="unit-price text-end">@ticketType.Price.ToString("C2")</td>
+                            <td class="unit-price text-end">@ticketType.Price.ToString("C0")</td>
                             <td class="text-center">
                                 <select class="quantity-select form-select form-select-sm w-auto mx-auto">
                                     @for (int i = 0; i <= 10; i++)
@@ -334,7 +334,7 @@
                                 </select>
                             </td>
                             <td class="total-amount text-end">
-                                @((0m).ToString("C2", CultureInfo.CreateSpecificCulture("en-US")))
+                                @((0m).ToString("C0", CultureInfo.CreateSpecificCulture("en-US")))
                             </td>
                         </tr>
                     }
@@ -393,7 +393,7 @@
                     <tfoot>
                         <tr>
                             <td colspan="4" class="text-end fw-bold">加購總計:</td>
-                            <td class="total-amount snack-total text-end fw-bold">@((0m).ToString("C2"))</td>
+                            <td class="total-amount snack-total text-end fw-bold">@((0m).ToString("C0"))</td>
                         </tr>
                     </tfoot>
                 </table>
@@ -422,7 +422,7 @@
                     var total = unitPrice * quantity;
                     var ticketName = $(this).data('ticket-name');
                     var ticketDescription = $(this).data('ticket-type');
-                    $(this).find('.total-amount').text(total.toFixed(2));
+                    $(this).find('.total-amount').text(total.toFixed(0));
                     ticketTotalAmount += total;
                     totalTicketQuantity += quantity;
                     $(this).toggleClass('selected-row', quantity > 0);
@@ -436,7 +436,7 @@
                 });
 
                 // Update ticket total and selected tickets list
-                $('.ticket-total').text(ticketTotalAmount.toFixed(2));
+                $('.ticket-total').text(ticketTotalAmount.toFixed(0));
                 updateSelectedList('#selected-tickets-list', selectedTickets, '');
                 updateSelectedTicketDetails('#selected-tickets-detail', selectedTicketDetails, '');
                 // Process snacks
@@ -452,8 +452,8 @@
                     var snackName = $(this).data('snack-name');
                     var snackSize = selectedSize.text();
 
-                    $(this).find('.unit-price').text(unitPrice.toFixed(2));
-                    $(this).find('.total-amount').text(total.toFixed(2));
+                    $(this).find('.unit-price').text(unitPrice.toFixed(0));
+                    $(this).find('.total-amount').text(total.toFixed(0));
                     snacksTotalAmount += total;
                     $(this).toggleClass('selected-row', quantity > 0);
 
@@ -463,7 +463,7 @@
                 });
 
                 // Update snack total and selected snacks list
-                $('.snack-total').text(snacksTotalAmount.toFixed(2));
+                $('.snack-total').text(snacksTotalAmount.toFixed(0));
                 updateSelectedList('#selected-snacks-list', selectedSnacks, '');
 
                 // Update total ticket quantity in submit button and show/hide the button
@@ -488,7 +488,7 @@
 
                 // Calculate and update grand total
                 var grandTotalAmount = ticketTotalAmount + snacksTotalAmount;
-                $('#grand-total').text(grandTotalAmount.toFixed(2));
+                $('#grand-total').text(grandTotalAmount.toFixed(0));
                 // $('#GrandTotal').val(grandTotalAmount.toFixed(2));  // Update hidden input if needed
             }
 

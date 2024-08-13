@@ -1,4 +1,4 @@
-﻿@model CHY_Theater_Models.Models.ApplicationUser
+﻿@model CHY_Theater.Areas.Identity.Models.ViewModels.MemberCentreViewModel
 @{
     ViewData["Title"] = "會員中心";
     Layout = "_MemberCenterLayout";
@@ -89,6 +89,7 @@
 
 
         <!-- Right Content Area -->
+<!-- Right Content Area -->
 <div class="col-md-9">
     <h2 class="mb-4 text-dark mt-5">會員中心</h2>
     <div class="card mb-4">
@@ -107,7 +108,7 @@
                         <dd>@(Model.EmailConfirmed ? "是" : "否")</dd>
                         <dt><i class="me-2"></i>會員狀態</dt>
                         <dd>
-                            @if (@Model.MembershipLevel == "basic")
+                            @if (Model.MembershipLevel == "basic")
                             {
                                 <span>您尚未填寫詳細個人資訊 完成填寫以便累積會員點數</span>
                             }
@@ -116,8 +117,6 @@
                                 @Model.MembershipLevel
                             }
                         </dd>
-
-
                     </dl>
                 </div>
 
@@ -141,7 +140,7 @@
                         <dd class="col-sm-8">@Model.DateCreated.ToString("yyyy/MM/dd")</dd>
                         <dt class="col-sm-4"><i class="fas fa-shopping-cart me-2"></i>最近購票:</dt>
                         <dd class="col-sm-8">@(Model.LastTicketPurchase?.ToString("yyyy/MM/dd") ?? "無記錄")</dd>
-                        <dt class="col-sm-4"><i class="fas fa-dollar-sign me-2"></i>累計消費金額:</dt>
+                        <dt class="col-sm-4"><i class="fas fa-dollar-sign me-2"></i>近一年累計消費金額:</dt>
                         <dd class="col-sm-8">$@Model.TotalSpent.ToString("N0")</dd>
                         <dt class="col-sm-4"><i class="fas fa-clock me-2"></i>最近登入時間:</dt>
                         <dd class="col-sm-8">@(Model.LastLoginTime?.ToString("yyyy/MM/dd HH:mm") ?? "無記錄")</dd>
@@ -156,9 +155,9 @@
             <h4 class="card-title mb-4">最近活動</h4>
             <hr />
             <ul class="list-group">
-                <li class="list-group-item">最近購票: @Model.LastTicketPurchase?.ToString("yyyy/MM/dd")</li>
+                <li class="list-group-item">最近購票: @(Model.LastTicketPurchase?.ToString("yyyy/MM/dd") ?? "無記錄")</li>
                 <li class="list-group-item">累計消費金額: $@Model.TotalSpent.ToString("N0")</li>
-                <li class="list-group-item">最近登入時間: @Model.LastLoginTime?.ToString("yyyy/MM/dd HH:mm")</li>
+                <li class="list-group-item">最近登入時間: @(Model.LastLoginTime?.ToString("yyyy/MM/dd HH:mm") ?? "無記錄")</li>
             </ul>
         </div>
     </div>

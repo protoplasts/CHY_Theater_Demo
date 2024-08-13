@@ -69,7 +69,6 @@
                 dataType: 'json',
                 data: { inModel: postData, __RequestVerificationToken: $('@Html.AntiForgeryToken()').val() },
                 success: function (returnObj) {
-                    alert("Hi there");
                     $("#divContent").html(returnObj);
                     $("#payForm").submit();
                 },

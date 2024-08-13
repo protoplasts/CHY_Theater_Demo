@@ -13,9 +13,11 @@ using System.Drawing.Imaging;
 using System.IO;
 using ZXing;
 using ZXing.QrCode;
+using CHY_Theater.Areas.Identity.Services;
+
 // Make sure to include the correct namespace for ApplicationUser
 
-namespace CHY_Theater.Areas.Identity.Services
+namespace CHY_Theater.Areas.Identity.Controllers
 {
     [Authorize]
     [Area("Identity")]
@@ -25,13 +27,16 @@ namespace CHY_Theater.Areas.Identity.Services
         private readonly Theater_ProjectDbContext _context;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly BarcodeService _barcodeService;
+        private readonly IRewardPointService _rewardPointService;
 
-        public MemberCenterController(UserManager<ApplicationUser> userManager, Theater_ProjectDbContext context, SignInManager<ApplicationUser> signInManager, BarcodeService barcodeService)
+        public MemberCenterController(UserManager<ApplicationUser> userManager, Theater_ProjectDbContext context, SignInManager<ApplicationUser> signInManager, BarcodeService barcodeService, IRewardPointService rewardPointService)
         {
             _userManager = userManager;
             _context = context;
             _signInManager = signInManager;
-            _barcodeService = barcodeService;
+            _barcodeService = barcodeService; 
+            _rewardPointService = rewardPointService;
+
 
         }
 
@@ -43,7 +48,32 @@ namespace CHY_Theater.Areas.Identity.Services
                 return NotFound();
             }
 
-            return View(user);
+            var availablePoints = await _rewardPointService.GetTotalPointsAsync(user.Id);
+
+            // Fetch the last booking for this user
+            var lastBooking = await _context.Bookings
+                .Where(b => b.UserId == user.Id)
+                .OrderByDescending(b => b.BookingDate)
+                .FirstOrDefaultAsync();
+            // Calculate total spent from PaymentTransactions
+            var totalSpent = await _context.PaymentTransactions
+                .Where(pt => pt.MemberID == user.Id && pt.RtnCode == 1)  // Assuming RtnCode 1 means successful transaction
+                .SumAsync(pt => pt.TradeAmt ?? 0);
+            var viewModel = new MemberCentreViewModel   
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+                EmailConfirmed = user.EmailConfirmed,
+                MembershipLevel = user.MembershipLevel,
+                MemberPoints = availablePoints,
+                Id = user.Id,
+                DateCreated = user.DateCreated,
+                LastTicketPurchase = lastBooking?.BookingDate,
+                TotalSpent = totalSpent,
+                LastLoginTime = user.LastLoginTime
+            };
+
+            return View(viewModel);
         }
         public async Task<IActionResult> OrderInquiry()
         {

@@ -102,11 +102,8 @@ namespace CHY_Theater.Areas.Booking.Controllers
                     RtnMsg="付款進行中",
                     TradeAmt=model.MovieTotalPrice,
                     MemberID= userId,
-                    PaymentType="現場取票付款"               
-
-
-
-                };
+                    PaymentType="現場取票付款"           
+                 };
                 _context.PaymentTransactions.Add(paymentTransaction);
                 await _context.SaveChangesAsync();
                 // Add BookingSnacks if any
@@ -122,7 +119,6 @@ namespace CHY_Theater.Areas.Booking.Controllers
                         };
                         _context.BookingSnacks.Add(bookingSnack);
                         await _context.SaveChangesAsync();
-
                     }
                 }
                 // Apply points discount

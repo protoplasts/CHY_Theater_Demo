@@ -14,32 +14,31 @@ namespace CHY_Theater.Areas.Booking.Services
     {
         private readonly Theater_ProjectDbContext _context;
         private readonly IHttpContextAccessor _accessor;
+        private readonly string _userid;
 
         public IConfiguration Config { get; set; }
 
-        public ECPayService(Theater_ProjectDbContext eCPAY_TestContext, IHttpContextAccessor accessor)
+        public ECPayService(Theater_ProjectDbContext eCPAY_TestContext, IHttpContextAccessor accessor,string userId)
         {
             Config = new ConfigurationBuilder().AddJsonFile("appSettings.json").Build();
             _context = eCPAY_TestContext;
             _accessor = accessor;
+            _userid= userId;
         }
       
         public string GetCallBack(ECPayViewModel inModel)
         {
-            var userId = _accessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
             var orderId = inModel.MerchantTradeNo;
             var booking = _context.PaymentTransactions.Where(m => m.MerchantTradeNo == orderId).FirstOrDefault();
             var tradeDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
             if (booking != null)
             {
-
+                booking.PaymentType = "綠界科技線上支付";
                 booking.TradeDate = tradeDate;
                 booking.RtnMsg = "Pending";
                 booking.TradeNo = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 20);
                 booking.PaymentTypeChargeFee = "free";
-            }
-            
+            }            
 
             //var ecpModel = new PaymentTransaction
             //{
@@ -57,7 +56,6 @@ namespace CHY_Theater.Areas.Booking.Services
             _context.SaveChanges();
             //需填入 你的網址
             var website = $"{Config.GetSection("HostURL").Value}/ECP";
-
             var order = new Dictionary<string, object>
             {
                 //特店交易編號
@@ -82,7 +80,7 @@ namespace CHY_Theater.Areas.Booking.Services
                 { "Email",  inModel.Email},
 
                 //自訂名稱欄位2
-                { "CustomField2",  ""},
+                { "CustomField2",  _userid},
 
                 //自訂名稱欄位3
                 { "CustomField3",  ""},
@@ -191,11 +189,9 @@ namespace CHY_Theater.Areas.Booking.Services
             var booking = _context.Bookings.Where(m => m.MerchantTradeNo == temp).FirstOrDefault();
             if (booking != null)
             {
-
                 if (form["RtnMsg"] == "Succeeded") booking.BookingStatus = "已付款";
 
             }
-
             var ecpayOrder = _context.PaymentTransactions.Where(m => m.MerchantTradeNo == temp).FirstOrDefault();
             // 假設 ecpayOrder.TradeAmt 是一個數值（例如 decimal 或 double）
             var point = (int)(Math.Round((ecpayOrder.TradeAmt ?? 0) / 100m));
@@ -208,9 +204,17 @@ namespace CHY_Theater.Areas.Booking.Services
                 ecpayOrder.SimulatePaid = int.Parse(form["SimulatePaid"]);
                 ecpayOrder.Points = point;
                 _context.SaveChanges();
-
             };
-
+            var userid = form["CustomField2"];
+            var rewardPoint = new RewardPoint
+            {
+                UserId = userid,
+                Points = point,
+                EarnedDate= Convert.ToDateTime(form["PaymentDate"]),
+                ExpiryDate= Convert.ToDateTime(form["PaymentDate"]).AddYears(1),IsUsed=false
+            };
+            _context.RewardPoints.Add(rewardPoint);
+            _context.SaveChanges();
             // 接收參數
             StringBuilder receive = new StringBuilder();
             foreach (var item in form)
