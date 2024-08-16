@@ -1,0 +1,117 @@
+﻿@model CHY_Theater_Models.News
+
+@{
+    ViewData["Title"] = "活動詳情"; Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+@section Styles {
+    <style>
+        .event-container {
+            padding-top: 100px; /* Adjust based on your navbar height */
+        }
+
+        .event-card {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .event-title {
+            color: #e90101;
+        }
+
+        .event-type {
+            color: #ffc107;
+        }
+
+        .event-date {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .event-description {
+            font-size: 1.5rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .event-notice {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+            .event-notice p {
+                margin-bottom: 0.5rem;
+            }
+
+                .event-notice p:last-child {
+                    margin-bottom: 0;
+                }
+
+        .event-image {
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .breadcrumb {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+
+        .breadcrumb-item a {
+            color: #e90101;
+            text-decoration: none;
+        }
+
+        .breadcrumb-item.active {
+            color: #fff;
+        }
+
+        .breadcrumb-item + .breadcrumb-item::before {
+            color: #fff;
+        }
+    </style>
+}
+
+<div class="container event-container mb-5">
+    <nav aria-label="breadcrumb" class="mt-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">首頁</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", "News")">最新消息</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.NewsTitle</li>
+        </ol>
+    </nav>
+
+    <div class="card event-card mb-5">
+        <div class="row g-0">
+            <div class="col-md-5">
+                <img src="@Model.NewsPoster" class="img-fluid event-image" alt="@Model.NewsTitle">
+            </div>
+            <div class="col-md-7">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 event-type">@Model.NewsType</h6>
+                    <h1 class="card-title event-title">@Model.NewsTitle</h1>
+                    <p class="event-date">
+                        公告期間: @Model.StartDate.ToString("yyyy/MM/dd") - @Model.ExpiryDate.ToString("yyyy/MM/dd")
+                    </p>
+                    <p class="event-description">@Model.NewsDescription</p>
+                    <div class="event-notice mt-5">
+                        @foreach (var line in Model.NewsNotice.Split("※", StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            if (!string.IsNullOrWhiteSpace(line))
+                            {
+                                <p>※ @line.Trim()</p>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

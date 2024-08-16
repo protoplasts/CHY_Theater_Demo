@@ -5,90 +5,69 @@
 }
 
 @section Styles {
-    <style>    
+    <style>            
         
-        .center-container {
-            padding-top: 120px; /* Adjusted for navbar height */
-            background-image: url('/img/test3.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: repeat;
-            position: relative;
-        }
-
-            .center-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            background-color: rgba(0, 0, 0, 0.5); /* Adjust the last value (0.5) for opacity */
-            z-index: 0;
-        }
-
-            .center-container > * {
-            position: relative;
-            z-index: 1;
-        }
-        .list-group-item.active {
-            background-color: #dc3545;
-            border-color: #dc3545;
-        }
-
-        .list-group-item:hover {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        .card {
-            border: none;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-        }
-
-        .card-title {
-            color: #dc3545;
-        }
-
-        dt {
-            font-weight: 600;
-            color: #495057;
-        }
-
-        dd {
-            color: #6c757d;
-        }
-
-        .row-body{
-            background-color: currentcolor;
-        }
-
-        .barcode-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: white;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .barcode-image {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 5px;
-        }
-
-        .barcode-id {
-            font-size: 0.9em;
-            color: #6c757d;
-            font-style: italic;
-        }
+         .card {
+        border: none;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    .card-title {
+        color: #007bff;
+        font-weight: bold;
+    }
+    dt {
+        font-weight: 600;
+        color: #495057;
+    }
+    dd {
+        color: #6c757d;
+    }
+    .border-end {
+        border-right: 1px solid #dee2e6;
+    }
+    .barcode-container {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .barcode-image {
+        max-width: 100%;
+        height: auto;
+    }
+    .barcode-id {
+        font-size: 1.1em;
+        color: #495057;
+        font-weight: bold;
+        margin-top: 10px;
+    }
     </style>
 }
+@functions {
+    private string GetMembershipLevelClass(string membershipLevel)
+    {
+        return membershipLevel.ToLower() switch
+        {
+            "silver" => "bg-secondary text-white",
+            "gold" => "bg-warning text-dark",
+            "platinum" => "bg-info text-white",
+            "diamond" => "bg-primary text-white",
+            _ => "bg-light text-dark"
+        };
+    }
 
-
-        <!-- Right Content Area -->
+    private string GetMembershipLevelDescription(string membershipLevel)
+    {
+        return membershipLevel.ToLower() switch
+        {
+            "silver" => "享有基本會員權益及額外優惠",
+            "gold" => "專屬優惠及會員活動邀請",
+            "platinum" => "尊享貴賓服務及優先訂票",
+            "diamond" => "最高級別會員權益及專屬客戶經理",
+            _ => "基本會員權益"
+        };
+    }
+}
 <!-- Right Content Area -->
 <div class="col-md-9">
     <h2 class="mb-4 text-dark mt-5">會員中心</h2>
@@ -96,69 +75,68 @@
         <div class="card-body">
             <div class="row">
                 <!-- 個人資訊 (4/12) -->
-                <div class="col-md-4">
-                    <h4 class="card-title mb-4">個人資訊</h4>
-                    <hr />
-                    <dl>
-                        <dt><i class="fas fa-user me-2"></i>用戶名稱:</dt>
-                        <dd>@Model.UserName</dd>
-                        <dt><i class="fas fa-envelope me-2"></i>電子郵件:</dt>
-                        <dd>@Model.Email</dd>
-                        <dt><i class="fas fa-check-circle me-2"></i>電子郵件已驗證:</dt>
-                        <dd>@(Model.EmailConfirmed ? "是" : "否")</dd>
-                        <dt><i class="me-2"></i>會員狀態</dt>
-                        <dd>
+                <div class="col-md-6 border-end">
+                    <h4 class="card-title mb-4 text-primary">個人資訊</h4>
+                    <hr class="bg-primary" />
+                    <dl class="row">
+                        <dt class="col-sm-4"><i class="fas fa-user me-2 text-primary"></i>用戶名稱:</dt>
+                        <dd class="col-sm-8">@Model.UserName</dd>
+                        <dt class="col-sm-4"><i class="fas fa-envelope me-2 text-primary"></i>電子郵件:</dt>
+                        <dd class="col-sm-8">@Model.Email</dd>
+                        <dt class="col-sm-4"><i class="fas fa-check-circle me-2 text-primary"></i>信箱驗證:</dt>
+                        <dd class="col-sm-8">@(Model.EmailConfirmed ? "是" : "否")</dd>
+                        <dt class="col-sm-4"><i class="fas fa-info-circle me-2"></i>會員狀態:</dt>
+                        <dd class="col-sm-6">
                             @if (Model.MembershipLevel == "basic")
                             {
-                                <span>您尚未填寫詳細個人資訊 完成填寫以便累積會員點數</span>
+                                <div class="p-2 bg-warning text-dark rounded">
+                                    <strong>基本會員</strong><br>
+                                    <small>您尚未填寫詳細個人資訊<br>完成填寫以便累積會員點數</small>
+                                </div>
                             }
                             else
                             {
-                                @Model.MembershipLevel
+                                <div class="p-2 rounded @GetMembershipLevelClass(Model.MembershipLevel)">
+                                    <strong>@Model.MembershipLevel</strong><br>
+                                    <small>@GetMembershipLevelDescription(Model.MembershipLevel)</small>
+                                </div>
                             }
                         </dd>
                     </dl>
                 </div>
 
                 <!-- 會員資訊 (8/12) -->
-                <div class="col-md-8">
-                    <h4 class="card-title mb-4">會員資訊</h4>
-                    <hr />
+                <div class="col-md-6">
+                    <h4 class="card-title mb-4 text-primary">會員資訊</h4>
+                    <hr class="bg-primary" />
                     <dl class="row">
-                        <dt class="col-sm-4"><i class="fas fa-star me-2"></i>會員等級:</dt>
-                        <dd class="col-sm-8">@Model.MembershipLevel</dd>
-                        <dt class="col-sm-4"><i class="fas fa-coins me-2"></i>會員點數:</dt>
-                        <dd class="col-sm-8">@Model.MemberPoints</dd>
-                        <dt class="col-sm-4"><i class="fas fa-barcode me-2"></i>會員條碼:</dt>
-                        <dd class="col-sm-8">
-                            <div class="barcode-container">
-                                <img src="@Url.Action("GetUserBarcode", "MemberCenter", new { id = Model.Id })" alt="會員條碼" class="barcode-image" />
-                                <span class="barcode-id">@Model.Id</span>
-                            </div>
-                        </dd>
-                        <dt class="col-sm-4"><i class="fas fa-calendar-alt me-2"></i>註冊日期:</dt>
+                        <dt class="col-sm-4"><i class="fas fa-star me-2 text-warning"></i>會員等級:</dt>
+                        <dd class="col-sm-8"><span class="badge bg-primary">@Model.MembershipLevel</span></dd>
+                        <dt class="col-sm-4"><i class="fas fa-coins me-2 text-warning"></i>會員點數:</dt>
+                        <dd class="col-sm-8"><span class="badge bg-success">@Model.MemberPoints</span></dd>
+                        <dt class="col-sm-4"><i class="fas fa-calendar-alt me-2 text-primary"></i>註冊日期:</dt>
                         <dd class="col-sm-8">@Model.DateCreated.ToString("yyyy/MM/dd")</dd>
-                        <dt class="col-sm-4"><i class="fas fa-shopping-cart me-2"></i>最近購票:</dt>
+                        <dt class="col-sm-4"><i class="fas fa-shopping-cart me-2 text-primary"></i>最近購票:</dt>
                         <dd class="col-sm-8">@(Model.LastTicketPurchase?.ToString("yyyy/MM/dd") ?? "無記錄")</dd>
-                        <dt class="col-sm-4"><i class="fas fa-dollar-sign me-2"></i>近一年累計消費金額:</dt>
+                        <dt class="col-sm-4"><i class="fas fa-dollar-sign me-2 text-success"></i>近一年累計消費:</dt>
                         <dd class="col-sm-8">$@Model.TotalSpent.ToString("N0")</dd>
-                        <dt class="col-sm-4"><i class="fas fa-clock me-2"></i>最近登入時間:</dt>
+                        <dt class="col-sm-4"><i class="fas fa-clock me-2 text-primary"></i>最近登入時間:</dt>
                         <dd class="col-sm-8">@(Model.LastLoginTime?.ToString("yyyy/MM/dd HH:mm") ?? "無記錄")</dd>
                     </dl>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title mb-4">最近活動</h4>
-            <hr />
-            <ul class="list-group">
-                <li class="list-group-item">最近購票: @(Model.LastTicketPurchase?.ToString("yyyy/MM/dd") ?? "無記錄")</li>
-                <li class="list-group-item">累計消費金額: $@Model.TotalSpent.ToString("N0")</li>
-                <li class="list-group-item">最近登入時間: @(Model.LastLoginTime?.ToString("yyyy/MM/dd HH:mm") ?? "無記錄")</li>
-            </ul>
+            <!-- 會員條碼 (Separated section) -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <h4 class="card-title mb-4 text-primary">會員條碼</h4>
+                    <hr class="bg-primary" />
+                    <div class="barcode-container text-center">
+                        <img src="@Url.Action("GetUserBarcode", "MemberCenter", new { id = Model.Id })" alt="會員條碼" class="barcode-image img-fluid mb-2" />
+                        <div class="barcode-id">會員編號: @Model.Id</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

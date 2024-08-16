@@ -8,10 +8,16 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\css\Carosel.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\news.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\img\theaters\Theater_2.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\img\影廳資訊\Theater_1.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\img\活動\event.jpg" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.7">
       <PrivateAssets>all</PrivateAssets>
@@ -44,6 +50,10 @@
 
   <ItemGroup>
     <Content Update="Views\Shared\_MemberCenterLayout.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\CaroselHome.css">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

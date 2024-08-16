@@ -1,0 +1,303 @@
+﻿
+/* Container for the image and content */
+.yao {
+    position: relative;
+    overflow: hidden;
+    height: 60vh; /* 60% of the viewport height */
+    min-height: 250px; /* Minimum height to prevent it from becoming too small */
+    max-height: 500px; /* Maximum height to prevent it from becoming too large on big screens */
+}
+
+@media (max-width: 1500px) {
+    #carousel-inner-container {
+        height: 400px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .yao {
+        height: 350px;
+    }
+
+    #carousel-inner-container {
+        height: 370px;
+    }
+}
+
+@media (max-width: 1050px) {
+    .yao {
+        height: 300px;
+    }
+
+    #carousel-inner-container {
+        height: 350px;
+    }
+}
+
+@media (max-width: 890px) {
+    .yao {
+        height: 250px;
+    }
+
+    #carousel-inner-container {
+        height: 300px;
+    }
+}
+
+@media (max-width: 700px) {
+    .yao {
+        height: 100px;
+    }
+
+    #carousel-inner-container {
+        height: 200px;
+    }
+}
+
+@media (max-width: 430px) {
+
+
+    #carousel-inner-container {
+        height: 130px;
+    }
+}
+/* Image styling */
+.carousel-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Full-width background overlay */
+.background-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(to top, rgba(245, 222, 179, 0.5) 50%, rgba(245, 222, 179, 0.3) 75%, rgba(245, 222, 179, 0.1) 100% );
+}
+
+/* Content overlay */
+.content-overlay {
+    position: absolute;
+    bottom: 0;
+    right: 10%;
+    width: 50%;
+    padding: 30px;
+    color: white;
+    z-index: 1;
+    text-align: right;
+}
+
+    .content-overlay h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        text-align: right;
+    }
+
+    .content-overlay h5 {
+        text-align: right;
+    }
+
+/* Title display styles */
+.full-title {
+    display: block;
+}
+
+.short-title {
+    display: none;
+}
+
+/* Button styling */
+.buttonPlay {
+    display: inline-block;
+    background: black;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    float: right;
+    clear: both;
+}
+
+    .buttonPlay:hover {
+        background: black;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+/* Carousel control buttons */
+.carousel-control-edge {
+    width: 5%;
+    opacity: 0.8;
+}
+
+.carousel-control-prev.carousel-control-edge {
+    left: -5%;
+}
+
+.carousel-control-next.carousel-control-edge {
+    right: -5%;
+}
+
+.carousel-control-edge:hover {
+    opacity: 1;
+}
+
+#onShowMoviesCarousel {
+    overflow: visible;
+}
+
+/* Stylized paragraph */
+    p.mt-2.text-dark.stylized-paragraph {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 245, 220, 0.9));
+    border-left: 5px solid #FFD700;
+    border-radius: 0 15px 15px 0;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-style: italic;
+    line-height: 1.6;
+    max-width: 900px;
+    margin-left: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+    p.mt-2.text-dark.stylized-paragraph::before {
+        content: '"';
+        font-size: 5em;
+        color: rgba(255, 215, 0, 0.2);
+        position: absolute;
+        top: -20px;
+        left: 10px;
+        font-family: Georgia, serif;
+    }
+
+    p.mt-2.text-dark.stylized-paragraph::after {
+        content: '"';
+        font-size: 5em;
+        color: rgba(255, 215, 0, 0.2);
+        position: absolute;
+        bottom: -70px;
+        right: 10px;
+        font-family: Georgia, serif;
+    }
+
+/* Movie details styling */
+.movie-details {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 245, 220, 0.9));
+    border-left: 5px solid #FFD700;
+    border-radius: 0 15px 15px 0;
+    padding: 15px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin-left: 20px;
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+    .movie-details .rating {
+        color: black;
+        padding: 8px 12px;
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    .movie-details .col_green {
+        font-weight: bold;
+    }
+
+    .movie-details .year {
+        font-style: italic;
+        color: #555;
+    }
+
+    .movie-details .col_red {
+        color: #dc3545;
+        font-weight: bold;
+    }
+
+/* Media queries for smaller screens */
+@media (max-width: 768px) {
+    .yao {
+        height: 200px;
+    }
+
+    .content-overlay {
+        right: 5%;
+        width: 90%;
+        padding: 15px;
+        color: white;
+    }
+
+        .content-overlay h1 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+    .full-title {
+        display: none;
+    }
+
+    .short-title {
+        display: block;
+    }
+
+    /* Hide movie-details on smaller screens */
+    .movie-details {
+        display: none;
+    }
+
+    /* Hide description paragraph on smaller screens */
+    p.mt-2.text-dark.stylized-paragraph {
+        display: none;
+    }
+
+    .buttonPlay {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+        float: none;
+        display: inline-block;
+        margin-top: 15px;
+    }
+
+    .background-overlay {
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.3) 100% );
+    }
+
+    .carousel-control-prev, .carousel-control-next {
+        width: 15%;
+    }
+
+        .carousel-control-prev.carousel-control-edge {
+            left: -2%;
+        }
+
+        .carousel-control-next.carousel-control-edge {
+            right: -2%;
+        }
+}
+
+
+.carousel-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    line-height: 1.2;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    text-align: right;
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black background */
+    color: #fff; /* White text color */
+    padding: 10px 15px; /* Add some padding */
+    border-radius: 5px; /* Rounded corners */
+    margin-left:auto
+        ;
+    width:450px;
+}

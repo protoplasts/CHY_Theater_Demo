@@ -1,6 +1,5 @@
 ﻿@model List<CHY_Theater_Models.News>
 <link rel="stylesheet" href="~/css/News.css" asp-append-version="true" />
-
 <div id="news" class="news-box container my-5">
     <div class="row g-4">
         @if (Model.Any())
@@ -31,7 +30,7 @@
                 }
             </dl>
             <div class="d-lg-none text-center mt-3">
-                <a class="btn btn-outline-secondary" href="@Url.Action("NewsList", "Home")">更多消息</a>
+                <a class="btn btn-outline-secondary btnMore" href="@Url.Action("NewsList", "Home")">更多消息</a>
             </div>
         </div>
     </div>

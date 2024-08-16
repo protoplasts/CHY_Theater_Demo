@@ -1,0 +1,69 @@
+﻿@model List<CHY_Theater.Models.CarouselItemViewModel>
+
+<div class="main_2 clearfix test-container mt-5">
+    <section id="center" class="center_home">
+        <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")" aria-label="Slide @(i+1)"></button>
+                }
+            </div>
+            <div class="carousel-inner" id="carousel-inner-container">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    var item = Model[i];
+                    <div class="carousel-item @(i == 0 ? "active" : "") yao">
+                        @* <div class="background-overlay"></div> *@
+                        <img src="@item.ImageUrl" class="d-block w-100" alt="@item.Title" />
+
+                        <div class="content-overlay">
+                            <h5 class="text-dark badge bg-danger">@(item.IsMovie ? "強檔推薦" : "活動推薦")</h5>
+                            <h2 class="carousel-title">
+                                <span class="full-title">@item.Title <br /> @item.SubTitle</span>
+                                <span class="short-title">@item.Title</span>
+                            </h2>
+                            <div class="movie-details">
+
+                                <h6 class="text-white">
+                                    @if (item.IsMovie)
+                                    {
+                                        <span class="rating d-inline-block rounded-circle me-2 col_green">@item.Rating</span>
+                                        <span class="col_green">影評推薦12</span>
+                                    }
+                                    <span class="mx-3 text-black">@item.Year</span>
+                                    <span class="col_red">@string.Join(", ", item.Tags)</span>
+                                </h6>
+                            </div>
+
+                            @* <p class="mt-2 text-dark stylized-paragraph">
+                                @item.Description
+                            </p> *@
+                            <h5 class="mb-0 mt-4 text-uppercase">
+                                <a class="buttonPlay" href="@item.ButtonLink">
+                                    @if (item.IsMovie)
+                                    {
+                                        <i class="fa-brands fa-youtube me-3"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa-solid fa-calendar-days me-3"></i>
+                                    }
+                                    @item.ButtonText
+                                </a>
+                            </h5>
+                        </div>
+                    </div>
+                }
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </section>
+</div>

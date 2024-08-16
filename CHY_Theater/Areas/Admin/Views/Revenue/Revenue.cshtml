@@ -1,75 +1,96 @@
 ﻿@{
     ViewData["Title"] = "收入儀表板";
-    Layout = "_Layout";
+    Layout = "_AdminLayout";
 }
-<h2>收入儀表板</h2>
-<div class="row">
-    <div class="col-md-6">
+@section Styles {
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="~/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="~/assets/css/kaiadmin.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@sweetalert2/theme-bootstrap-4/bootstrap-4.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+}
+<h2>收入報表</h2>
+@* <div class="row">
+    <div class="col-md-3">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">總收入</h5>
-                <p class="card-text">$@ViewBag.TotalRevenue.ToString("N2")</p>
+                <h5 class="card-title">總收入:</h5>
+                <p class="card-text">$ @ViewBag.TotalRevenue.ToString("N0")</p>
             </div>
         </div>
     </div>
-</div>
+</div> *@
 <div class="row mt-4">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">年度收入</h5>
+                <h5 class="card-title">年度報表</h5>
                 <canvas id="yearlyRevenueChart"></canvas>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">月度收入</h5>
+                <h5 class="card-title">月報表</h5>
                 <canvas id="monthlyRevenueChart"></canvas>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">每日收入</h5>
+                <h5 class="card-title">每日報表</h5>
                 <canvas id="dailyRevenueChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">總收入:</h5>
+                <p class="card-text">$ @ViewBag.TotalRevenue.ToString("N0")</p>
             </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
+    <script src="~/assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="~/assets/js/core/popper.min.js"></script>
+    <script src="~/assets/js/core/bootstrap.min.js"></script>
+    <script src="~/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <script src="~/assets/js/kaiadmin.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/date-fns@2.29.3/locale/zh-TW/index.js"></script>
     <script>
-        alert('腳本正在運行');
         try {
             var yearlyData = @Html.Raw(ViewBag.YearlyRevenue);
             var monthlyData = @Html.Raw(ViewBag.MonthlyRevenue);
             var dailyData = @Html.Raw(ViewBag.DailyRevenue);
-            alert('年度收入數據: ' + JSON.stringify(yearlyData));
-            alert('月度收入數據: ' + JSON.stringify(monthlyData));
-            alert('每日收入數據: ' + JSON.stringify(dailyData));
 
-            function createChart(canvasId, label, data, timeUnit) {
+            function createChart(canvasId, label, data, timeUnit, type = 'bar') {
                 var ctx = document.getElementById(canvasId);
                 if (!ctx) {
                     alert('找不到畫布元素 ' + canvasId);
                     throw new Error('找不到畫布元素 ' + canvasId);
                 }
                 return new Chart(ctx.getContext('2d'), {
-                    type: 'bar',  // Changed from 'line' to 'bar'
+                    type: type,
                     data: {
                         labels: data.map(item => item.Date),
                         datasets: [{
                             label: label,
                             data: data.map(item => item.Revenue),
-                            backgroundColor: 'rgba(75, 192, 192, 0.6)',  // Added for bar color
+                            backgroundColor: type === 'bar' ? 'rgba(75, 192, 192, 0.6)' : 'transparent',
                             borderColor: 'rgb(75, 192, 192)',
-                            borderWidth: 1  // Added for bar border
+                            borderWidth: 2,
+                            fill: type === 'line',  // Fill only for line charts
+                            tension: 0.4,  // Adjust this value for interpolation
+                            cubicInterpolationMode: 'monotone'  // Add interpolation mode here
                         }]
                     },
                     options: {
@@ -83,8 +104,8 @@
                                         timeUnit === 'month' ? 'yyyy-MM' : 'yyyy-MM-dd',
                                     displayFormats: {
                                         year: 'yyyy年',
-                                        month: 'yyyy年MM月',
-                                        day: 'MM月dd日'
+                                        month: 'MM月',
+                                        day: 'MM/dd'
                                     }
                                 }
                             },
@@ -100,9 +121,15 @@
                 });
             }
 
-            createChart('yearlyRevenueChart', '年度收入', yearlyData, 'year');
-            createChart('monthlyRevenueChart', '月度收入', monthlyData, 'month');
+            // Create Yearly Revenue Chart
+            createChart('yearlyRevenueChart', '年度收入', yearlyData, 'year','line');
+
+            // Create Daily Revenue Chart
             createChart('dailyRevenueChart', '每日收入', dailyData, 'day');
+
+            // Create Monthly Revenue Chart with Interpolation Mode
+            createChart('monthlyRevenueChart', '月度營收', monthlyData, 'month', 'line');
+
             alert('圖表創建成功');
         } catch (error) {
             alert('創建圖表時出錯: ' + error.message);

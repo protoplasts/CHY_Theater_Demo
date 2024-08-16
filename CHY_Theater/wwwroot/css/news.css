@@ -1,0 +1,101 @@
+﻿.news-box {
+    background-color: #181526;
+    border-radius: 0.625rem;
+    padding: 1.875rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1);
+}
+
+.news-image {
+    border-radius: 0.625rem;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+    .news-image:hover {
+        transform: scale(1.05);
+    }
+
+.news-image-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 0.625rem;
+    transition: opacity 0.3s ease;
+}
+
+.news-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: antiquewhite;
+    margin-bottom: 1rem;
+}
+
+.more {
+    font-size: 1rem;
+    color: #007bff;
+    transition: color 0.3s ease;
+}
+
+    .more:hover {
+        color: #0056b3;
+    }
+
+.news-list-title {
+    font-weight: bold;
+    margin-top: 0.625rem;
+    color: #e90101;
+    font-size: 1.1rem;
+}
+
+.news-list a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+    .news-list a:hover {
+        color: #007bff;
+    }
+
+.btn-outline-secondary {
+    background-color: transparent;
+    color: #e90101;
+    border: 2px solid #e90101;
+    border-radius: 0.625rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+    .btn-outline-secondary:hover,
+    .btn-outline-secondary:focus {
+        background-color: #e90101;
+        color: #ffffff;
+        box-shadow: 0 0.25rem 0.5rem rgba(233, 1, 1, 0.2);
+    }
+
+    .btn-outline-secondary:active {
+        transform: translateY(2px);
+        box-shadow: 0 0.125rem 0.25rem rgba(233, 1, 1, 0.2);
+    }
+
+@media (max-width: 768px) {
+    .news-box {
+        padding: 1.25rem;
+    }
+
+    .news-title {
+        font-size: 1.25rem;
+    }
+
+    .btn-outline-secondary {
+        font-size: 0.9rem;
+        padding: 0.4rem 0.8rem;
+    }
+}

@@ -101,3 +101,97 @@
 #movieCarousel .carousel-control-next-icon {
     background-color: red;
 }
+.btnMoreMovie {
+    background-color: #dc3545; /* Red background, matching the carousel controls */
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 20px;
+}
+
+    .btnMoreMovie:hover {
+        background-color: #c82333; /* Darker red on hover */
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .btnMoreMovie:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+/* Common styles for both buttons */
+#onShowMoviesButton,
+#comingSoonMoviesButton {
+    color: #6c757d;
+    background-color: transparent;
+    border: 2px solid #6c757d;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    margin: 0 10px;
+}
+
+    #onShowMoviesButton:hover,
+    #comingSoonMoviesButton:hover {
+        color: #495057;
+        border-color: #495057;
+        transform: translateY(-2px);
+    }
+
+    /* Active state for both buttons */
+    #onShowMoviesButton.active,
+    #comingSoonMoviesButton.active {
+        color: white;
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+        #onShowMoviesButton.active:hover,
+        #comingSoonMoviesButton.active:hover {
+            background-color: #c82333;
+            border-color: #c82333;
+        }
+
+
+
+/* Styles for the containing elements */
+.custom-nav-tabs {
+    border-bottom: none;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.custom-nav-item {
+    list-style-type: none;
+}
+
+.btnMoreMovie {
+    background-color: #dc3545; /* Red background, matching the carousel controls */
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 20px;
+}
+
+    .btnMoreMovie:hover {
+        background-color: #c82333; /* Darker red on hover */
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .btnMoreMovie:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }

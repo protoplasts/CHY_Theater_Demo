@@ -10,30 +10,47 @@
         }
 
         .theater-details-card {
-            overflow: hidden;
-            border: none;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-        }
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
 
-        .theater-image {
-            height: 100%;
-            object-fit: cover;
-        }
+.theater-image-container {
+    position: relative;
+    padding-top: 100%; /* This creates a 1:1 aspect ratio */
+    overflow: hidden;
+}
 
-        .theater-description {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-        }
+.theater-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin-left:20px;
+}
 
-        .theater-info p {
-            margin-bottom: 0.5rem;
-        }
+.theater-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
 
-        .theater-info i {
-            width: 20px;
-            color: #e90101;
-        }
+.theater-info p {
+    margin-bottom: 0.5rem;
+}
+
+.theater-info i {
+    width: 20px;
+    color: #e90101;
+}
+
+@@media (min-width: 992px) {
+    .theater-details-card .row {
+        min-height: 600px; /* Adjust this value as needed */
+    }
+}
 
         .btn-danger {
             background-color: #e90101;
@@ -169,17 +186,19 @@
 
     <div class="card bg-dark text-white theater-details-card">
         <div class="row g-0">
-            <div class="col-md-6">
-                @if (!string.IsNullOrEmpty(Model.TheaterImage))
-                {
-                    <img src="@Model.TheaterImage" class="card-img-top" alt="@Model.TheaterName">
-                }
-                else
-                {
-                    <img src="~/img/no_image_available.jpg" class="card-img-top" alt="Default Theater Image">
-                }
+            <div class="col-lg-6">
+                <div class="theater-image-container mt-3">
+                    @if (!string.IsNullOrEmpty(Model.TheaterImage))
+                    {
+                        <img src="@Model.TheaterImage" class="theater-image" alt="@Model.TheaterName">
+                    }
+                    else
+                    {
+                        <img src="~/img/no_image_available.jpg" class="theater-image" alt="Default Theater Image">
+                    }
+                </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-lg-6">
                 <div class="card-body">
                     <h1 class="card-title">@Model.TheaterName</h1>
                     <p class="card-text theater-description">@Model.TheaterDescription</p>
@@ -190,18 +209,17 @@
                         <p><i class="fas fa-clock"></i> <strong>營業時間：</strong> @Model.TheaterStartTime.ToString("HH:mm") - @Model.TheaterEndTime.ToString("HH:mm")</p>
                     </div>
                     <div class="mt-4 mb-3">
-                        <button id="showTimesBtn" class="btn btn-danger"><i class="fas fa-ticket-alt"></i> 放映場次</button>
-                        <button id="auditoriumInfoBtn" class="btn btn-outline-light"><i class="fas fa-film"></i> 放映廳資訊</button>
+                        <button id="showTimesBtn" class="btn btn-danger"><i class="fas fa-ticket-alt"></i>放映場次</button>
+                        <button id="auditoriumInfoBtn" class="btn btn-outline-light"><i class="fas fa-film"></i>影城資訊</button>
                     </div>
                     <p><i class="fas fa-map-marker-alt"></i> <strong>交通位置</strong></p>
-
                     <div id="map" style="height: 300px; width: 100%;"></div>
-
                 </div>
             </div>
+
+
         </div>
     </div>
-
     @if (Model.Auditoria.Any())
     {
         <div id="auditoriumInfoContainer" class="mt-5" style="display: show;">
@@ -209,16 +227,38 @@
             <div class="row">
                 @foreach (var auditorium in Model.Auditoria)
                 {
-                    <div class="col-md-4 mb-4">
+                    <div class="col-md-6 mb-4">
                         <div class="card bg-dark text-white">
                             <div class="card-body">
                                 <h5 class="card-title">@auditorium.AuditoriumName</h5>
                                 <p class="card-text">座位數: @auditorium.TotalSeats</p>
+                                
                             </div>
                         </div>
                     </div>
                 }
             </div>
+            <h6 class="card-subtitle mb-2 mt-3">票價說明</h6>
+            <table class="table table-dark table-striped">
+                <thead>
+                    <tr>
+                        <th>電影版本</th>
+                        <th>全票</th>
+                        <th>優待票</th>
+                        <th>早場票</th>
+                        <th>愛心票</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2D數位電影</td>
+                        <td>300</td>
+                        <td>270</td>
+                        <td>250</td>
+                        <td>150</td>
+                    </tr>
+                </tbody>
+            </table>
             <h2 class="text-white mb-4">
                 停車資訊
             </h2>
@@ -268,8 +308,42 @@
                     <p class="text-white">DOLBY ATMOS 杜比全景聲</p>
                 </div>
             </div>
+            <h2 class="text-white mb-4 mt-5">影城須知</h2>
+                <div class="guidelines-section">
+                    <h3>禁止攜入影廳食物須知</h3>
+                    <ul>
+                        <li class="text-white">
+                            為維護清潔舒適的觀影環境及觀賞品質，禁止攜帶味道嗆辣、濃郁、高溫熱湯（飲）或食用時會發出聲響之食物進入影廳。點選觀看外食公告。
+                            <p class="text-white-50 mt-2">
+                                Food that are spicy, have a strong odor, or can disturb others while chewing are not allowed inside the theatres (including hot soups and beverages).
+                            </p>
+                        </li>
+                        <li class="text-white">
+                            本影城全面禁煙、酒類及嚼食檳榔；請勿攜帶玻璃瓶、鐵鋁罐或寵物入場。
+                            <p class="text-white-50 mt-2">
+                                No smoking, alcoholic beverages or betel nut chewing allowed. No glass bottles, metal cans or pets allowed.
+                            </p>
+                        </li>
+                    </ul>
+                </div>
 
-        </div>
+                <div class="guidelines-section">
+                    <h3>兒童權益須知</h3>
+                    <ul>
+                        <li class="text-white">
+                            未滿2歲且不占位之兒童可免費入場，恕不提供座位，但每位兒童須由一位已購票之成人陪同。免費入場之兒童如觀賞3D電影亦不提供3D眼鏡，如欲租用3D眼鏡須另外支付NT100元；二歲以上且未滿十二歲之兒童，請購買優待票入場。以上兒童均應遵守電影分級制度入場。
+                        </li>
+                        <li class="text-white">
+                            請注意您身邊兒童的安全。
+                            <p class="text-white-50 mt-2">
+                                Please pay attention to your children's safety.
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        
+        
     }
 
     <div id="showTimesContainer" class="mt-5" style="display: none;">

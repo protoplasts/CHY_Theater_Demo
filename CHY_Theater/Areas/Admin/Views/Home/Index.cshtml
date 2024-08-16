@@ -16,8 +16,8 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-12 text-center">
-            <h1 class="display-4">Welcome to the Admin System</h1>
-            <p class="lead">Manage your movie theater efficiently and effectively.</p>
+            <h1 class="display-4">歡迎來到如影隨形後台系統</h1>
+            <p class="lead">讓影城管理更輕鬆</p>
         </div>
     </div>
 
@@ -26,9 +26,19 @@
             <div class="card">
                 <div class="card-body text-center">
                     <i class="fas fa-film fa-3x mb-3"></i>
-                    <h5 class="card-title">Movies</h5>
-                    <p class="card-text">Manage movie listings, schedules, and details.</p>
-                    <a href="@Url.Action("Index", "Movies")" class="btn btn-primary">Go to Movies</a>
+                    <h5 class="card-title mb-3">電影管理</h5>
+                    @* <p class="card-text">場次時刻, 電影資訊與細節</p> *@
+                    <a href="@Url.Action("Index", "Movies")" class="btn btn-primary">前往</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-film fa-3x mb-3"></i>
+                    <h5 class="card-title">消息與活動管理</h5>
+                    <p class="card-text"> </p>
+                    <a href="@Url.Action("Index", "Movies")" class="btn btn-primary">前往</a>
                 </div>
             </div>
         </div>
@@ -36,9 +46,19 @@
             <div class="card">
                 <div class="card-body text-center">
                     <i class="fas fa-users fa-3x mb-3"></i>
-                    <h5 class="card-title">Users</h5>
+                    <h5 class="card-title">使用者管理</h5>
                     <p class="card-text">Manage user accounts and permissions.</p>
-                    <a href="@Url.Action("Index", "Users")" class="btn btn-primary">Go to Users</a>
+                    <a href="@Url.Action("Index", "Users")" class="btn btn-primary">前往</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-users fa-3x mb-3"></i>
+                    <h5 class="card-title">訂單管理</h5>
+                    <p class="card-text">Manage user accounts and permissions.</p>
+                    <a href="@Url.Action("Index", "Users")" class="btn btn-primary">前往</a>
                 </div>
             </div>
         </div>
@@ -46,9 +66,10 @@
             <div class="card">
                 <div class="card-body text-center">
                     <i class="fas fa-chart-line fa-3x mb-3"></i>
-                    <h5 class="card-title">Reports</h5>
-                    <p class="card-text">View and generate reports on theater performance.</p>
-                    <a href="@Url.Action("Index", "Reports")" class="btn btn-primary">Go to Reports</a>
+                    <h5 class="card-title mb-3 mt-2">營運報表</h5>
+                    <a href="@Url.Action("Revenue", "Revenue")" class="btn btn-primary">前往</a>
+                    <a class="nav-link" asp-area="Admin" asp-controller="Revenue" asp-action="Revenue">Revenue</a>
+
                 </div>
             </div>
         </div>
@@ -66,7 +87,7 @@
 
     <script>
         $(document).ready(function () {
-            toastr.success('Welcome to the Admin System!');
+            toastr.success('歡迎來到後台，上班加油!');
         });
     </script>
 }

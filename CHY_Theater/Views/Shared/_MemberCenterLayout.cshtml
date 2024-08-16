@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@{
+    bool IsActive(string controller, string action)
+    {
+        string currentController = ViewContext.RouteData.Values["Controller"].ToString();
+        string currentAction = ViewContext.RouteData.Values["Action"].ToString();
+        return (currentController == controller && currentAction == action);
+    }
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -16,9 +24,45 @@
     <link rel="stylesheet" href="~/css/HomePage.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/OnShow.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Focus.css" asp-append-version="true" />
-   
-    @RenderSection("Styles", required: false)
+    <style>
+        .list-group-item.is-active {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color:antiquewhite
+        }
 
+        .list-group-item:hover {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .center-container {
+            padding-top: 66px; /* Adjusted for navbar height */
+            background-image: url('/img/test3.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: repeat;
+            position: relative;
+        }
+
+            .center-container::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                background-color: rgba(0, 0, 0, 0.5); /* Adjust the last value (0.5) for opacity */
+                z-index: 0;
+            }
+
+            .center-container > * {
+                position: relative;
+                z-index: 1;
+            }
+    </style>
+    @RenderSection("Styles", required: false)
+    
 </head>
 <body>
     <section class="center-container">
@@ -86,41 +130,34 @@
 		<div class="container-xl ">
     <div class="row row-body mb-4 bg-light rounded-2">
         <!-- Left Navigation Bar -->
-        <div class="col-md-3 mb-4 ">
-            <div class="list-group mt-5">
-                <a href="#" class="list-group-item list-group-item-action active">
-                    <i class="fas fa-user-circle me-2"></i>我的帳戶
-                </a>
-                    <a href="@Url.Action("UpdatePersonalInfo", "MemberCenter")" class="list-group-item list-group-item-action">
-                    <i class="fas fa-edit me-2"></i>更新個人資訊
-                </a>
-                     <a href="@Url.Action("ChangePassword", "MemberCenter")" class="list-group-item list-group-item-action">
-                     <i class="fas fa-key me-2"></i>更改密碼
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-key me-2"></i>登入設定
-                </a>
-                <a href="@Url.Action("OrderInquiry", "MemberCenter")" class="list-group-item list-group-item-action">
-                    <i class="fas fa-shopping-cart me-2"></i>訂單查詢
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-map-marker-alt me-2"></i>收件地址管理
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-ticket-alt me-2"></i>專屬優惠券
-                </a>
-                        <a href="@Url.Action("Index", "RewardPoints")" class="list-group-item list-group-item-action">
+                <div class="col-md-3 mb-4">
+                    <div class="list-group mt-5">
+                        <a asp-area="Identity" asp-controller="MemberCenter" asp-action="Index" class="list-group-item list-group-item-action @(IsActive("MemberCenter", "Index") ? "is-active" : "")">
+                            <i class="fas fa-user-circle me-2"></i>我的帳戶
+                        </a>
+                        <a asp-area="Identity" asp-controller="MemberCenter" asp-action="UpdatePersonalInfo" class="list-group-item list-group-item-action @(IsActive("MemberCenter", "UpdatePersonalInfo") ? "is-active" : "")">
+                            <i class="fas fa-edit me-2"></i>更新個人資訊
+                        </a>
+                        <a asp-area="Identity" asp-controller="MemberCenter" asp-action="ChangePassword" class="list-group-item list-group-item-action @(IsActive("MemberCenter", "ChangePassword") ? "is-active" : "")">
+                            <i class="fas fa-key me-2"></i>更改密碼
+                        </a>
+                        <a asp-area="Identity" asp-controller="MemberCenter" asp-action="LoginSettings" class="list-group-item list-group-item-action @(IsActive("MemberCenter", "LoginSettings") ? "is-active" : "")">
+                            <i class="fas fa-key me-2"></i>登入設定
+                        </a>
+                        <a asp-area="Identity" asp-controller="MemberCenter" asp-action="OrderInquiry" class="list-group-item list-group-item-action @(IsActive("MemberCenter", "OrderInquiry") ? "is-active" : "")">
+                            <i class="fas fa-shopping-cart me-2"></i>訂單查詢
+                        </a>
+                        <a asp-area="Identity" asp-controller="MemberCenter" asp-action="Coupons" class="list-group-item list-group-item-action @(IsActive("MemberCenter", "Coupons") ? "is-active" : "")">
+                            <i class="fas fa-ticket-alt me-2"></i>專屬優惠券
+                        </a>
+                        <a asp-area="Identity" asp-controller="RewardPoints" asp-action="Index" class="list-group-item list-group-item-action @(IsActive("RewardPoints", "Index") ? "is-active" : "")">
                             <i class="fas fa-coins me-2"></i>紅利點數
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-heart me-2"></i>收藏清單
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-question-circle me-2"></i>詢問紀錄
-                </a>
-            </div>
-        </div>
-        <!-- Right Content Area -->
+                        </a>
+                        <a asp-area="Identity" asp-controller="MemberCenter" asp-action="Inquiries" class="list-group-item list-group-item-action @(IsActive("MemberCenter", "Inquiries") ? "is-active" : "")">
+                            <i class="fas fa-question-circle me-2"></i>詢問紀錄
+                        </a>
+                    </div>
+                </div>        <!-- Right Content Area -->
 			@RenderBody()
 
     </div>
@@ -249,8 +286,6 @@
                 document.body.style.paddingTop = "0";
             }
         }
-
-
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

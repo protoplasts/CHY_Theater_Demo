@@ -520,6 +520,9 @@ namespace CHY_Theater_DataAcess.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int?>("IMDb")
+                        .HasColumnType("int");
+
                     b.Property<string>("Language")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -539,6 +542,9 @@ namespace CHY_Theater_DataAcess.Migrations
                         .HasColumnType("varchar(50)");
 
                     b.Property<string>("MovieImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MovieImageHorizontal")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MovieName")

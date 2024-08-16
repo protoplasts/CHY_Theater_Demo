@@ -1,6 +1,7 @@
 ﻿@model List<BookingViewModel>
 @{
     ViewData["Title"] = "訂單查詢";
+    Layout = "_MemberCenterLayout";
     var currentDate = DateTime.Now;
     var currentOrders = Model.Where(b => b.ShowTime > currentDate).ToList();
     var paidOnSowOrders = currentOrders.Where(b => b.BookingStatus == "現場付款").ToList();
@@ -84,27 +85,8 @@
     </style>
 }
 
-<div class="container-xl center-container">
 
-    <div class="row">
-        <!-- Left Navigation Bar -->
-        <div class="col-md-3 mb-4">
-            <div class="list-group">
-                <a href="@Url.Action("Index", "MemberCenter")" class="list-group-item list-group-item-action">
-                    <i class="fas fa-user-circle me-2"></i>我的帳戶
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-edit me-2"></i>更新個人資訊
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-key me-2"></i>更改密碼
-                </a>
-                <a href="@Url.Action("OrderInquiry", "MemberCenter")" class="list-group-item list-group-item-action active">
-                    <i class="fas fa-shopping-cart me-2"></i>訂單查詢
-                </a>
-                <!-- ... other navigation items ... -->
-            </div>
-        </div>
+       
         <!-- Right Content Area -->
         <div class="col-md-9 bg-white">
             <h2 class="mb-4">訂單查詢</h2>
@@ -146,7 +128,7 @@
             </div>
         </div>
     </div>
-</div>
+
 
 @section Scripts {
     <script>

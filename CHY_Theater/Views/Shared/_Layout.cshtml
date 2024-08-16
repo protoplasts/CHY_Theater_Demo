@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/Footer.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/FinalDemo.styles.css" asp-append-version="true" />
-	<link rel="stylesheet" href="~/css/Carosel.css" asp-append-version="true" />
 
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
@@ -18,6 +17,8 @@
     <link rel="stylesheet" href="~/css/OnShow.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/css/Focus.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Test.css" asp-append-version="true" />
+
+    @* <link rel="stylesheet" href="~/css/Carosel.css" asp-append-version="true" /> *@
 
     @RenderSection("Styles", required: false)
 
@@ -40,7 +41,7 @@
                                 @* <li class="nav-item">
                                     <a class="nav-link active" aria-current="page" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                                 </li> *@
-                                <li class="nav-item">
+                           @*      <li class="nav-item">
                                     <a class="nav-link" asp-area="Admin" asp-controller="Revenue" asp-action="Revenue">Revenue</a>
                                 </li>
                                 <li class="nav-item">
@@ -51,25 +52,25 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" asp-area="Admin" asp-controller="MovieAJAX" asp-action="Index">WebAPIAJAX測試</a>
-                                </li>
+                                </li> *@
                                 <li class="nav-item">
                                     <a class="nav-link" asp-area="Customer" asp-controller="Movies" asp-action="Index">電影</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="Theaters" asp-action="Index">影城</a>
+                                    <a class="nav-link" asp-area="Customer" asp-controller="Theaters" asp-action="Index">影城</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="Events" asp-action="Index">活動</a>
+                                    <a class="nav-link" asp-area="Customer" asp-controller="Events" asp-action="Index">活動</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="News" asp-action="Index">最新消息</a>
+                                    <a class="nav-link" asp-area="Customer" asp-controller="News" asp-action="Index">最新消息</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" asp-area="Booking" asp-controller="ChooseTheaterAuditorium" asp-action="Index">快速訂票</a>
                                 </li>
-                                <li class="nav-item">
+                               @*  <li class="nav-item">
                                 <a class="nav-link" asp-area="Identity" asp-controller="Account" asp-action="Index">Test</a>
-                                </li>
+                                </li> *@
                             </ul>
                            @*  <ul class="navbar-nav mb-0 ms-auto">
                                 <li class="nav-item me-2">
@@ -86,7 +87,8 @@
                                 </li>
                             </ul> *@
                             <ul class="navbar-nav mb-0 ms-auto">
-                            @await Html.PartialAsync("~/Areas/Identity/Views/Shared/_LoginPartialCustom.cshtml")
+                                @await Html.PartialAsync("~/Areas/Identity/Views/Shared/_LoginPartialCustom.cshtml")
+
                             </ul>
                         </div>
                     </div>
@@ -149,8 +151,8 @@
                 <div class="row mt-3">
 
                     <!-- Grid Column: Company Info -->
-                    <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-                        <h6 class="text-uppercase fw-bold mb-4">
+					<div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4 text-white">
+                        <h6 class="text-uppercase fw-bold mb-4 ">
                             <i class="fa-brands fa-youtube me-1"></i> 如影隨形
                         </h6>
                         <p>
@@ -159,7 +161,7 @@
                     </div>
                     <!-- Grid Column: Company Info End -->
                     <!-- Grid Column: Navigation Links -->
-                    <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                    <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4 text-white">
                         <h6 class="text-uppercase fw-bold mb-4">Navigation</h6>
                         <p><a href="index.html" class="text-reset">首頁</a></p>
                         <p><a href="about.html" class="text-reset">影城</a></p>
@@ -170,7 +172,7 @@
                     </div>
                     <!-- Grid Column: Navigation Links End -->
                     <!-- Grid Column: Useful Links -->
-                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4 text-white">
                         <h6 class="text-uppercase fw-bold mb-4">Useful Links</h6>
                         <p><a href="./Regesiter.html" class="text-reset">加入會員</a></p>
                         <p><a href="#!" class="text-reset">Pricing</a></p>
@@ -180,7 +182,7 @@
                     </div>
                     <!-- Grid Column: Useful Links End -->
                     <!-- Grid Column: Contact -->
-                    <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                    <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4 text-white">
                         <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
                         <p><i class="fas fa-home me-3"></i> New York, NY 10012, US</p>
                         <p><i class="fas fa-envelope me-3"></i> info@example.com</p>

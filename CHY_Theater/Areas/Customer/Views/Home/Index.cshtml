@@ -1,8 +1,8 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
-    
+    ViewData["Title"] = "Home Page";   
 
 }
+<link rel="stylesheet" href="~/css/CaroselHome.css" asp-append-version="true" />
 
 <link href="~/css/test.css" rel="stylesheet" />
 @section Styles {
@@ -46,15 +46,12 @@
     </style>
 }
 
-@Html.Partial("~/Views/Shared/Partial View/_carousel.cshtml")
-
+@* @Html.Partial("~/Views/Shared/Partial View/_carousel.cshtml")
+ *@
 <!-- test -->
-@* @Html.Partial("~/Views/Shared/Partial View/_OnShow.cshtml")
-
-@Html.Partial("~/Views/Shared/Partial View/_Focus.cshtml") *@
+@await Component.InvokeAsync("Carousel")
 
 @await Component.InvokeAsync("Events")
-
 @await Component.InvokeAsync("MovieTrailers")
 @await Component.InvokeAsync("Focus")
 @await Component.InvokeAsync("News")

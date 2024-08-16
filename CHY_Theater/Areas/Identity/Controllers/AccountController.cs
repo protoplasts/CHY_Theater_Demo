@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 using System.Text.Encodings.Web;
 
 namespace CHY_Theater.Areas.Identity.Controllers
@@ -266,7 +267,123 @@ namespace CHY_Theater.Areas.Identity.Controllers
             }
             return View(model);
         }
-        private void AddErrors(IdentityResult result)
+
+		[HttpPost]
+		[AllowAnonymous]
+		[ValidateAntiForgeryToken]
+		//This method is part of the process that allows users to log in using external authentication providers (e.g., Google, Facebook).
+		//When the user clicks on an external login button, this method is called, which redirects them to the chosen provider's login page.
+		//After successful authentication, the provider redirects the user back to the specified callback URL (ExternalLoginCallback).
+		public IActionResult ExternalLogin(string provider, string returnurl = null)
+		{
+			var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { returnurl });
+			var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+			return Challenge(properties, provider);
+		}
+
+
+		[HttpGet]
+		[AllowAnonymous]
+		public async Task<IActionResult> ExternalLoginCallback(string returnurl = null, string remoteError = null)
+		{
+			returnurl = returnurl ?? Url.Content("~/");
+			if (remoteError != null)
+			{
+				ModelState.AddModelError(string.Empty, $"Error from external provider: {remoteError}");
+				return View(nameof(Login));
+			}
+
+			var info = await _signInManager.GetExternalLoginInfoAsync();
+			if (info == null)
+			{
+				return RedirectToAction(nameof(Login));
+			}
+
+			//Attempts to sign in the user with the external login provider using the provider key. 
+			var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey,
+							   isPersistent: false, bypassTwoFactor: true);
+			//之前有使用此外部帳號註冊過result=Succeeded
+			if (result.Succeeded)
+			{
+				//Updates the external authentication tokens.
+				// It ensures that the application has the latest tokens provided by the external authentication service.
+				await _signInManager.UpdateExternalAuthenticationTokensAsync(info);
+				return LocalRedirect(returnurl);
+			}
+			//如果此帳號有設定二階段登入
+			if (result.RequiresTwoFactor)
+			{
+				//跳轉至VerifyAuthenticatorCode 介面
+				return RedirectToAction(nameof(VerifyAuthenticatorCode), new { returnurl });
+			}
+			//沒有註冊過就跳轉到註冊頁面，在這邊可以填入客製化的會員資料
+			else
+			{
+				//that means user account is not create and we will display a view to create an account
+
+				ViewData["ReturnUrl"] = returnurl;
+				ViewData["ProviderDisplayName"] = info.ProviderDisplayName;
+
+				//Returns the ExternalLoginConfirmation view with a model containing the user's email and name retrieved from the external login information.
+				return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel
+				{
+					Email = info.Principal.FindFirstValue(ClaimTypes.Email),
+					Name = info.Principal.FindFirstValue(ClaimTypes.Name)
+				});
+			}
+
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[AllowAnonymous]
+		public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model,
+	  string returnurl = null)
+		{
+			returnurl = returnurl ?? Url.Content("~/");
+
+			if (ModelState.IsValid)
+			{
+				var info = await _signInManager.GetExternalLoginInfoAsync();
+				if (info == null)
+				{
+					return View("Error");
+				}
+
+				//Creates a new ApplicationUser object with the email, username, and other properties populated from the ExternalLoginConfirmationViewModel.
+				var user = new ApplicationUser
+				{
+					UserName = model.Email,
+					Email = model.Email,
+					Name = model.Email,
+					NormalizedEmail = model.Email.ToUpper(),
+					DateCreated = DateTime.Now
+				};
+				//create the new user in the database.
+				var result = await _userManager.CreateAsync(user);
+				if (result.Succeeded)
+				{
+					//If user creation is successful, assigns the user a default role (e.g., SD.User).
+					await _userManager.AddToRoleAsync(user, SD.User);
+					//把外部登入的資訊加到剛剛的user裡面
+					result = await _userManager.AddLoginAsync(user, info);
+					if (result.Succeeded)
+					{
+						//signs in the user and updates the external authentication tokens.
+						await _signInManager.SignInAsync(user, isPersistent: false);
+						await _signInManager.UpdateExternalAuthenticationTokensAsync(info);
+						return LocalRedirect(returnurl);
+
+					}
+				}
+				AddErrors(result);
+			}
+			ViewData["ReturnUrl"] = returnurl;
+			return View(model);
+		}
+
+
+		private void AddErrors(IdentityResult result)
 		{
 			foreach (var error in result.Errors)
 			{

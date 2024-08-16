@@ -64,7 +64,7 @@
 
                 <div class="card bg-glass">
                     <div class="card-body px-4 py-5 px-md-5">
-                        <form method="post" asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">
+                        <form id="registrationForm" method="post" asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">
                             <div asp-validation-summary="All" class="text-danger"></div>
 
                             <div class="row">
@@ -100,7 +100,7 @@
                             </div>
                             @* //form-select與form-outline在MDB不能通用會相衝我讓AI 生成的程式把兩個混用了 *@
                             <div class="col-md-6 mb-4">
-                                <label asp-for="RoleSelected" class="form-label">Role</label>
+                                <label asp-for="RoleSelected" class="form-label">用戶角色</label>
 
                                 <select asp-for="RoleSelected" asp-items="@Model.RoleList" class="form-select">
                                     <option disabled selected>--Select Role--</option>
@@ -110,7 +110,7 @@
 
                                 <span asp-validation-for="RoleSelected" class="text-danger"></span>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block mb-4">Register</button>
+                            <button type="submit" class="btn btn-primary btn-block mb-4">註冊</button>
 
                             @if (ViewBag.Message != null)
                             {
@@ -144,7 +144,7 @@
                                 <hr />
                                 <section>
                                     <p>or sign up with:</p>
-                                    <form asp-controller="Account" asp-action="ExternalLogin"
+                                    <form asp-controller="Account" asp-action="ExternalLogin" asp-area="Identity"
                                           asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" role="form">
 
                                         <div>
@@ -180,7 +180,7 @@
 
     <script>
         $(document).ready(function () {
-            $('form').on('submit', function (e) {
+            $('#registrationForm').on('submit', function (e) {
                 e.preventDefault();
                 $.ajax({
                     url: this.action,

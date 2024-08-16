@@ -57,7 +57,23 @@ builder.Services.ConfigureApplicationCookie(opt =>
     opt.LoginPath = "/Identity/Account/Login";
     opt.LogoutPath = "/Account/Logout";
 });
+// Add Microsoft authentication
 
+builder.Services.AddAuthentication().AddMicrosoftAccount(opt =>
+{
+	opt.ClientId = "95de3a24-950e-40af-b746-55671c7b109a";
+	opt.ClientSecret = "vub8Q~mZPp0ksucpN2oqpCQ5Lk7rDXrifKjjFaIt";
+});
+// Add Google authentication
+builder.Services.AddAuthentication()
+	.AddGoogle(options =>
+	{
+		IConfigurationSection googleAuthNSection =
+			builder.Configuration.GetSection("Authentication:Google");
+
+		options.ClientId = googleAuthNSection["ClientId"];
+		options.ClientSecret = googleAuthNSection["ClientSecret"];
+	});
 
 // Session configuration
 builder.Services.AddDistributedMemoryCache();

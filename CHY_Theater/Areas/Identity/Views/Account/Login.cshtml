@@ -44,6 +44,8 @@
         color: white !important;
     }
 </style>
+<div class="mdb-content">
+
 <section class="vh-100 gradient-custom">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -51,8 +53,8 @@
                 <div class="card bg-dark text-white" style="border-radius: 1rem;">
                     <div class="card-body p-5 text-center">
                         <div class="mb-md-5 mt-md-4 pb-5">
-                            <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
-                            <p class="text-white-50 mb-5">Please enter your login and password!</p>
+                            <h2 class="fw-bold mb-2 text-uppercase">歡迎回到如影隨形</h2>
+                            <p class="text-white-50 mb-5">請輸入您的帳號和密碼！</p>
 
                             <form method="post" asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]">
                                 <div asp-validation-summary="All" class="text-danger"></div>
@@ -71,13 +73,13 @@
                                 <div class="mb-4">
                                     <div class="form-check">
                                         <input asp-for="RememberMe" class="form-check-input" />
-                                        <label asp-for="RememberMe" class="form-check-label">Remember me</label>
+                                        <label asp-for="RememberMe" class="form-check-label">記得密碼</label>
                                     </div>
                                 </div>
 
-                                <p class="small mb-5 pb-lg-2"><a asp-action="ForgotPassword" class="text-white-50">Forgot password?</a></p>
+                                <p class="small mb-5 pb-lg-2"><a asp-action="ForgotPassword" class="text-white-50">忘記密碼?</a></p>
 
-                                <button class="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
+                                <button class="btn btn-outline-light btn-lg px-5" type="submit">登入</button>
 
                                 @* <div class="d-flex justify-content-center text-center mt-4 pt-1">
                                     @{
@@ -137,6 +139,7 @@
         </div>
     </div>
 </section>
+</div>
 
 @section Scripts {
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.0.0/mdb.umd.min.js"></script>

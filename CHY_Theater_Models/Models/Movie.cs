@@ -18,10 +18,13 @@ public partial class Movie
     public int Runtime { get; set; }
 
     public int Level { get; set; }
+    public int? IMDb { get; set; }
+
 
     public string Language { get; set; } = null!;
 
     public string? MovieImage { get; set; }
+    public string? MovieImageHorizontal { get; set; }
 
     public string? Movievideo { get; set; }
 

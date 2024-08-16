@@ -6,10 +6,10 @@
         <div class="container-xl pb-5" style="overflow: visible">
             <ul class="nav nav-tabs custom-nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item custom-nav-item" role="presentation">
-                    <button class="nav-link custom-nav-link active" id="on-show-movies-tab" data-bs-toggle="tab" data-bs-target="#on-show-movies" type="button" role="tab" aria-controls="on-show-movies" aria-selected="true">現正熱映</button>
+                    <button id="onShowMoviesButton" class="nav-link custom-nav-link active" data-bs-toggle="tab" data-bs-target="#on-show-movies" type="button" role="tab" aria-controls="on-show-movies" aria-selected="true">現正熱映</button>
                 </li>
                 <li class="nav-item custom-nav-item" role="presentation">
-                    <button class="nav-link custom-nav-link" id="coming-soon-movies-tab" data-bs-toggle="tab" data-bs-target="#coming-soon-movies" type="button" role="tab" aria-controls="coming-soon-movies" aria-selected="false">即將上映</button>
+                    <button id="comingSoonMoviesButton" class="nav-link custom-nav-link" data-bs-toggle="tab" data-bs-target="#coming-soon-movies" type="button" role="tab" aria-controls="coming-soon-movies" aria-selected="false">即將上映</button>
                 </li>
             </ul>
 
@@ -63,7 +63,7 @@
 
                             </div>
                             <div class="d-flex justify-content-center mt-3">
-                                <a asp-controller="Movies" asp-action="Index" class="btn btn-danger">更多電影123</a>
+                                <a asp-controller="Movies" asp-action="Index" class="btn btnMoreMovie">更多電影</a>
                             </div>
                         </div>
                     </div>
@@ -103,9 +103,9 @@
                                         </div>
                                     }
                                 </div>
-                                <div>
-                                    <a href="@Url.Action("Index", "Movies")" class="btn btn-danger">更多電影</a>
-                                </div>
+                                <div class="d-flex justify-content-center mt-3">
+                                <a asp-controller="Movies" asp-action="Index" class="btn btnMoreMovie">更多電影</a>
+                            </div>
                                 <button class="carousel-control-prev carousel-control-edge" type="button" data-bs-target="#onShowMoviesCarousel" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>

@@ -36,10 +36,7 @@ namespace CHY_Theater.Areas.Identity.Controllers
             _signInManager = signInManager;
             _barcodeService = barcodeService; 
             _rewardPointService = rewardPointService;
-
-
         }
-
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -240,5 +237,7 @@ namespace CHY_Theater.Areas.Identity.Controllers
             var barcodeImage = _barcodeService.GenerateUserIdBarcode(user.Id);
             return File(barcodeImage, "image/png");
         }
+
+
     }
 }
