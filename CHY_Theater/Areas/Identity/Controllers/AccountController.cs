@@ -337,8 +337,7 @@ namespace CHY_Theater.Areas.Identity.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[AllowAnonymous]
-		public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model,
-	  string returnurl = null)
+		public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model,string returnurl = null)
 		{
 			returnurl = returnurl ?? Url.Content("~/");
 
@@ -353,14 +352,28 @@ namespace CHY_Theater.Areas.Identity.Controllers
 				//Creates a new ApplicationUser object with the email, username, and other properties populated from the ExternalLoginConfirmationViewModel.
 				var user = new ApplicationUser
 				{
-					UserName = model.Email,
-					Email = model.Email,
-					Name = model.Email,
-					NormalizedEmail = model.Email.ToUpper(),
-					DateCreated = DateTime.Now
-				};
-				//create the new user in the database.
-				var result = await _userManager.CreateAsync(user);
+                    UserName = model.Email,
+                    Email = model.Email,
+                    Name = model.Name,
+                    NormalizedEmail = model.Email.ToUpper(),
+                    DateCreated = DateTime.Now,
+                    Address = model.Address,
+                    PhoneNumber = model.PhoneNumber,
+                    Birthday = model.Birthday,
+                };
+                // Determine MembershipLevel based on whether all optional fields are filled
+                if (!string.IsNullOrEmpty(model.Address) &&
+                    !string.IsNullOrEmpty(model.PhoneNumber) &&
+                    model.Birthday.HasValue)
+                {
+                    user.MembershipLevel = "白金會員";
+                }
+                else
+                {
+                    user.MembershipLevel = "basic";
+                }
+                //create the new user in the database.
+                var result = await _userManager.CreateAsync(user);
 				if (result.Succeeded)
 				{
 					//If user creation is successful, assigns the user a default role (e.g., SD.User).
@@ -373,7 +386,6 @@ namespace CHY_Theater.Areas.Identity.Controllers
 						await _signInManager.SignInAsync(user, isPersistent: false);
 						await _signInManager.UpdateExternalAuthenticationTokensAsync(info);
 						return LocalRedirect(returnurl);
-
 					}
 				}
 				AddErrors(result);
