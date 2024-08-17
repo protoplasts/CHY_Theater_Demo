@@ -141,7 +141,7 @@
                         <a asp-area="Identity" asp-controller="MemberCenter" asp-action="ChangePassword" class="list-group-item list-group-item-action @(IsActive("MemberCenter", "ChangePassword") ? "is-active" : "")">
                             <i class="fas fa-key me-2"></i>更改密碼
                         </a>
-                        <a asp-area="Identity" asp-controller="MemberCenter" asp-action="LoginSettings" class="list-group-item list-group-item-action @(IsActive("MemberCenter", "LoginSettings") ? "is-active" : "")">
+                        <a asp-area="Identity" asp-controller="Authenticator" asp-action="TwoFactorLogin" class="list-group-item list-group-item-action @(IsActive("MemberCenter", "LoginSettings") ? "is-active" : "")">
                             <i class="fas fa-key me-2"></i>登入設定
                         </a>
                         <a asp-area="Identity" asp-controller="MemberCenter" asp-action="OrderInquiry" class="list-group-item list-group-item-action @(IsActive("MemberCenter", "OrderInquiry") ? "is-active" : "")">

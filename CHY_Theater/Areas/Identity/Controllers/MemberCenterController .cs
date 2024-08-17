@@ -219,6 +219,7 @@ namespace CHY_Theater.Areas.Identity.Controllers
 
             return RedirectToAction("Index", "MemberCenter");
         }
+
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)

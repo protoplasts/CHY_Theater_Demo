@@ -412,7 +412,6 @@ namespace CHY_Theater.Areas.Identity.Controllers
                 return View("Error");
             }
             ViewData["ReturnUrl"] = returnUrl;
-
             return View(new VerifyAuthenticatorViewModel { ReturnUrl = returnUrl, RememberMe = rememberMe });
 
         }
@@ -422,7 +421,6 @@ namespace CHY_Theater.Areas.Identity.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> VerifyAuthenticatorCode(VerifyAuthenticatorViewModel model)
         {
-
             model.ReturnUrl = model.ReturnUrl ?? Url.Content("~/");
             if (!ModelState.IsValid)
             {
