@@ -56,6 +56,8 @@ namespace CHY_Theater.Areas.Identity.Controllers
             var totalSpent = await _context.PaymentTransactions
                 .Where(pt => pt.MemberID == user.Id && pt.RtnCode == 1)  // Assuming RtnCode 1 means successful transaction
                 .SumAsync(pt => pt.TradeAmt ?? 0);
+            // Get the two-factor authentication status
+            var twoFactorEnabled = await _userManager.GetTwoFactorEnabledAsync(user);
             var viewModel = new MemberCentreViewModel   
             {
                 UserName = user.UserName,
@@ -67,7 +69,9 @@ namespace CHY_Theater.Areas.Identity.Controllers
                 DateCreated = user.DateCreated,
                 LastTicketPurchase = lastBooking?.BookingDate,
                 TotalSpent = totalSpent,
-                LastLoginTime = user.LastLoginTime
+                LastLoginTime = user.LastLoginTime,
+                TwoFactorEnabled = twoFactorEnabled  // Add this line
+
             };
 
             return View(viewModel);

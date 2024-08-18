@@ -9,6 +9,8 @@
         public string MembershipLevel { get; set; }
         public int MemberPoints { get; set; }
         public string Id { get; set; }
+        public bool TwoFactorEnabled { get; set; }
+
         public DateTime DateCreated { get; set; }
         public DateTime? LastTicketPurchase { get; set; }
         public int TotalSpent { get; set; }

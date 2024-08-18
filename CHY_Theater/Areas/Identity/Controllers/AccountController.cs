@@ -7,8 +7,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
+using System.Web;
 
 namespace CHY_Theater.Areas.Identity.Controllers
 {
@@ -21,17 +24,22 @@ namespace CHY_Theater.Areas.Identity.Controllers
 		private readonly IEmailSender _emailSender;
 		private readonly UrlEncoder _urlEncoder;
 		private readonly JwtTokenService _jwtTokenService;
+        private readonly ILogger<AccountController> _logger;
+        private readonly IConfiguration _configuration;
 
-		public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-			 UrlEncoder urlEncoder, RoleManager<IdentityRole> roleManager, IEmailSender emailSender, JwtTokenService jwtTokenService)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
+			 UrlEncoder urlEncoder, RoleManager<IdentityRole> roleManager, IEmailSender emailSender, JwtTokenService jwtTokenService,
+        ILogger<AccountController> logger, IConfiguration configuration)
 		{
 			_urlEncoder = urlEncoder;
 			_signInManager = signInManager;
 			_userManager = userManager;
 			_roleManager = roleManager;
 			_emailSender = emailSender;
-			_jwtTokenService = jwtTokenService;
-		}
+			_jwtTokenService = jwtTokenService; _logger = logger; _configuration = configuration;
+
+
+        }
         [AllowAnonymous]
         public IActionResult Index()
         {
@@ -58,96 +66,108 @@ namespace CHY_Theater.Areas.Identity.Controllers
             return View(registerViewModel);
         }
 
-		[HttpPost]
-		[AllowAnonymous]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Register(RegisterViewModel model, string returnurl = null)
-		{
-			ViewData["ReturnUrl"] = returnurl;
-			returnurl = returnurl ?? Url.Content("~/");
-			if (ModelState.IsValid)
-			{
-				var user = new ApplicationUser
-				{
-					UserName = model.Email,
-					Email = model.Email,
-					Name = model.Name,
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        {
+            returnUrl ??= Url.Content("~/");
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    Name = model.Name,
                     DateCreated = DateTime.UtcNow,
-                    MembershipLevel = "普通", 
-                    MemberPoints = 0, 
-                    TotalSpent = 0, 
-                    LastLoginTime = DateTime.UtcNow // Set initial login time
+                    MembershipLevel = "普通",
+                    MemberPoints = 0,
+                    TotalSpent = 0,
+                    LastLoginTime = DateTime.UtcNow
                 };
-				var result = await _userManager.CreateAsync(user, model.Password);
-				if (result.Succeeded)
-				{
-					//將選取的角色塞入資料庫
-					if (model.RoleSelected != null)
-					{
-						await _userManager.AddToRoleAsync(user, model.RoleSelected);
-					}
-					else
-					{
-						await _userManager.AddToRoleAsync(user, SD.User);
-					}
-					//Email Confirmation
-					//var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-					//var callbackurl = Url.Action("ConfirmEmail", "Account", new
-					//{
-					//    userid = user.Id,
-					//    code
-					//}, protocol: HttpContext.Request.Scheme);
 
-					//await _emailSender.SendEmailAsync(model.Email, "Confirm Email - Identity Manager",
-					//                       $"Please confirm your email by clicking here: <a href='{callbackurl}'>link</a>");
-
-					// Sign in the user immediately
-					//await _signInManager.SignInAsync(user, isPersistent: false);
-					//return LocalRedirect(returnurl);
-
-
-					// Generate fake email confirmation token
-					var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-					var callbackurl = Url.Action("FakeConfirmEmail", "Account", new
-					{
-						userId = user.Id,
-						code,
-						returnurl
-					}, protocol: HttpContext.Request.Scheme);
-
-					//// Generate JWT token
-					//var token = await _jwtTokenService.GenerateJwtToken(user);
-
-					//// Store the token in session
-					//HttpContext.Session.SetString("JWTToken", token);
-
-					// Simulate sending the email (you can log this or just display it in the view for testing)
-					// For example:
-					//ViewBag.Message = $"Please confirm your email by clicking here: <a href='{callbackurl}'>link</a>";
-					//// Do not sign in the user immediately, wait for confirmation
-					//// await _signInManager.SignInAsync(user, isPersistent: false);
-					//return View("RegisterConfirmation"); // Return a view to show the confirmation link
-
-                    // Instead of returning a view, return a JSON result
-                    return Json(new
+                try
+                {
+                    var result = await _userManager.CreateAsync(user, model.Password);
+                    if (result.Succeeded)
                     {
-                        success = true,
-                        message = $"Please confirm your email by clicking here: <a href='{callbackurl}'>link</a>"
-                    });
+                        _logger.LogInformation("User created a new account with password.");
 
+                        if (model.RoleSelected != null)
+                        {
+                            await _userManager.AddToRoleAsync(user, model.RoleSelected);
+                        }
+                        else
+                        {
+                            await _userManager.AddToRoleAsync(user, SD.User);
+                        }
+
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        code = WebUtility.UrlEncode(code);
+                        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+
+                        await SendEmailAsync(model.Email, "Confirm Email - Identity Manager",
+                            $"Please confirm your email by clicking here: <a href='{callbackUrl}'>link</a>");
+
+                        if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                        {
+                            return Json(new { success = true, message = "Registration successful. Please check your email for confirmation." });
+                        }
+                        else
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            return Json(new { success = true, message = "Registration successful. You are now logged in." });
+                        }
+                    }
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error during user registration");
+                    return Json(new { success = false, message = "An error occurred during registration. Please try again later." });
+                }
+            }
 
-				AddErrors(result);
+            // If we got this far, something failed, redisplay form
+            return Json(new { success = false, message = "Registration failed. Please check your input and try again." });
+        }
 
-			}
-			//失敗導回原介面
-			model.RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
-			{
-				Text = i,
-				Value = i
-			});
-			return View(model);
-		}
+        private async Task SendEmailAsync(string email, string subject, string htmlMessage)
+        {
+            var emailSettings = _configuration.GetSection("EmailSettings");
+            var smtpServer = emailSettings["SmtpServer"];
+            var smtpPort = int.Parse(emailSettings["SmtpPort"]);
+            var senderEmail = emailSettings["SenderEmail"];
+            var password = emailSettings["Password"];
+            var senderName = emailSettings["SenderName"];
+
+            var client = new SmtpClient(smtpServer, smtpPort)
+            {
+                Credentials = new NetworkCredential(senderEmail, password),
+                EnableSsl = true
+            };
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress(senderEmail, senderName),
+                Subject = subject,
+                Body = htmlMessage,
+                IsBodyHtml = true
+            };
+            mailMessage.To.Add(email);
+
+            try
+            {
+                await client.SendMailAsync(mailMessage);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to send email");
+                throw;
+            }
+        }
         [AllowAnonymous]
         public IActionResult FakeConfirmEmail(string userId, string code)
         {
@@ -182,7 +202,25 @@ namespace CHY_Theater.Areas.Identity.Controllers
 
             return View("Error");
         }
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return View("Error");
+            }
 
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return View("Error");
+            }
+
+            code = WebUtility.UrlDecode(code);
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogOff()

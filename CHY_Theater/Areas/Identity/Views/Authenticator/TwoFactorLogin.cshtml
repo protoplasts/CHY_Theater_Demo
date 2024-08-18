@@ -10,6 +10,7 @@
     @if (User.Identity.IsAuthenticated)
     {
         var twofactor = ViewData["TwoFactorEnabled"];
+        var isTwoFactorClientRemembered = ViewData["IsTwoFactorClientRemembered"];
         if (twofactor != null && twofactor.ToString().ToLower() == "true")
         {
             <div class="card mb-4">
@@ -17,9 +18,12 @@
                     <h5 class="card-title">雙重驗證已啟用</h5>
                     <p class="card-text">您的帳戶目前已啟用雙重驗證保護。</p>
                     <a href="#" id="removeAuthenticator" class="btn btn-warning">重設並移除雙重驗證</a>
-                    <form asp-action="RemoveRememberClient" asp-controller="Authenticator" method="post" class="d-inline">
-                        <button type="submit" class="btn btn-danger ml-2">移除記住的裝置</button>
-                    </form>
+                    @if (isTwoFactorClientRemembered.ToString().ToLower() == "true")
+                    {
+                       <form asp-action="RemoveRememberClient" asp-controller="Authenticator" method="post" class="d-inline">
+						<button type="submit" class="btn btn-danger ml-2">移除記住的裝置</button>
+					    </form> 
+                    }                            
                 </div>
             </div>
         }
@@ -38,7 +42,7 @@
         }
     }
 
-   
+   </div>
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

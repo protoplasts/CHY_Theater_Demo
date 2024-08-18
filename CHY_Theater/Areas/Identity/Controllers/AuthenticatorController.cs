@@ -13,11 +13,13 @@ namespace CHY_Theater.Areas.Identity.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly UrlEncoder _urlEncoder;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public AuthenticatorController(UserManager<ApplicationUser> userManager, UrlEncoder urlEncoder)
+        public AuthenticatorController(UserManager<ApplicationUser> userManager, UrlEncoder urlEncoder, SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _urlEncoder = urlEncoder;
+            _signInManager = signInManager;
 
 
         }
@@ -29,6 +31,9 @@ namespace CHY_Theater.Areas.Identity.Controllers
         {  //The User property is a member of the Controller class, and it provides access to the current authenticated user.
             //When a user logs in successfully, the ClaimsPrincipal (User) is set up by the authentication middleware. 
             var user = await _userManager.GetUserAsync(User);
+            // Check if the current client is remembered for 2FA
+            var isTwoFactorClientRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user);
+
             if (user == null)
             {
                 ViewData["TwoFactorEnabled"] = false;
@@ -36,6 +41,7 @@ namespace CHY_Theater.Areas.Identity.Controllers
             else
             {
                 ViewData["TwoFactorEnabled"] = user.TwoFactorEnabled;
+                ViewData["IsTwoFactorClientRemembered"] = isTwoFactorClientRemembered;
             }
             return View();
         }
@@ -96,6 +102,17 @@ namespace CHY_Theater.Areas.Identity.Controllers
             //Why Both Steps Are Needed
             //If only the key is reset, the user might still be prompted to set up a new authenticator during the next login attempt, which might be confusing.
             //Explicitly disabling 2FA updates the user's security settings in the system, ensuring that no 2FA code is requested at all.
+            return RedirectToAction(nameof(Index), "MemberCenter");
+        }
+
+        //移除信任此裝置
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveRememberClient()
+        {
+            await _signInManager.ForgetTwoFactorClientAsync(); // Remove the RememberClient cookie
+            /*await _signInManager.SignOutAsync();*/ // Sign out the user
+
             return RedirectToAction(nameof(Index), "MemberCenter");
         }
     }

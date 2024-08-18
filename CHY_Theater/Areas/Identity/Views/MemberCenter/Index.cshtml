@@ -85,6 +85,19 @@
                         <dd class="col-sm-8">@Model.Email</dd>
                         <dt class="col-sm-4"><i class="fas fa-check-circle me-2 text-primary"></i>信箱驗證:</dt>
                         <dd class="col-sm-8">@(Model.EmailConfirmed ? "是" : "否")</dd>
+                        <dt class="col-sm-4"><i class="fas fa-lock me-2 text-primary"></i>雙重驗證:</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.TwoFactorEnabled)
+                            {
+                                <span class="text-success">已啟用</span>
+                                <a asp-action="TwoFactorLogin" asp-controller="Authenticator" class="btn btn-sm btn-warning ms-2">前往設定</a>
+                            }
+                            else
+                            {
+                                <span class="text-danger">未啟用</span>
+                                <a href="#" id="setupTwoFactor" class="btn btn-sm btn-primary ms-2">設定</a>
+                            }
+                        </dd>
                         <dt class="col-sm-4"><i class="fas fa-info-circle me-2"></i>會員狀態:</dt>
                         <dd class="col-sm-6">
                             @if (Model.MembershipLevel == "basic")
