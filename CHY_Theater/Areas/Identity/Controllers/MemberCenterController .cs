@@ -14,6 +14,8 @@ using System.IO;
 using ZXing;
 using ZXing.QrCode;
 using CHY_Theater.Areas.Identity.Services;
+using CHY_Theater.Service.IService;
+using CHY_Theater.Service;
 
 // Make sure to include the correct namespace for ApplicationUser
 
@@ -28,14 +30,17 @@ namespace CHY_Theater.Areas.Identity.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly BarcodeService _barcodeService;
         private readonly IRewardPointService _rewardPointService;
+        private readonly IUserCouponService _userCouponService;
 
-        public MemberCenterController(UserManager<ApplicationUser> userManager, Theater_ProjectDbContext context, SignInManager<ApplicationUser> signInManager, BarcodeService barcodeService, IRewardPointService rewardPointService)
+        public MemberCenterController(UserManager<ApplicationUser> userManager, Theater_ProjectDbContext context, SignInManager<ApplicationUser> signInManager, BarcodeService barcodeService, IRewardPointService rewardPointService, IUserCouponService userCouponService)
         {
             _userManager = userManager;
             _context = context;
             _signInManager = signInManager;
             _barcodeService = barcodeService; 
             _rewardPointService = rewardPointService;
+            _userCouponService = userCouponService;
+
         }
         public async Task<IActionResult> Index()
         {
@@ -223,7 +228,17 @@ namespace CHY_Theater.Areas.Identity.Controllers
 
             return RedirectToAction("Index", "MemberCenter");
         }
+        public async Task<IActionResult> UserCoupons()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
 
+            var userCoupons = await _userCouponService.GetUserCoupons(user.Id);
+            return View(userCoupons);
+        }
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
