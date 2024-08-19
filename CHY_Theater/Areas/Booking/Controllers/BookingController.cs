@@ -47,7 +47,6 @@ namespace CHY_Theater.Areas.Booking.Controllers
                 _context.Bookings.Add(booking);
                 await _context.SaveChangesAsync();
 
-
                 //add ShowSeats first
                 foreach (var seat in model.SelectedSeats)
                 {
@@ -61,9 +60,7 @@ namespace CHY_Theater.Areas.Booking.Controllers
                 }
                 await _context.SaveChangesAsync();
 
-
                 // Add BookingTicketTypes_Detail
-
                 foreach (var ticket in model.SelectedTickets)
                 {
                     var bookingTicketTypesDetail = new BookingTicketTypesDetail
@@ -73,7 +70,6 @@ namespace CHY_Theater.Areas.Booking.Controllers
                     };
                     _context.BookingTicketTypesDetails.Add(bookingTicketTypesDetail);
                     await _context.SaveChangesAsync();
-
                 }
 
                 // Add BookingSeats_Detail
@@ -82,9 +78,7 @@ namespace CHY_Theater.Areas.Booking.Controllers
                     var seatIdString = seat.SeatID; // assuming seat.SeatID is a string
                     int seatId = int.Parse(seatIdString);
                     // You need to get the ShowSeatId based on the seat information
-
                     var ShowSeatId = _context.ShowSeats.FirstOrDefault(a => a.SeatId == seatId);
-
                     var bookingSeatDetail = new BookingSeatsDetail
                     {
                         BookingId = booking.BookingId,
@@ -92,8 +86,8 @@ namespace CHY_Theater.Areas.Booking.Controllers
                     };
                     _context.BookingSeatsDetails.Add(bookingSeatDetail);
                     await _context.SaveChangesAsync();
-
                 }
+
                 //Add PaymentTransaction
                 var paymentTransaction = new PaymentTransaction
                 {
@@ -142,15 +136,30 @@ namespace CHY_Theater.Areas.Booking.Controllers
                     var coupon = await _context.Coupons.FirstOrDefaultAsync(c => c.CouponCode == model.CouponCode);
                     if (coupon != null)
                     {
-                        if (coupon.CurrentUsageCount.HasValue)
+                        if (coupon.IsUserSpecific=true) 
                         {
-                            coupon.CurrentUsageCount++;
-                        }
-                        else
-                        {
-                            coupon.CurrentUsageCount = 1;
-                        }
+                            var usercoupon = await _context.UserCoupons.FirstOrDefaultAsync(c => c.CouponId == coupon.CouponId);
+                            if (usercoupon != null) {
 
+                                usercoupon.IsUsed = true;
+                                await _context.SaveChangesAsync();
+
+                            }
+
+                        }
+                        else { 
+                            
+                            if (coupon.CurrentUsageCount.HasValue)
+                            {
+                                coupon.CurrentUsageCount++;
+                            }
+                            else
+                            {
+                                coupon.CurrentUsageCount = 1;
+                            }
+
+                            
+                        }
                         await _context.SaveChangesAsync();
                     }
                 }

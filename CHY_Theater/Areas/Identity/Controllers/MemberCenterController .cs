@@ -236,7 +236,7 @@ namespace CHY_Theater.Areas.Identity.Controllers
                 return NotFound();
             }
 
-            var userCoupons = await _userCouponService.GetUserCoupons(user.Id);
+            var userCoupons = await _userCouponService.GetAllCoupons(user.Id);
             return View(userCoupons);
         }
         private void AddErrors(IdentityResult result)

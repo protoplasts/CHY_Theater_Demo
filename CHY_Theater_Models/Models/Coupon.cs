@@ -22,6 +22,8 @@ public partial class Coupon
     public int? CurrentUsageCount { get; set; }
 
     public string? Description { get; set; }
+    public int? MinimumPurchaseAmount { get; set; }
+
     public bool IsUserSpecific { get; set; }
     public virtual ICollection<UserCoupon> UserCoupons { get; set; } = new List<UserCoupon>();
     public virtual ICollection<BookingCoupon> BookingCoupons { get; set; } = new List<BookingCoupon>();

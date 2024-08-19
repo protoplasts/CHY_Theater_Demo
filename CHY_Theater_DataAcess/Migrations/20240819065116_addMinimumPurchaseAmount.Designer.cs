@@ -4,6 +4,7 @@ using CHY_Theater_DataAcess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CHY_Theater_DataAcess.Migrations
 {
     [DbContext(typeof(Theater_ProjectDbContext))]
-    partial class Theater_ProjectDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240819065116_addMinimumPurchaseAmount")]
+    partial class addMinimumPurchaseAmount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

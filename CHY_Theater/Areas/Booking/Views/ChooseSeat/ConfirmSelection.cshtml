@@ -281,16 +281,34 @@
             </ul>
             <p><strong>總計:</strong> <span id="totalPrice">@Model.MovieTotalPrice</span></p>
 
-            <div class="coupon-section mt-3">
-                <div class="input-group">
-                    <input type="text" id="couponCode" class="form-control" placeholder="輸入優惠碼">
-                    <div class="input-group-append">
-                        <button id="applyCouponBtn" class="btn btn-outline-secondary" type="button" onclick="applyCoupon()">應用優惠碼</button>
-                        <button id="cancelCouponBtn" class="btn btn-outline-danger" type="button" onclick="cancelCoupon()" style="display: none;">取消使用</button>
+                <div class="coupon-section mt-3">
+                    <div class="form-group">
+                        <label for="userCouponSelect">選擇優惠券</label>
+                        <select id="userCouponSelect" class="form-control">
+                            <option value="選擇優惠券">選擇優惠券</option>
+                            @foreach (var userCoupon in ViewBag.UserCoupons)
+                            {
+                                <option value="@userCoupon.Coupon.CouponCode" data-discount-type="@userCoupon.Coupon.DiscountType" data-discount-value="@userCoupon.Coupon.DiscountValue">
+                                    @userCoupon.Coupon.Description (@userCoupon.Coupon.DiscountType: @userCoupon.Coupon.DiscountValue)
+                                </option>
+                            }
+                        </select>
                     </div>
+
+                    <div class="form-group mt-2" id="couponCodeInputSection">
+                        <label for="couponCode">輸入優惠碼</label>
+                        <input type="text" id="couponCode" class="form-control" placeholder="輸入優惠碼">
+                    </div>
+
+                    <div class="input-group mt-2" id="CouponBtnSection">
+                        <div class="input-group-append">
+                            <button id="applyCouponBtn" class="btn btn-outline-secondary" type="button" onclick="applyCoupon()">應用優惠碼</button>
+                            <button id="cancelCouponBtn" class="btn btn-outline-danger" type="button" onclick="cancelCoupon()" style="display: none;">取消使用</button>
+                        </div>
+                    </div>
+
+                    <small id="couponMessage" class="form-text text-dark mt-2"></small>
                 </div>
-                <small id="couponMessage" class="form-text text-dark"></small>
-            </div>
 
             <div class="reward-points-section mt-3">
                 <p>您有 <span id="availablePoints">@ViewBag.AvailablePoints</span> 點可用獎勵點數。</p>
@@ -326,7 +344,23 @@
             let appliedPointsDiscount = 0;
             let appliedPoints = 0;
             let appliedCouponCode = '';
+            $('#userCouponSelect').change(function () {
+                var selectedCoupon = $(this).val();
+                if (selectedCoupon == "選擇優惠券") {
+                    cancelCoupon();
+                    $('#couponCode').show();
+                    $('#CouponBtnSection').show();
+                    $('#couponCodeInputSection').show();
 
+                }
+                else{
+                    $('#couponCode').val(selectedCoupon);
+                    $('#CouponBtnSection').hide();
+                    $('#couponCodeInputSection').hide();
+
+                    applyCoupon();
+                }
+            });
             function updateTotalPrice() {
                 currentTotalPrice = originalTotal - appliedCouponDiscount - appliedPointsDiscount;
                 $('#totalPrice').text(currentTotalPrice.toFixed(2));
@@ -373,7 +407,7 @@
                 // Clear coupon code and message
                 $('#couponCode').val('').prop('disabled', false);
                 $('#couponMessage').text('').removeClass('text-success text-danger');
-
+                $('#couponCode').show();
                 // Reset button states
                 $('#applyCouponBtn').prop('disabled', false).show();
                 $('#cancelCouponBtn').hide();

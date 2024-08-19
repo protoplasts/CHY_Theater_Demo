@@ -69,7 +69,13 @@ namespace CHY_Theater.Service
                 .Include(uc => uc.Coupon)
                 .ToListAsync();
         }
-
+        public async Task<List<UserCoupon>> GetAllCoupons(string userId)
+        {
+            return await _context.UserCoupons
+                .Where(uc => uc.UserId == userId)
+                .Include(uc => uc.Coupon)
+                .ToListAsync();
+        }
         public async Task UseUserCoupon(int userCouponId)
         {
             var userCoupon = await _context.UserCoupons.FindAsync(userCouponId);

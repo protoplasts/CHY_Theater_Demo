@@ -1,6 +1,6 @@
 ﻿using CHY_Theater.Areas.Booking.Models.ViewModels;
 using CHY_Theater.Areas.Identity.Services;
-
+using CHY_Theater.Service.IService;
 using CHY_Theater_DataAcess.Data;
 using CHY_Theater_Models.Models;
 using FUEN104_2_FinalProject.Models.ViewModels;
@@ -19,11 +19,14 @@ namespace CHY_Theater.Areas.Booking.Controllers
     {
         private readonly Theater_ProjectDbContext _context;
         private readonly IRewardPointService _rewardPointService;
+        private readonly IUserCouponService _userCouponService;
 
-        public ChooseSeatController(Theater_ProjectDbContext context, IRewardPointService rewardPointService)
+        public ChooseSeatController(Theater_ProjectDbContext context, IRewardPointService rewardPointService, IUserCouponService userCouponService)
         {
             _context = context; 
             _rewardPointService = rewardPointService;
+            _userCouponService = userCouponService;
+
 
         }
         public IActionResult ChooseSeat()
@@ -147,6 +150,9 @@ namespace CHY_Theater.Areas.Booking.Controllers
 
             // Pass the available points to the view using ViewBag
             ViewBag.AvailablePoints = availablePoints;
+            // Fetch user-specific coupons
+            var userCoupons = await _userCouponService.GetUserCoupons(userId);
+            ViewBag.UserCoupons = userCoupons.Where(uc => !uc.IsUsed).ToList();
             //model.MovieImg.Add(movie.MovieImage);
             // Process the rest of the submitted data
             return View(model);
@@ -181,11 +187,11 @@ namespace CHY_Theater.Areas.Booking.Controllers
                 return Json(new { isValid = false, message = "優惠碼已達到使用上限。" });
             }
 
-            //// Check if the current total meets the minimum purchase amount
-            //if (coupon.MinimumPurchaseAmount.HasValue && request.CurrentTotal < coupon.MinimumPurchaseAmount.Value)
-            //{
-            //    return Json(new { isValid = false, message = $"訂單金額須滿 {coupon.MinimumPurchaseAmount:C0} 才能使用此優惠碼。" });
-            //}
+            // Check if the current total meets the minimum purchase amount
+            if (coupon.MinimumPurchaseAmount.HasValue && request.CurrentTotal < coupon.MinimumPurchaseAmount.Value)
+            {
+                return Json(new { isValid = false, message = $"訂單金額須滿 {coupon.MinimumPurchaseAmount:C0} 才能使用此優惠碼。" });
+            }
             // Calculate new total price based on the discount
             decimal newTotal = CalculateDiscountedTotal(coupon, request.CurrentTotal);
             string formattedTotal = newTotal.ToString("C0");
