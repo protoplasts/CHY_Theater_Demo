@@ -18,6 +18,8 @@ public partial class Theater_ProjectDbContext : IdentityDbContext<IdentityUser>
         : base(options)
     {
     }
+    public virtual DbSet<UserCoupon> UserCoupons { get; set; }
+
     public virtual DbSet<RewardPoint> RewardPoints { get; set; }
 
     public DbSet<EcpayOrder> EcpayOrders { get; set; }

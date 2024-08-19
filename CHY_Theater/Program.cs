@@ -1,6 +1,8 @@
 using CHY_Theater.Areas.Admin.Service;
 using CHY_Theater.Areas.Identity.Authorize;
 using CHY_Theater.Areas.Identity.Services;
+using CHY_Theater.Service.IService;
+using CHY_Theater.Service;
 using CHY_Theater.Views.Shared.Filters;
 using CHY_Theater_DataAcess.Data;
 using CHY_Theater_Models.Models;
@@ -26,6 +28,7 @@ builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddScoped<BarcodeService>();
 builder.Services.AddScoped<IRewardPointService, RewardPointService>();
+builder.Services.AddScoped<IUserCouponService, UserCouponService>();
 //客製化的一些密碼限制
 builder.Services.Configure<IdentityOptions>(options =>
 {

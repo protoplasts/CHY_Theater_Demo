@@ -1,5 +1,7 @@
 ﻿using CHY_Theater.Areas.Identity.Authorize;
 using CHY_Theater.Areas.Identity.Models.ViewModels;
+using CHY_Theater.Service;
+using CHY_Theater.Service.IService;
 using CHY_Theater_Models.Models;
 using CHY_Theater_Utitly;
 using Microsoft.AspNetCore.Authorization;
@@ -27,17 +29,18 @@ namespace CHY_Theater.Areas.Identity.Controllers
 		private readonly JwtTokenService _jwtTokenService;
         private readonly ILogger<AccountController> _logger;
         private readonly IConfiguration _configuration;
+        private readonly IUserCouponService _userCouponService;
 
         public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
 			 UrlEncoder urlEncoder, RoleManager<IdentityRole> roleManager, IEmailSender emailSender, JwtTokenService jwtTokenService,
-        ILogger<AccountController> logger, IConfiguration configuration)
+        ILogger<AccountController> logger, IConfiguration configuration, IUserCouponService userCouponService)
 		{
 			_urlEncoder = urlEncoder;
 			_signInManager = signInManager;
 			_userManager = userManager;
 			_roleManager = roleManager;
 			_emailSender = emailSender;
-			_jwtTokenService = jwtTokenService; _logger = logger; _configuration = configuration;
+			_jwtTokenService = jwtTokenService; _logger = logger; _configuration = configuration; _userCouponService = userCouponService;
 
 
         }
@@ -101,7 +104,8 @@ namespace CHY_Theater.Areas.Identity.Controllers
                         {
                             await _userManager.AddToRoleAsync(user, SD.User);
                         }
-
+                        // Create new user coupon
+                        await _userCouponService.CreateNewUserCoupon(user.Id);
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         code = WebUtility.UrlEncode(code);
                         var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
@@ -116,7 +120,8 @@ namespace CHY_Theater.Areas.Identity.Controllers
                         else
                         {
                             await _signInManager.SignInAsync(user, isPersistent: false);
-                            return Json(new { success = true, message = "Registration successful. You are now logged in." });
+                            return Json(new { success = true, message = "註冊成功。系統將跳轉回首頁並自動登入，同時請檢查您的電子信箱進行驗證。" });
+                            //轉回首頁
                         }
                     }
                     foreach (var error in result.Errors)
