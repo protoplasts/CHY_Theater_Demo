@@ -1,13 +1,10 @@
 ﻿@model ApplicationUser
 @{
-    ViewData["Title"] = "Update Personal Information"; 
+    ViewData["Title"] = "Update Personal Information";
     Layout = "_MemberCenterLayout";
-
 }
 @section Styles {
     <style>
-
-
         .center-container {
             padding-top: 120px; /* Adjusted for navbar height */
             background-image: url('/img/test3.jpg');
@@ -65,13 +62,69 @@
             background-color: currentcolor;
         }
     </style>
-}        
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var birthdayField = document.getElementById("dateInput");
+            var explanationText = document.getElementById("birthdayExplanation");
+
+            if (birthdayField.value) {
+                birthdayField.disabled = true;
+                explanationText.style.display = "block"; // Show the explanation text
+            }
+        });
+        document.getElementById("saveButton").addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent the form from submitting immediately
+            var birthdayField = document.querySelector('#dateInput');
+            var isBirthdaySet = @Json.Serialize(Model.Birthday.HasValue);
+
+            alert(birthdayField.value); // Will alert the selected date value
+            alert(isBirthdaySet);//
+            if (!isBirthdaySet) {
+                Swal.fire({
+                    title: '警告',
+                    text: '請確認您的生日日期。一旦設定後將無法修改。',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: '確認',
+                    cancelButtonText: '取消'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById("updateForm").submit(); // Submit the form if confirmed
+
+                    } else {
+                        birthdayField.focus();
+                    }
+                });
+            } else {   
+                Swal.fire({
+                title: '確認儲存?',
+                text: "你確定要儲存更改嗎？",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '是的, 儲存!',
+                cancelButtonText: '取消'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById("updateForm").submit(); // Submit the form if confirmed
+                }
+            })
+            }
+          
+        });
+    </script>
+}
 
 <div class="col-md-9">
-    <h2 class="mb-4 text-dark mt-5">Update Personal Information</h2>
+    <h2 class="mb-4 text-dark mt-5">更新個人資料</h2>
     <div class="card">
         <div class="card-body">
-            <form asp-action="UpdatePersonalInfo" method="post">
+            <form asp-action="UpdatePersonalInfo" method="post" id="updateForm">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                 <div class="form-group mb-2">
@@ -80,29 +133,34 @@
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-group mb-2">
-                    <label asp-for="Email" class="control-label mb-2"></label>
+                    <label asp-for="Email" class="control-label mb-2">電子郵件</label>
                     <input asp-for="Email" class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
 
                 <div class="form-group mb-2">
-                    <label asp-for="Address" class="control-label mb-2"></label>
+                    <label asp-for="Address" class="control-label mb-2">地址</label>
                     <input asp-for="Address" class="form-control" />
                     <span asp-validation-for="Address" class="text-danger"></span>
                 </div>
                 <div class="form-group mb-2">
-                    <label asp-for="PhoneNumber" class="control-label mb-2"></label>
+                    <label asp-for="PhoneNumber" class="control-label mb-2">電話號碼</label>
                     <input asp-for="PhoneNumber" class="form-control" />
                     <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                 </div>
                 <div class="form-group mb-2">
-                    <label asp-for="Birthday" class="control-label mb-2"></label>
-                    <input asp-for="Birthday" class="form-control" type="date" />
+                    <label asp-for="Birthday" class="control-label mb-2">生日</label>
+                    <input asp-for="Birthday" class="form-control" type="date" id="dateInput" />
                     <span asp-validation-for="Birthday" class="text-danger"></span>
+                    <small id="birthdayExplanation" class="text-danger" style="display:none;">無法修改生日</small>
                 </div>
 
+
+
+               
+
                 <div class="form-group mt-4">
-                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <input type="submit" value="儲存" class="btn btn-primary" id="saveButton" />
                 </div>
             </form>
         </div>

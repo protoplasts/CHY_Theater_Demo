@@ -29,6 +29,7 @@ builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddScoped<BarcodeService>();
 builder.Services.AddScoped<IRewardPointService, RewardPointService>();
 builder.Services.AddScoped<IUserCouponService, UserCouponService>();
+builder.Services.AddHostedService<BirthdayCouponService>();
 //客製化的一些密碼限制
 builder.Services.Configure<IdentityOptions>(options =>
 {

@@ -159,20 +159,38 @@ namespace CHY_Theater.Areas.Identity.Controllers
             user.Email = model.Email;
             user.Address = model.Address;
             user.PhoneNumber = model.PhoneNumber;
-            user.Birthday = model.Birthday;
-
-            // Check if all detailed info is filled
-            if (!string.IsNullOrEmpty(user.Address) &&
-                !string.IsNullOrEmpty(user.PhoneNumber) &&
-                user.Birthday.HasValue)
+            // Check if the birthday is being set for the first time
+            bool isBirthdayFirstSet = !user.Birthday.HasValue && model.Birthday.HasValue;
+            // Only update the birthday if it hasn't been set before
+            if (isBirthdayFirstSet)
             {
-                user.MembershipLevel = "Advanced";
+                user.Birthday = model.Birthday;
+
+                // Check if all detailed info is filled
+                if (!string.IsNullOrEmpty(user.Address) &&
+                    !string.IsNullOrEmpty(user.PhoneNumber) &&
+                    user.Birthday.HasValue)
+                {
+                    user.MembershipLevel = "Advanced";
+                }
+
+                // Create birthday coupon
+                await _userCouponService.CreateBirthdayCouponForNewUser(user.Id);
+            }
+            else if (user.Birthday.HasValue && model.Birthday != user.Birthday)
+            {
+                ModelState.AddModelError("Birthday", "Birthday cannot be changed once set.");
+                return View(model);
             }
 
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)
             {
                 TempData["StatusMessage"] = "Your profile has been updated successfully.";
+                if (isBirthdayFirstSet)
+                {
+                    TempData["BirthdayCouponMessage"] = "A birthday coupon has been added to your account!";
+                }
                 return RedirectToAction("Index", "MemberCenter");
             }
 

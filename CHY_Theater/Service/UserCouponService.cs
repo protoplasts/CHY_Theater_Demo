@@ -1,6 +1,7 @@
 ﻿using CHY_Theater.Service.IService;
 using CHY_Theater_DataAcess.Data;
 using CHY_Theater_Models.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CHY_Theater.Service
@@ -8,40 +9,76 @@ namespace CHY_Theater.Service
     public class UserCouponService : IUserCouponService
     {
         private readonly Theater_ProjectDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public UserCouponService(Theater_ProjectDbContext context)
+        public UserCouponService(UserManager<ApplicationUser> userManager, Theater_ProjectDbContext context, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public async Task CreateNewUserCoupon(string userId)
         {
-            var newUserCoupon = await _context.Coupons
-                .FirstOrDefaultAsync(c => c.IsUserSpecific && c.DiscountType == "NewUser");
+           
+            var newUserCoupons = await _context.Coupons
+         .Where(c => c.IsUserSpecific && c.Description == "新用戶禮")
+         .ToListAsync();
 
-            if (newUserCoupon != null)
+            if (newUserCoupons != null)
             {
-                var userCoupon = new UserCoupon
+                foreach (var newUserCoupon in newUserCoupons)
                 {
-                    UserId = userId,
-                    CouponId = newUserCoupon.CouponId,
-                    CreatedAt = DateTime.UtcNow
-                };
-
-                _context.UserCoupons.Add(userCoupon);
+                    var userCoupon = new UserCoupon
+                    {
+                        UserId = userId,
+                        CouponId = newUserCoupon.CouponId,
+                        CreatedAt = DateTime.UtcNow
+                    };
+                    _context.UserCoupons.Add(userCoupon);
+                }
+                // Check if it's the user's birth month
+               
                 await _context.SaveChangesAsync();
             }
         }
-
-        public async Task CreateBirthdayCoupon(string userId)
+        public async Task CreateBirthdayCouponForNewUser(string userId)
         {
-            var user = await _context.Users.FindAsync(userId);
+            var user = await _userManager.FindByIdAsync(userId);
             if (user?.Birthday != null)
             {
                 var today = DateOnly.FromDateTime(DateTime.Today);
-
                 // Check if it's the first day of the user's birth month
-                if (today.Month == user.Birthday.Month && today.Day == 1)
+                if (today.Month == user.Birthday.Value.Month )
+                {
+                    var birthdayCoupon = await _context.Coupons
+                        .FirstOrDefaultAsync(c => c.IsUserSpecific && c.Description == "生日禮");
+
+                    if (birthdayCoupon != null)
+                    {
+                        var userCoupon = new UserCoupon
+                        {
+                            UserId = userId,
+                            CouponId = birthdayCoupon.CouponId,
+                            CreatedAt = DateTime.UtcNow
+                        };
+
+                        _context.UserCoupons.Add(userCoupon);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+            }
+
+        }
+        public async Task CreateBirthdayCoupon(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user?.Birthday != null)
+            {
+                var today = DateOnly.FromDateTime(DateTime.Today);
+                // Check if it's the first day of the user's birth month
+                if (today.Month == user.Birthday.Value.Month && today.Day == 1)
                 {
                     var birthdayCoupon = await _context.Coupons
                         .FirstOrDefaultAsync(c => c.IsUserSpecific && c.DiscountType == "Birthday");
