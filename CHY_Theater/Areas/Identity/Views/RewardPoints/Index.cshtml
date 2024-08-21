@@ -76,7 +76,7 @@
 
             <h5 class="card-title">總點數（過去12個月）： @Model.TotalPoints</h5>
             <h6 class="card-subtitle mb-2 text-muted">可用點數： @Model.AvailablePoints</h6>
-        <h6 class="card-subtitle mb-2 text-muted">Latest Transaction: @Model.LatestPoints points</h6>
+        <h6 class="card-subtitle mb-2 text-muted">最新交易獲得: @Model.LatestPoints points</h6>
         @if (Model.LatestTransactionDate.HasValue)
         {
             <p class="card-text">Last updated: @Model.LatestTransactionDate.Value.ToString("g")</p>
@@ -131,10 +131,10 @@
 <nav aria-label="Page navigation">
     <ul class="pagination">
         <li class="page-item @prevDisabled">
-            <a class="page-link" href="@Url.Action("Index", new { tab = Model.CurrentTab, pageIndex = Model.PointDetails.PageIndex - 1 })">Previous</a>
+            <a class="page-link" href="@Url.Action("Index", new { tab = Model.CurrentTab, pageIndex = Model.PointDetails.PageIndex - 1 })">上一頁</a>
         </li>
         <li class="page-item @nextDisabled">
-            <a class="page-link" href="@Url.Action("Index", new { tab = Model.CurrentTab, pageIndex = Model.PointDetails.PageIndex + 1 })">Next</a>
+            <a class="page-link" href="@Url.Action("Index", new { tab = Model.CurrentTab, pageIndex = Model.PointDetails.PageIndex + 1 })">下一頁</a>
         </li>
     </ul>
 </nav>
@@ -168,7 +168,7 @@
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Chinese-traditional.json"
                 },
-                "pageLength": 10,
+                "pageLength": 5,
                 "ordering": true,
                 "info": true,
                 "lengthChange": false

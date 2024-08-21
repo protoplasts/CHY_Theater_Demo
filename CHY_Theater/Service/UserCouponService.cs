@@ -34,7 +34,8 @@ namespace CHY_Theater.Service
                     {
                         UserId = userId,
                         CouponId = newUserCoupon.CouponId,
-                        CreatedAt = DateTime.UtcNow
+                        CreatedAt = DateTime.UtcNow,
+                        ExpiredAt = DateTime.UtcNow.AddMonths(1)
                     };
                     _context.UserCoupons.Add(userCoupon);
                 }
@@ -61,7 +62,9 @@ namespace CHY_Theater.Service
                         {
                             UserId = userId,
                             CouponId = birthdayCoupon.CouponId,
-                            CreatedAt = DateTime.UtcNow
+                            CreatedAt = DateTime.UtcNow,
+                            ExpiredAt = DateTime.UtcNow.AddMonths(1)
+
                         };
 
                         _context.UserCoupons.Add(userCoupon);
@@ -89,7 +92,9 @@ namespace CHY_Theater.Service
                         {
                             UserId = userId,
                             CouponId = birthdayCoupon.CouponId,
-                            CreatedAt = DateTime.UtcNow
+                            CreatedAt = DateTime.UtcNow,
+                            ExpiredAt = DateTime.UtcNow.AddMonths(1)
+
                         };
 
                         _context.UserCoupons.Add(userCoupon);

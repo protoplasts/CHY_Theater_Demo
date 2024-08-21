@@ -30,7 +30,6 @@ namespace CHY_Theater_Models.Models
         //detail infor
 
         public string? Address { get; set; }
-        public string? PhoneNumber { get; set; }
         public DateTime? Birthday { get; set; }
         public virtual ICollection<UserCoupon> UserCoupons { get; set; } = new List<UserCoupon>();
 

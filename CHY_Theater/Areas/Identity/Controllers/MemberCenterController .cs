@@ -49,9 +49,7 @@ namespace CHY_Theater.Areas.Identity.Controllers
             {
                 return NotFound();
             }
-
             var availablePoints = await _rewardPointService.GetTotalPointsAsync(user.Id);
-
             // Fetch the last booking for this user
             var lastBooking = await _context.Bookings
                 .Where(b => b.UserId == user.Id)
@@ -76,7 +74,6 @@ namespace CHY_Theater.Areas.Identity.Controllers
                 TotalSpent = totalSpent,
                 LastLoginTime = user.LastLoginTime,
                 TwoFactorEnabled = twoFactorEnabled  // Add this line
-
             };
 
             return View(viewModel);
@@ -177,11 +174,11 @@ namespace CHY_Theater.Areas.Identity.Controllers
                 // Create birthday coupon
                 await _userCouponService.CreateBirthdayCouponForNewUser(user.Id);
             }
-            else if (user.Birthday.HasValue && model.Birthday != user.Birthday)
-            {
-                ModelState.AddModelError("Birthday", "Birthday cannot be changed once set.");
-                return View(model);
-            }
+            //else if (user.Birthday.HasValue && model.Birthday != user.Birthday)
+            //{
+            //    ModelState.AddModelError("Birthday", "Birthday cannot be changed once set.");
+            //    return View(model);
+            //}
 
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)

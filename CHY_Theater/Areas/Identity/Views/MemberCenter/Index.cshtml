@@ -109,8 +109,7 @@
                             }
                             else
                             {
-                                <div class="p-2 rounded @GetMembershipLevelClass(Model.MembershipLevel)">
-                                    <strong>@Model.MembershipLevel</strong><br>
+                                <div class="p-2 rounded @GetMembershipLevelClass(Model.MembershipLevel)" style="text-align:center">
                                     <small>@GetMembershipLevelDescription(Model.MembershipLevel)</small>
                                 </div>
                             }
@@ -133,8 +132,8 @@
                         <dd class="col-sm-8">@(Model.LastTicketPurchase?.ToString("yyyy/MM/dd") ?? "無記錄")</dd>
                         <dt class="col-sm-4"><i class="fas fa-dollar-sign me-2 text-success"></i>近一年累計消費:</dt>
                         <dd class="col-sm-8">$@Model.TotalSpent.ToString("N0")</dd>
-                        <dt class="col-sm-4"><i class="fas fa-clock me-2 text-primary"></i>最近登入時間:</dt>
-                        <dd class="col-sm-8">@(Model.LastLoginTime?.ToString("yyyy/MM/dd HH:mm") ?? "無記錄")</dd>
+                        @* <dt class="col-sm-4"><i class="fas fa-clock me-2 text-primary"></i>最近登入時間:</dt>
+                        <dd class="col-sm-8">@(Model.LastLoginTime?.ToString("yyyy/MM/dd HH:mm") ?? "無記錄")</dd> *@
                     </dl>
                 </div>
             </div>

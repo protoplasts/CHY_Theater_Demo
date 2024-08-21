@@ -4,9 +4,9 @@
     Layout = "_MemberCenterLayout";
 
     // Group coupons by status
-    var availableCoupons = Model.Where(c => !c.IsUsed && c.Coupon.ExpiryDate.ToDateTime(TimeOnly.MinValue) >= DateTime.Now).ToList();
+    var availableCoupons = Model.Where(c => !c.IsUsed && c.ExpiredAt >= DateTime.Now).ToList();
     var usedCoupons = Model.Where(c => c.IsUsed).ToList();
-    var expiredCoupons = Model.Where(c => !c.IsUsed && c.Coupon.ExpiryDate.ToDateTime(TimeOnly.MinValue) < DateTime.Now).ToList();
+    var expiredCoupons = Model.Where(c => !c.IsUsed && c.ExpiredAt < DateTime.Now).ToList();
 }
 
 @section Styles {
@@ -91,7 +91,7 @@
                                     else
                                     {
                                         <p class="card-text"><strong>金額限制：</strong> 訂單金額須滿 @userCoupon.Coupon.MinimumPurchaseAmount 元</p>
-                                    }                                    <p class="card-text"><strong>有效期限：</strong> @userCoupon.Coupon.ExpiryDate.ToString("yyyy-MM-dd")</p>
+                                    }                                    <p class="card-text"><strong>有效期限：</strong> @userCoupon.ExpiredAt.ToString("yyyy-MM-dd")</p>
                                     <span class="badge bg-success">可使用</span>
                                 </div>
                             </div>
@@ -137,8 +137,8 @@
                                     {
                                         <p class="card-text"><strong>金額限制：</strong> 訂單金額須滿 @userCoupon.Coupon.MinimumPurchaseAmount 元</p>
                                     }
-                                    
-                                    <p class="card-text"><strong>有效期限：</strong> @userCoupon.Coupon.ExpiryDate.ToString("yyyy-MM-dd")</p>
+
+                                    <p class="card-text"><strong>有效期限：</strong> @userCoupon.ExpiredAt.ToString("yyyy-MM-dd")</p>
                                     <span class="badge bg-secondary">已使用</span>
                                 </div>
                             </div>

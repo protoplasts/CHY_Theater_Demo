@@ -317,6 +317,8 @@
                 <button id="usePointsBtn" class="btn">使用紅利折抵</button>
                 <button id="cancelPointsBtn" class="btn" style="display: none;">取消使用</button>
             </div>
+                <button class="btn btn-abandon btn-block animateBtn mt-4" onclick="goBackToIndex()">放棄本次訂票</button>
+
             <button class="btn btn-primary btn-block animateBtn mt-4" onclick="proceedToPayment()">確認訂單</button>
         </div>
     </div>
@@ -335,6 +337,26 @@
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        function goBackToIndex() {
+            Swal.fire({
+                title: '警告',
+                html: '<div class="custom-swal-text">要離開此頁面嗎？<br>您的先前的選擇將會遺失!</div>',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '離開',
+                cancelButtonText: '留下'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Remove any onbeforeunload handler before navigating
+                    window.onbeforeunload = null;
+                    // Navigate to the index page
+                    window.location.href = '/Booking/ChooseTheaterAuditorium';
+                }
+            });
+        }
+
         var currentTotalPrice;
 
         $(document).ready(function () {
@@ -361,6 +383,7 @@
                     applyCoupon();
                 }
             });
+
             function updateTotalPrice() {
                 currentTotalPrice = originalTotal - appliedCouponDiscount - appliedPointsDiscount;
                 $('#totalPrice').text(currentTotalPrice.toFixed(2));
