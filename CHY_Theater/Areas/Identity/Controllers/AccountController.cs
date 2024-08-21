@@ -4,14 +4,17 @@ using CHY_Theater.Service;
 using CHY_Theater.Service.IService;
 using CHY_Theater_Models.Models;
 using CHY_Theater_Utitly;
+using MailKit.Security;
+using MailKit.Net.Smtp;
+using MimeKit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using MimeKit.Text;
 using System.Net;
-using System.Net.Mail;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Web;
@@ -61,6 +64,7 @@ namespace CHY_Theater.Areas.Identity.Controllers
             ViewData["ReturnUrl"] = returnurl;
             RegisterViewModel registerViewModel = new()
             {
+                //對每個角色使用 Select(x => x.Name) 取得其名稱。接著，這些名稱被轉換為 SelectListItem 物件，這些物件將用於在下拉選單中顯示角色名稱。
                 RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
                 {
                     Text = i,
@@ -95,27 +99,27 @@ namespace CHY_Theater.Areas.Identity.Controllers
                     if (result.Succeeded)
                     {
                         _logger.LogInformation("User created a new account with password.");
-
-                        if (model.RoleSelected != null)
+                        
+                        if (model.RoleSelected == "管理員")
                         {
                             await _userManager.AddToRoleAsync(user, model.RoleSelected);
                         }
                         else
                         {
-                            await _userManager.AddToRoleAsync(user, SD.User);
+                            await _userManager.AddToRoleAsync(user, SD.User);                        
+                            // Create new user coupon
+                            await _userCouponService.CreateNewUserCoupon(user.Id);
+                            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                            code = WebUtility.UrlEncode(code);
+                            var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+
+                            await SendEmailAsync(model.Email, "帳號驗證信-如影隨形",
+                                $"請點擊此處確認您的電子郵件：<a href='{callbackUrl}'>link</a>");
                         }
-                        // Create new user coupon
-                        await _userCouponService.CreateNewUserCoupon(user.Id);
-                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                        code = WebUtility.UrlEncode(code);
-                        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-
-                        await SendEmailAsync(model.Email, "Confirm Email - Identity Manager",
-                            $"Please confirm your email by clicking here: <a href='{callbackUrl}'>link</a>");
-
+                        //用於確定在用戶登錄之前是否需要確認帳戶。我在Program.cs設為false所以不需要驗證即可登入)
                         if (_userManager.Options.SignIn.RequireConfirmedAccount)
                         {
-                            return Json(new { success = true, message = "Registration successful. Please check your email for confirmation." });
+                            return Json(new { success = true, message = "註冊成功。請檢查您的電子郵件以進行驗證。" });
                         }
                         else
                         {
@@ -132,47 +136,75 @@ namespace CHY_Theater.Areas.Identity.Controllers
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error during user registration");
-                    return Json(new { success = false, message = "An error occurred during registration. Please try again later." });
+                    return Json(new { success = false, message = "註冊發生錯誤。請稍後重試。" });
                 }
             }
-
-            // If we got this far, something failed, redisplay form
-            return Json(new { success = false, message = "Registration failed. Please check your input and try again." });
+            
+            return Json(new { success = false, message = "註冊失敗。請檢查您的輸入欄位並重試。" });
         }
 
         private async Task SendEmailAsync(string email, string subject, string htmlMessage)
-        {
+        {    
+            // 從配置中讀取電子郵件設置
             var emailSettings = _configuration.GetSection("EmailSettings");
             var smtpServer = emailSettings["SmtpServer"];
             var smtpPort = int.Parse(emailSettings["SmtpPort"]);
             var senderEmail = emailSettings["SenderEmail"];
             var password = emailSettings["Password"];
             var senderName = emailSettings["SenderName"];
-
-            var client = new SmtpClient(smtpServer, smtpPort)
+            // 建立 MimeMessage 對象
+            var emailMessage = new MimeMessage();
+            emailMessage.From.Add(new MailboxAddress(senderName, senderEmail));
+            emailMessage.To.Add(new MailboxAddress("", email));
+            emailMessage.Subject = subject;
+            emailMessage.Body = new TextPart(TextFormat.Html)
             {
-                Credentials = new NetworkCredential(senderEmail, password),
-                EnableSsl = true
+                Text = htmlMessage
             };
 
-            var mailMessage = new MailMessage
+            // 使用 MailKit 的 SmtpClient 發送郵件
+            using (var client = new SmtpClient())
             {
-                From = new MailAddress(senderEmail, senderName),
-                Subject = subject,
-                Body = htmlMessage,
-                IsBodyHtml = true
-            };
-            mailMessage.To.Add(email);
+                try
+                {
+                    await client.ConnectAsync(smtpServer, smtpPort, MailKit.Security.SecureSocketOptions.StartTls);
+                    await client.AuthenticateAsync(senderEmail, password);
+                    await client.SendAsync(emailMessage);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to send email");
+                    throw;
+                }
+                finally
+                {
+                    await client.DisconnectAsync(true);
+                }
+            }
+            //var client = new SmtpClient(smtpServer, smtpPort)
+            //{
+            //    Credentials = new NetworkCredential(senderEmail, password),
+            //    EnableSsl = true
+            //};
 
-            try
-            {
-                await client.SendMailAsync(mailMessage);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to send email");
-                throw;
-            }
+            //var mailMessage = new MailMessage
+            //{
+            //    From = new MailAddress(senderEmail, senderName),
+            //    Subject = subject,
+            //    Body = htmlMessage,
+            //    IsBodyHtml = true
+            //};
+            //mailMessage.To.Add(email);
+
+            //try
+            //{
+            //    await client.SendMailAsync(mailMessage);
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.LogError(ex, "Failed to send email");
+            //    throw;
+            //}
         }
 
         [HttpGet]
@@ -346,6 +378,15 @@ namespace CHY_Theater.Areas.Identity.Controllers
                 if (result.Succeeded)
                 {
                     var user = await _userManager.FindByEmailAsync(model.Email);
+
+                    // Update the LastLoginTime property
+                    // 取得伺服器的本地時間
+                    DateTime localTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.Local);
+
+                    // 更新 LastLoginTime 屬性
+                    user.LastLoginTime = localTime;
+                    await _userManager.UpdateAsync(user);
+
 
                     // Generate JWT token for all authenticated users
                     var jwtToken = await _jwtTokenService.GenerateJwtToken(user);

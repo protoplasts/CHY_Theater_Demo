@@ -1,0 +1,123 @@
+﻿@model IEnumerable<CHY_Theater_Models.Models.Movie>
+
+@{
+    ViewData["Title"] = "Index";
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+<title>Movie List</title>
+
+
+@section Styles {
+    
+}
+@*     	<link href="~/css/jquery.datatables.css" rel="stylesheet" />
+ *@
+
+
+<div class="container">
+    <div class="page-inner">
+        <div class="page-header">
+            <h3 class="fw-bold mb-3">Movie Management System</h3>
+            <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                    <a href="#">
+                        <i class="fas fa-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="fas fa-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Movies</a>
+                </li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex align-items-center">
+                            <h4 class="card-title">Movies</h4>
+                            <a asp-action="Create" asp-controller="Movie" class="btn btn-primary btn-round ms-auto">
+                                <i class="fa fa-plus"></i>
+                                Create New
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="movies-table" class="display table table-striped table-hover">
+
+
+                                <thead class="mt-2">
+                                    <tr class="custom-thead">
+                                        <th class="Name">Movie Name</th>
+                                        <th>Release Date</th>
+                                        <th>Runtime</th>
+                                        <th>Director</th>
+                                        <th style="width: 15%">Actions</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach (var movie in Model)
+                                    {
+                                        <tr>
+                                            <td>@movie.MovieName</td>
+                                            <td>@movie.ReleaseDate.ToString("yyyy/MM/dd")</td>
+                                            <td>@movie.Runtime</td>
+                                            <td>@movie.DirectorName</td>
+                                            <td>
+                                                <div class="form-button-action">
+                                                    <a asp-action="Edit" asp-route-id="@movie.MovieId" class="btn btn-link btn-primary btn-lg">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <a asp-action="Details" asp-route-id="@movie.MovieId" class="btn btn-link btn-info btn-lg">
+                                                        <i class="fa fa-info-circle"></i>
+                                                    </a>
+                                                    <button class="btn btn-link btn-danger btn-lg delete-movie" data-movie-id="@movie.MovieId">
+                                                        <i class="fa fa-times"></i>
+                                                    </button>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="~/assets/js/core/popper.min.js"></script>
+    <script src="~/assets/js/core/bootstrap.min.js"></script>
+    <script src="~/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <script src="~/assets/js/kaiadmin.min.js"></script>
+    <script src="~/assets/js/plugin/datatables/datatables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+    <!-- Initialize DataTable -->
+    <script>
+        $(document).ready(function () {
+            $('#movies-table').DataTable();
+        });
+
+    </script>
+}
+
+
+
+
+
+
+

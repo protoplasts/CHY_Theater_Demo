@@ -25,129 +25,61 @@ namespace CHY_Theater.Areas.Admin.Controllers
         {
             return View(await _context.Actors.ToListAsync());
         }
-
-        // GET: Admin/Actors/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: Actors/GetActor/5
+        [HttpGet]
+        public async Task<IActionResult> GetActor(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var actor = await _context.Actors
-                .FirstOrDefaultAsync(m => m.ActorId == id);
-            if (actor == null)
-            {
-                return NotFound();
-            }
-
-            return View(actor);
-        }
-
-        // GET: Admin/Actors/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Admin/Actors/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ActorId,ActorName")] Actor actor)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(actor);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(actor);
-        }
-
-        // GET: Admin/Actors/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var actor = await _context.Actors.FindAsync(id);
             if (actor == null)
             {
                 return NotFound();
             }
-            return View(actor);
+            return Json(new { actorId = actor.ActorId, actorName = actor.ActorName });
         }
-
-        // POST: Admin/Actors/Edit/5
+        // POST: Actors/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ActorId,ActorName")] Actor actor)
+        public async Task<IActionResult> Create([Bind("ActorName")] Actor actor)
         {
-            if (id != actor.ActorId)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                _context.Add(actor);
+                await _context.SaveChangesAsync();
+                return Json(new { success = true, actorId = actor.ActorId, actorName = actor.ActorName });
             }
-
+            return Json(new { success = false, message = "Invalid model state" });
+        }
+       
+        // POST: Actors/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit([Bind("ActorId,ActorName")] Actor actor)
+        {
             if (ModelState.IsValid)
             {
                 try
                 {
                     _context.Update(actor);
                     await _context.SaveChangesAsync();
+                    return Json(new { success = true, actorId = actor.ActorId, actorName = actor.ActorName });
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!ActorExists(actor.ActorId))
                     {
-                        return NotFound();
+                        return Json(new { success = false, message = "Actor not found" });
                     }
                     else
                     {
-                        throw;
+                        return Json(new { success = false, message = "An error occurred while updating the actor" });
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(actor);
-        }
-
-        // GET: Admin/Actors/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var actor = await _context.Actors
-                .FirstOrDefaultAsync(m => m.ActorId == id);
-            if (actor == null)
-            {
-                return NotFound();
-            }
-
-            return View(actor);
-        }
-
-        // POST: Admin/Actors/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var actor = await _context.Actors.FindAsync(id);
-            if (actor != null)
-            {
-                _context.Actors.Remove(actor);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return Json(new { success = false, message = "Invalid model state" });
         }
 
         private bool ActorExists(int id)

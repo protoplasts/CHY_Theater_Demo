@@ -2,34 +2,436 @@
 
 @{
     ViewData["Title"] = "Index";
-}
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+ }
+    <title>Actor List</title>
+    @section Styles {
 
-<h1>Index</h1>
+        <!-- CSS Files -->
+        <link rel="stylesheet" href="~/assets/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/assets/css/plugins.min.css" />
+        <link rel="stylesheet" href="~/assets/css/kaiadmin.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@sweetalert2/theme-bootstrap-4/bootstrap-4.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    }
+    <div class="container">
+        <div class="page-inner">
+            <div class="page-header">
+                <!-- breadcrumbs Start -->
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ActorName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ActorName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ActorId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ActorId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ActorId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                <h3 class="fw-bold mb-3">後臺管理系統</h3>
+                <ul class="breadcrumbs mb-3">
+                    <li class="nav-home">
+                        <a href="#">
+                            <i class="fas fa-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="fas fa-arrow-right"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#">Tables</a>
+                    </li>
+                    <li class="separator">
+                        <i class="fas fa-arrow-right"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#">Datatables</a>
+                    </li>
+                </ul>
+                <!-- breadcrumbs End -->
+            </div>
+            <div class="row">
+
+
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex align-items-center">
+                            <h4 class="card-title">演員清單</h4>
+                                <button class="btn btn-primary btn-round ms-auto"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#addRowModal">
+                                    <i class="fa fa-plus"></i>
+                                   新增
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <!-- Modal Start -->
+                            <div class="modal fade"
+                                 id="addRowModal"
+                                 tabindex="-1"
+                                 role="dialog"
+                                 aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header border-0">
+                                            <h5 class="modal-title">
+                                                <span class="fw-mediumbold"> New</span>
+                                                <span class="fw-light"> Row </span>
+                                            </h5>
+                                            <button type="button"
+                                                    class="close"
+                                                    data-dismiss="modal"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p class="small">
+                                                Create a new actor using this form, make sure you
+                                                fill the column
+                                            </p>
+                                            <form>
+                                                @Html.AntiForgeryToken()
+
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group form-group-default">
+                                                            <label>Name</label>
+                                                            <input id="addName"
+                                                                   type="text"
+                                                                   class="form-control"
+                                                                   placeholder="fill name" />
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer border-0">
+                                            <button type="button"
+                                                    id="addRowButton"
+                                                    class="btn btn-primary">
+                                                Add
+                                            </button>
+                                            <button type="button"
+                                                    class="btn btn-danger"
+                                                    data-dismiss="modal">
+                                                Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal End-->
+                            <div class="table-responsive">
+                                <table id="add-row"
+                                       class="display table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th> @Html.DisplayNameFor(model => model.ActorName)</th>
+
+                                            <th style="width: 10%">Action</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ActorName)
+                                                </td>
+                                                <td>
+                                                    <div class="form-button-action">
+                                                        <a href="#" class="btn btn-link btn-primary btn-lg edit-actor" data-actor-id="@item.ActorId">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                       
+                                                        <button class="btn btn-link btn-danger btn-lg delete-actor" data-actor-id="@item.ActorId">
+                                                            <i class="fa fa-times"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+<div class="modal fade" id="editActorModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title">編輯演員</h5>
+                <button type="button" class="close" id="closeEditModal" data-dismiss="modal" aria-label="關閉">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editActorForm">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="editActorId" name="ActorId" />
+                    <div class="form-group form-group-default">
+                        <label>名稱</label>
+                        <input id="editActorName" type="text" class="form-control" name="ActorName" placeholder="演員名稱" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" id="saveEditButton" class="btn btn-primary">儲存</button>
+                <button type="button" class="btn btn-danger" id="closeEditModalBtn" data-dismiss="modal">關閉</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+    @section Scripts {
+
+        <script src="~/assets/js/core/jquery-3.7.1.min.js"></script>
+        <script src="~/assets/js/core/popper.min.js"></script>
+        <script src="~/assets/js/core/bootstrap.min.js"></script>
+        <script src="~/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+        <script src="~/assets/js/kaiadmin.min.js"></script>
+        <script src="~/assets/js/plugin/datatables/datatables.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+            // Close the edit modal when the close button is clicked
+            $('#closeEditModal').click(function () {
+                $('#editActorModal').modal('hide');
+            });
+            // Close the edit modal when the "關閉" button is clicked
+            $('#closeEditModalBtn').click(function () {
+                $('#editActorModal').modal('hide');
+            });
+                var addRowTable = $("#add-row").DataTable({
+                    pageLength: 6,
+                    columns: [
+                        {
+                            title: "演員",
+                            className: "text-left vertical-middle capitalize-first",
+                            render: function (data, type, row) {
+                                if (type === 'display') {
+                                    return data.charAt(0).toUpperCase() + data.slice(1).toLowerCase();
+                                }
+                                return data;
+                            }
+                        },
+                        {
+                            title: "動作",
+                            className: "text-center vertical-middle ",
+                            orderable: false
+                        }
+                    ]
+                });
+                // <!--Sweet Alert-- >
+                $(document).on('click', '.delete-actor', function () {
+                    var actorId = $(this).data('actor-id');
+                    var row = $(this).closest('tr'); // Find the row to delete
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete it!',
+                        cancelButtonText: 'No, cancel!',
+                        customClass: {
+                            confirmButton: 'btn btn-success',
+                            cancelButton: 'btn btn-danger ms-3'
+                        },
+                        buttonsStyling: false,
+                        background: '#e5f0c0',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: '/Actors/Delete/' + actorId,
+                                type: 'POST',
+                                data: {
+                                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                                },
+                                success: function (result) {
+                                    if (result.success) {
+                                        Swal.fire({
+                                            title: 'Deleted!',
+                                            text: 'The actor has been successfully deleted.',
+                                            icon: 'success',
+                                            customClass: {
+                                                confirmButton: 'btn btn-success'
+                                            },
+                                            buttonsStyling: false
+                                        });
+
+                                        // Remove the row from the DataTable
+                                        addRowTable.row(row).remove().draw(false);
+                                    } else {
+                                        Swal.fire({
+                                            title: 'Error!',
+                                            text: 'An error occurred while deleting the actor.',
+                                            icon: 'error',
+                                            customClass: {
+                                                confirmButton: 'btn btn-danger'
+                                            },
+                                            buttonsStyling: false
+                                        });
+                                    }
+                                },
+                                error: function () {
+                                    Swal.fire(
+                                        'Error!',
+                                        'An error occurred while deleting the actor.',
+                                        'error'
+                                    );
+                                }
+                            });
+                        }
+                    });
+                });
+
+                // Add Modal
+                function getActionHtml(actorId) {
+                    return '<div class="form-button-action">' +
+                        '<a asp-action="Edit" asp-route-id="' + actorId + '" class="btn btn-link btn-primary btn-lg">' +
+                        '<i class="fa fa-edit"></i>' +
+                        '</a>' +
+                        '<a asp-action="Details" asp-route-id="' + actorId + '" class="btn btn-link btn-info btn-lg">' +
+                        '<i class="fa fa-info-circle"></i>' +
+                        '</a>' +
+                        '<button class="btn btn-link btn-danger btn-lg delete-actor" data-actor-id="' + actorId + '">' +
+                        '<i class="fa fa-times"></i>' +
+                        '</button>' +
+                        '</div>';
+                }
+                $("#addRowButton").click(function () {
+                    var actorName = $("#addName").val();
+                    $.ajax({
+                        url: '/Admin/Actors/Create',
+                        type: 'POST',
+                        data: {
+                            ActorName: actorName,
+                            __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                        },
+                        success: function (result) {
+                            if (result.success) {
+                                addRowTable.row.add([
+                                    result.actorName,
+                                    getActionHtml(result.actorId)
+                                ]).draw(false);
+                                $("#addRowModal").modal("hide");
+                                $("#addName").val('');
+
+                                // Use Toastr for success notification
+                                toastr.success('Actor added successfully!', 'Success', {
+                                    closeButton: true,
+                                    progressBar: true,
+                                    positionClass: "toast-top-right"
+                                });
+                            } else {
+                                // Use Toastr for error notification
+                                toastr.error(result.message, 'Error', {
+                                    closeButton: true,
+                                    progressBar: true,
+                                    positionClass: "toast-top-right"
+                                });
+                            }
+                        },
+                        error: function () {
+                            // Use Toastr for error notification
+                            toastr.error('An error occurred while adding the actor.', 'Error', {
+                                closeButton: true,
+                                progressBar: true,
+                                positionClass: "toast-top-right"
+                            });
+                        }
+                    });
+                });
+                //Handle close btn for edit modal
+
+
+                // Handle edit button click
+                $(document).on('click', '.edit-actor', function (e) {
+                    e.preventDefault();
+                    var actorId = $(this).data('actor-id');
+
+                    // Fetch actor details
+                    $.ajax({
+                    url: '/Admin/Actors/GetActor/' + actorId,
+                        type: 'GET',
+                        success: function (result) {
+                            $('#editActorId').val(result.actorId);
+                            $('#editActorName').val(result.actorName);
+                            $('#editActorModal').modal('show');
+                        },
+                        error: function () {
+                            toastr.error('Failed to fetch actor details', 'Error');
+                        }
+                    });
+                });
+
+                // Handle save edit button click
+                $('#saveEditButton').click(function () {
+                    var actorId = $('#editActorId').val();
+                    var actorName = $('#editActorName').val();
+
+                    $.ajax({
+                    url: '/Admin/Actors/Edit',
+                        type: 'POST',
+                        data: {
+                            ActorId: actorId,
+                            ActorName: actorName,
+                            __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                        },
+                        success: function (result) {
+                            if (result.success) {
+                                $('#editActorModal').modal('hide');
+                                // Find the row in the DataTable
+                                var row = addRowTable.row($('button.delete-actor[data-actor-id="' + actorId + '"]').closest('tr'));
+
+                                // Update the row data
+                                row.data([
+                                    actorName,
+                                    getActionHtml(actorId)  // Make sure this function is defined to generate the action buttons HTML
+                                ]).draw();
+
+                                toastr.success('Actor updated successfully!', 'Success');
+                            } else {
+                                toastr.error(result.message, 'Error');
+                            }
+                        },
+                        error: function () {
+                            toastr.error('An error occurred while updating the actor.', 'Error');
+                        }
+                    });
+                }
+                );
+
+                // Function to generate action buttons HTML
+                function getActionHtml(actorId) {
+                    return '<div class="form-button-action">' +
+                        '<a href="#" class="btn btn-link btn-primary btn-lg edit-actor" data-actor-id="' + actorId + '">' +
+                        '<i class="fa fa-edit"></i>' +
+                        '</a>' +
+                        '<a href="#" class="btn btn-link btn-info btn-lg" data-actor-id="' + actorId + '">' +
+                        '<i class="fa fa-info-circle"></i>' +
+                        '</a>' +
+                        '<button class="btn btn-link btn-danger btn-lg delete-actor" data-actor-id="' + actorId + '">' +
+                        '<i class="fa fa-times"></i>' +
+                        '</button>' +
+                        '</div>';
+                }
+
+            }
+            );
+        </script>
+
+
+    }
+
