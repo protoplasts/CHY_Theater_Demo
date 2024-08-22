@@ -1,0 +1,175 @@
+﻿@model CHY_Theater_Models.Models.Movie
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Edit Movie"; Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+@section Styles {
+    
+}
+
+<div class="container mt-4">
+    <h1 class="display-4 mb-3">Edit Movie</h1>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form asp-action="Edit" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="MovieId" />
+
+                        <div class="mb-3">
+                            <label asp-for="MovieName" class="form-label"></label>
+                            <input asp-for="MovieName" class="form-control" />
+                            <span asp-validation-for="MovieName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="MovieEnglishName" class="form-label"></label>
+                            <input asp-for="MovieEnglishName" class="form-control" />
+                            <span asp-validation-for="MovieEnglishName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="MovieDescription" class="form-label"></label>
+                            <textarea asp-for="MovieDescription" class="form-control" rows="5"></textarea>
+                            <span asp-validation-for="MovieDescription" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="ReleaseDate" class="form-label"></label>
+                                <input asp-for="ReleaseDate" class="form-control" type="date" />
+                                <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Runtime" class="form-label"></label>
+                                <input asp-for="Runtime" class="form-control" />
+                                <span asp-validation-for="Runtime" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="Level" class="form-label"></label>
+                                <input asp-for="Level" class="form-control" />
+                                <span asp-validation-for="Level" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="Language" class="form-label"></label>
+                                <input asp-for="Language" class="form-control" />
+                                <span asp-validation-for="Language" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="MovieState" class="form-label"></label>
+                                <input asp-for="MovieState" class="form-control" />
+                                <span asp-validation-for="MovieState" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Movievideo" class="form-label"></label>
+                            <input asp-for="Movievideo" class="form-control" />
+                            <span asp-validation-for="Movievideo" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="DirectorName" class="form-label"></label>
+                            <input asp-for="DirectorName" class="form-control" />
+                            <span asp-validation-for="DirectorName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="MovieImage" class="form-label">Movie Poster</label>
+                            <input asp-for="MovieImage" class="form-control" type="file" id="movieImageInput" accept="image/*" />
+                            <span asp-validation-for="MovieImage" class="text-danger"></span>
+                            <small class="form-text text-muted">Leave empty to keep the existing poster. Choose a new file to replace it.</small>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary" id="saveButton">
+                                <i class="fas fa-save me-2"></i>Save Changes
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-list me-2"></i>Back to List
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Current Poster</h5>
+                    @if (Model.MovieImage != null)
+                    {
+                        <img src="@Url.Action("GetPicture", "Movies", new { id = Model.MovieId })"
+                             alt="Current Movie Poster"
+                             class="img-fluid rounded mb-3" />
+                    }
+                    else
+                    {
+                        <img src="~/img/no image.png" class="img-fluid rounded mb-3" />
+                    }
+
+                    <h5 class="card-title">New Poster Preview</h5>
+                    <div id="previewSection" style="display: none;">
+                        <div id="previewContainer" class="border rounded p-2 d-flex justify-content-center align-items-center" style="height: 300px;">
+                            <img id="imgPreview" src="#" alt="New Poster Preview" style="display:none; max-width:100%; max-height:100%;" class="img-fluid" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="~/assets/js/core/popper.min.js"></script>
+    <script src="~/assets/js/core/bootstrap.min.js"></script>
+    <script src="~/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <script src="~/assets/js/kaiadmin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function () {
+            $('#movieImageInput').change(function () {
+                var file = this.files[0];
+                if (file) {
+                    var fileType = file.type;
+                    var match = ['image/jpeg', 'image/png', 'image/jpg'];
+
+                    if (!(fileType == match[0] || fileType == match[1] || fileType == match[2])) {
+                        toastr.error('Only JPG, JPEG, and PNG files are allowed.');
+                        $('#saveButton').prop('disabled', true);
+                        return false;
+                    } else {
+                        $('#saveButton').prop('disabled', false);
+                    }
+
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#imgPreview').attr('src', e.target.result);
+                        $('#imgPreview').show();
+                        $('#previewSection').show();
+                    }
+                    reader.readAsDataURL(file);
+                } else {
+                    $('#previewSection').hide();
+                }
+            });
+
+            $('form').submit(function () {
+                // No need to handle the checkbox logic anymore
+                return true;
+            });
+        });
+    </script>
+}

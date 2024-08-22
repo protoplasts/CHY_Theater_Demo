@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<CHY_Theater_Models.Models.Movie>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
     ViewData["Title"] = "Index";
@@ -18,7 +19,7 @@
 <div class="container">
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">Movie Management System</h3>
+            <h3 class="fw-bold mb-3">電影清單管理系統</h3>
             <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
                     <a href="#">
@@ -41,7 +42,7 @@
                             <h4 class="card-title">Movies</h4>
                             <a asp-action="Create" asp-controller="Movie" class="btn btn-primary btn-round ms-auto">
                                 <i class="fa fa-plus"></i>
-                                Create New
+                                新增
                             </a>
                         </div>
                     </div>
@@ -52,11 +53,11 @@
 
                                 <thead class="mt-2">
                                     <tr class="custom-thead">
-                                        <th class="Name">Movie Name</th>
-                                        <th>Release Date</th>
-                                        <th>Runtime</th>
-                                        <th>Director</th>
-                                        <th style="width: 15%">Actions</th>
+                                        <th class="Name">電影名稱</th>
+                                        <th>上映日期</th>
+                                        <th>片長</th>
+                                        <th style="width: 20%;text-align: center ">導演</th>
+                                        <th style="width: 15%;text-align: center ">操作</th>
                                     </tr>
                                 </thead>
 
@@ -70,12 +71,17 @@
                                             <td>@movie.DirectorName</td>
                                             <td>
                                                 <div class="form-button-action">
-                                                    <a asp-action="Edit" asp-route-id="@movie.MovieId" class="btn btn-link btn-primary btn-lg">
+                                                    <a 
+                                                       href="/admin/Movies/Edit/@movie.MovieId"
+                                                       class="btn btn-link btn-primary btn-lg">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
-                                                    <a asp-action="Details" asp-route-id="@movie.MovieId" class="btn btn-link btn-info btn-lg">
-                                                        <i class="fa fa-info-circle"></i>
+                                                    <a asp-area="admin" asp-controller="Movies" asp-action="Edit" asp-route-id="@movie.MovieId" class="btn btn-link btn-primary btn-lg">
+                                                        <i class="fa fa-edit"></i>
                                                     </a>
+                                                    @* <a asp-action="Details" asp-route-id="@movie.MovieId" class="btn btn-link btn-info btn-lg">
+                                                        <i class="fa fa-info-circle"></i>
+                                                    </a> *@
                                                     <button class="btn btn-link btn-danger btn-lg delete-movie" data-movie-id="@movie.MovieId">
                                                         <i class="fa fa-times"></i>
                                                     </button>
