@@ -44,7 +44,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Booking\Data\" />
     <Folder Include="Areas\Identity\Data\" />
     <Folder Include="wwwroot\img\焦點電影\" />

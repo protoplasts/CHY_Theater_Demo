@@ -1,4 +1,5 @@
-﻿using CHY_Theater_DataAcess.Data;
+﻿using CHY_Theater.Areas.Admin.Models.ViewModels;
+using CHY_Theater_DataAcess.Data;
 using CHY_Theater_Models.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -114,6 +115,87 @@ namespace CHY_Theater.Areas.Admin.Controllers
 
             var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", movie.MovieImage.TrimStart('/'));
             return PhysicalFile(imagePath, "image/jpeg");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetMovieActors(int movieId)
+        {
+            try
+            {
+                var movieActors = await _context.MovieActors
+                    .Where(ma => ma.MovieId == movieId)
+                    .Select(ma => new MovieActorViewModel
+                    {
+                        ActorId = ma.ActorId,
+                        ActorName = ma.Actor.ActorName,
+                        MainLevel = ma.MainLevel,
+                        IsSelected = true
+                    })
+                    .ToListAsync();
+
+                
+
+                if (movieActors.Count == 0)
+                {
+                    // Log this information
+                }
+
+                return Json(movieActors);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
+        }
+        public class UpdateMovieActorsRequest
+        {
+            public int MovieId { get; set; }
+            public List<MovieActorViewModel> Actors { get; set; }
+        }
+        [HttpPost]
+        [HttpPost]
+        public async Task<IActionResult> UpdateMovieActors([FromBody] UpdateMovieActorsRequest request)
+        {
+            if (request == null)
+            {
+                return BadRequest("Request body is empty");
+            }
+
+
+            if (request.MovieId == 0 || request.Actors == null)
+            {
+                return BadRequest("Invalid request data");
+            }
+
+            var movie = await _context.Movies
+                .Include(m => m.MovieActors)
+                .FirstOrDefaultAsync(m => m.MovieId == request.MovieId);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            movie.MovieActors.Clear();
+            foreach (var actor in request.Actors.Where(a => a.IsSelected))
+            {
+                movie.MovieActors.Add(new MovieActor
+                {
+                    ActorId = actor.ActorId,
+                    MainLevel = actor.MainLevel
+                });
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while updating the movie actors");
+            }
         }
     }
 }

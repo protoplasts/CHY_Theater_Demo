@@ -259,7 +259,7 @@
         @if (!string.IsNullOrEmpty(Model.Movievideo))
         {
             <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" src="@Model.Movievideo" allowfullscreen></iframe>
+                <iframe id="trailerFrame" class="embed-responsive-item" src="" allowfullscreen></iframe>
             </div>
         }
     </div>
@@ -283,8 +283,24 @@
                     scrollToElement(element, 100); // 300ms duration
                 }
             }
+            // Convert and set trailer URL
+            var trailerUrl = '@Model.Movievideo';
+            var embedUrl = convertToEmbedUrl(trailerUrl);
+            document.getElementById('trailerFrame').src = embedUrl;
         });
+        function convertToEmbedUrl(url) {
+            var videoId = getYouTubeVideoId(url);
+            if (videoId) {
+                return 'https://www.youtube.com/embed/' + videoId;
+            }
+            return url; // Return original URL if conversion fails
+        }
 
+        function getYouTubeVideoId(url) {
+            var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            var match = url.match(regExp);
+            return (match && match[2].length == 11) ? match[2] : null;
+        }
         function scrollToElement(element, duration) {
             var start = window.pageYOffset;
             var target = element.getBoundingClientRect().top + start;

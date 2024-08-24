@@ -2,50 +2,135 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Edit Movie"; Layout = "~/Views/Shared/_AdminLayout.cshtml";
-
+    ViewData["Title"] = "編輯電影";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    string GetMovieStateText(int state)
+    {
+        switch (state)
+        {
+            case 0:
+                return "下檔";
+            case 1:
+                return "上映中";
+            case 2:
+                return "即將上映";
+            default:
+                return "未知狀態";
+        }
+    }
 }
 
 @section Styles {
-    
+    <style>
+        .form-label {
+            font-weight: bold;
+        }
+
+        .card {
+            border-radius: 15px;
+        }
+
+        .btn {
+            border-radius: 25px;
+        }
+
+        #videoPreview {
+            max-width: 100%;
+            margin-top: 10px;
+        }
+
+        #videoFrame {
+            width: 100%;
+            height: 450px; /* 你可以根據需要調整高度 */
+        }
+
+        .actor-selection {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            padding: 0.5rem;
+        }
+
+            .actor-selection:hover {
+                background-color: #e9ecef;
+            }
+
+            .actor-selection .form-check-label {
+                font-weight: bold;
+            }
+
+            .actor-selection .input-group-text {
+                background-color: #6c757d;
+                color: white;
+                border: none;
+            }
+
+            .actor-selection .form-control:focus {
+                border-color: #80bdff;
+                box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+            }
+    </style>
 }
 
-<div class="container mt-4">
-    <h1 class="display-4 mb-3">Edit Movie</h1>
+<div class="container mt-2">
+    <div class="page-header">
+        <h3 class="fw-bold mb-3">電影資訊修改</h3>
+        <ul class="breadcrumbs mb-3">
+            <li class="nav-home">
+                <a asp-action="Index" asp-controller="Movies" asp-area="admin">
+                    <i class="fas fa-home"></i>
+                </a>
+            </li>
+            <li class="separator">
+                <i class="fas fa-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a asp-action="Index" asp-controller="Movies" asp-area="admin">
+                    <span class="sub-item">電影列表</span>
+                </a>
+            </li>
+        </ul>
+    </div>    
     <div class="row">
         <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-body">
+            <div class="card shadow">
+                <div class="card-body p-4">
                     <form asp-action="Edit" enctype="multipart/form-data">
+                        <div id="actorsSection" class="mb-4">
+                            <h4 class="mb-3">Actors</h4>
+                            <div class="row" id="actorsContainer">
+                                <!-- This will be populated via AJAX -->
+                            </div>
+                        </div>
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <input type="hidden" asp-for="MovieId" />
 
                         <div class="mb-3">
-                            <label asp-for="MovieName" class="form-label"></label>
+                            <label asp-for="MovieName" class="form-label">電影名稱</label>
                             <input asp-for="MovieName" class="form-control" />
                             <span asp-validation-for="MovieName" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="MovieEnglishName" class="form-label"></label>
+                            <label asp-for="MovieEnglishName" class="form-label">英文名稱</label>
                             <input asp-for="MovieEnglishName" class="form-control" />
                             <span asp-validation-for="MovieEnglishName" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="MovieDescription" class="form-label"></label>
+                            <label asp-for="MovieDescription" class="form-label">電影描述</label>
                             <textarea asp-for="MovieDescription" class="form-control" rows="5"></textarea>
                             <span asp-validation-for="MovieDescription" class="text-danger"></span>
                         </div>
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label asp-for="ReleaseDate" class="form-label"></label>
+                                <label asp-for="ReleaseDate" class="form-label">上映日期</label>
                                 <input asp-for="ReleaseDate" class="form-control" type="date" />
                                 <span asp-validation-for="ReleaseDate" class="text-danger"></span>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label asp-for="Runtime" class="form-label"></label>
+                                <label asp-for="Runtime" class="form-label">片長</label>
                                 <input asp-for="Runtime" class="form-control" />
                                 <span asp-validation-for="Runtime" class="text-danger"></span>
                             </div>
@@ -53,47 +138,57 @@
 
                         <div class="row">
                             <div class="col-md-4 mb-3">
-                                <label asp-for="Level" class="form-label"></label>
+                                <label asp-for="Level" class="form-label">分級</label>
                                 <input asp-for="Level" class="form-control" />
                                 <span asp-validation-for="Level" class="text-danger"></span>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label asp-for="Language" class="form-label"></label>
+                                <label asp-for="Language" class="form-label">語言</label>
                                 <input asp-for="Language" class="form-control" />
                                 <span asp-validation-for="Language" class="text-danger"></span>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label asp-for="MovieState" class="form-label"></label>
-                                <input asp-for="MovieState" class="form-control" />
+                                <label asp-for="MovieState" class="form-label">電影狀態</label>
+                                <select asp-for="MovieState" class="form-control">
+                                    <option value="0">下檔</option>
+                                    <option value="1">上映中</option>
+                                    <option value="2">即將上映</option>
+                                </select>
                                 <span asp-validation-for="MovieState" class="text-danger"></span>
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Movievideo" class="form-label"></label>
-                            <input asp-for="Movievideo" class="form-control" />
+                            <label asp-for="Movievideo" class="form-label">影片連結</label>
+                            <input asp-for="Movievideo" class="form-control" id="movieVideoInput" />
                             <span asp-validation-for="Movievideo" class="text-danger"></span>
+                        </div>
+                        <div id="videoPreview" class="mb-3" style="display: none;">
+                            <label class="form-label">影片預覽</label>
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe id="videoFrame" class="embed-responsive-item" src="" allowfullscreen></iframe>
+                            </div>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="DirectorName" class="form-label"></label>
+                            <label asp-for="DirectorName" class="form-label">導演</label>
                             <input asp-for="DirectorName" class="form-control" />
                             <span asp-validation-for="DirectorName" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="MovieImage" class="form-label">Movie Poster</label>
+                            <label asp-for="MovieImage" class="form-label">電影海報</label>
                             <input asp-for="MovieImage" class="form-control" type="file" id="movieImageInput" accept="image/*" />
                             <span asp-validation-for="MovieImage" class="text-danger"></span>
-                            <small class="form-text text-muted">Leave empty to keep the existing poster. Choose a new file to replace it.</small>
+                            <small class="form-text text-muted">若不更換海報請留空。選擇新檔案以替換現有海報。</small>
                         </div>
 
-                        <div class="d-flex justify-content-between">
-                            <button type="submit" class="btn btn-primary" id="saveButton">
-                                <i class="fas fa-save me-2"></i>Save Changes
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="submit" class="btn btn-primary px-4" id="saveButton">
+                                <i class="fas fa-save me-2"></i>儲存更改
                             </button>
-                            <a asp-action="Index" class="btn btn-secondary">
-                                <i class="fas fa-list me-2"></i>Back to List
+                            <a asp-action="Index" class="btn btn-secondary px-4">
+                                <i class="fas fa-list me-2"></i>返回列表
                             </a>
                         </div>
                     </form>
@@ -101,24 +196,24 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Current Poster</h5>
+            <div class="card shadow">
+                <div class="card-body p-4">
+                    <h5 class="card-title mb-3">目前海報</h5>
                     @if (Model.MovieImage != null)
                     {
                         <img src="@Url.Action("GetPicture", "Movies", new { id = Model.MovieId })"
-                             alt="Current Movie Poster"
-                             class="img-fluid rounded mb-3" />
+                             alt="目前電影海報"
+                             class="img-fluid rounded mb-4" />
                     }
                     else
                     {
-                        <img src="~/img/no image.png" class="img-fluid rounded mb-3" />
+                        <img src="~/img/no image.png" alt="無海報" class="img-fluid rounded mb-4" />
                     }
 
-                    <h5 class="card-title">New Poster Preview</h5>
+                    <h5 class="card-title mb-3">新海報預覽</h5>
                     <div id="previewSection" style="display: none;">
                         <div id="previewContainer" class="border rounded p-2 d-flex justify-content-center align-items-center" style="height: 300px;">
-                            <img id="imgPreview" src="#" alt="New Poster Preview" style="display:none; max-width:100%; max-height:100%;" class="img-fluid" />
+                            <img id="imgPreview" src="#" alt="新海報預覽" style="display:none; max-width:100%; max-height:100%;" class="img-fluid" />
                         </div>
                     </div>
                 </div>
@@ -140,6 +235,7 @@
 
     <script>
         $(document).ready(function () {
+            loadActors();
             $('#movieImageInput').change(function () {
                 var file = this.files[0];
                 if (file) {
@@ -147,7 +243,7 @@
                     var match = ['image/jpeg', 'image/png', 'image/jpg'];
 
                     if (!(fileType == match[0] || fileType == match[1] || fileType == match[2])) {
-                        toastr.error('Only JPG, JPEG, and PNG files are allowed.');
+                        toastr.error('只允許 JPG、JPEG 和 PNG 檔案。');
                         $('#saveButton').prop('disabled', true);
                         return false;
                     } else {
@@ -166,9 +262,109 @@
                 }
             });
 
-            $('form').submit(function () {
-                // No need to handle the checkbox logic anymore
-                return true;
+            // 影片預覽功能
+            $('#movieVideoInput').on('input', function () {
+                var videoUrl = $(this).val();
+                var videoId = getYouTubeVideoId(videoUrl);
+                if (videoId) {
+                    $('#videoFrame').attr('src', 'https://www.youtube.com/embed/' + videoId);
+                    $('#videoPreview').show();
+                } else {
+                    $('#videoPreview').hide();
+                }
+            });
+            function getYouTubeVideoId(url) {
+                var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                var match = url.match(regExp);
+                return (match && match[2].length == 11) ? match[2] : null;
+            }
+
+            function loadActors() {
+                // alert("loadActors function called"); // Alert 1
+
+                var movieId = $('#MovieId').val();
+                // alert("Movie ID: " + movieId); // Alert 2
+
+                $.ajax({
+                    url: '/admin/Movies/GetMovieActors', // Updated URL
+
+                    data: { movieId: movieId },
+                    method: 'GET',
+                    success: function (data) {
+                        alert("AJAX call successful. Data received: " + JSON.stringify(data)); // Alert 3
+
+                        var html = '<h4>Actors</h4>';
+                        data.forEach(function (actor) {
+                            html += `
+                                       <div class="actor-selection mb-3">
+            <div class="d-flex align-items-center">
+                <div class="form-check me-3">
+                    <input type="checkbox" class="form-check-input" id="actor${actor.actorId}"
+                           ${actor.isSelected ? 'checked' : ''} data-actor-id="${actor.actorId}">
+                    <label class="form-check-label" for="actor${actor.actorId}">${actor.actorName}</label>
+                </div>
+                <div class="input-group" style="max-width: 150px;">
+                    <span class="input-group-text">主要性</span>
+                    <input type="number" class="form-control" value="${actor.mainLevel}"
+                           placeholder="Main Level" data-actor-id="${actor.actorId}" min="1" max="10">
+                </div>
+            </div>
+        </div>
+                    `;
+                        });
+                        $('#actorsSection').html(html);
+
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Error in AJAX call: " + status + " - " + error); // Alert 5
+                        console.error("Error loading actors:", status, error);
+                        console.log("Response:", xhr.responseText);
+                        toastr.error("Failed to load actors. Please try again.");
+                    }
+                });
+            }
+
+            function saveMovie() {
+                var movieData = $('form').serialize();
+                var actorsData = [];
+                $('.actor-selection').each(function () {
+                    var actorId = $(this).find('input[type="checkbox"]').data('actor-id');
+                    var isSelected = $(this).find('input[type="checkbox"]').is(':checked');
+                    var mainLevel = $(this).find('input[type="number"]').val();
+                    actorsData.push({
+                        actorId: actorId,
+                        isSelected: isSelected,
+                        mainLevel: mainLevel
+                    });
+                });
+
+                $.ajax({
+                    url: '@Url.Action("Edit", "Movies")',
+                    method: 'POST',
+                    data: movieData,
+                    success: function () {
+                        $.ajax({
+                            url: '@Url.Action("UpdateMovieActors", "Movies")',
+                            method: 'POST',
+                            data: JSON.stringify({ movieId: @Model.MovieId, actors: actorsData }),
+                            contentType: 'application/json',
+                            success: function () {
+                                window.location.href = '@Url.Action("Index", "Movies")';
+                            },
+                            error: function (xhr, status, error) {
+                                console.error("Error updating movie actors:", error);
+                                toastr.error("Failed to update movie actors. Please try again.");
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error saving movie:", error);
+                        toastr.error("Failed to save movie. Please try again.");
+                    }
+                });
+            } $('form').submit(function (e) {
+                e.preventDefault();
+                saveMovie();
             });
         });
     </script>
