@@ -31,7 +31,7 @@
         }
 
         .btn {
-            border-radius: 25px;
+            border-radius: 10px;
         }
 
         #videoPreview {
@@ -44,30 +44,51 @@
             height: 450px; /* 你可以根據需要調整高度 */
         }
 
-        .actor-selection {
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 0.25rem;
-            padding: 0.5rem;
+        .actor-item {
+            transition: background-color 0.3s ease;
+            height: 100%;
         }
 
-            .actor-selection:hover {
-                background-color: #e9ecef;
+            .actor-item:hover {
+                background-color: #f8f9fa;
             }
 
-            .actor-selection .form-check-label {
-                font-weight: bold;
+            .actor-item .form-check-input:checked + .form-check-label {
+                color: #007bff;
             }
 
-            .actor-selection .input-group-text {
-                background-color: #6c757d;
+            .actor-item select.form-select-sm {
+                padding-top: 0.25rem;
+                padding-bottom: 0.25rem;
+                width: 100%;
+            }
+
+        .card-header {
+            border-bottom: 0;
+        }
+
+        .actor-results {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+            .actor-results .list-group-item {
+                transition: all 0.2s ease-in-out;
+            }
+
+                .actor-results .list-group-item:hover {
+                    background-color: #f8f9fa;
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 6px rgba(0,0,0,.1);
+                }
+
+        #searchActorBtn {
+            transition: all 0.2s ease-in-out;
+        }
+
+            #searchActorBtn:hover {
+                background-color: #007bff;
                 color: white;
-                border: none;
-            }
-
-            .actor-selection .form-control:focus {
-                border-color: #80bdff;
-                box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
             }
     </style>
 }
@@ -96,8 +117,24 @@
             <div class="card shadow">
                 <div class="card-body p-4">
                     <form asp-action="Edit" enctype="multipart/form-data">
-                        <div id="actorsSection" class="mb-4">
-                            <h4 class="mb-3">Actors</h4>
+						<div class="card  mb-4">
+							<div class="card-header bg-primary text-white">
+								<h5 class="mb-0"><i class="fas fa-user-plus me-2"></i>新增主演</h5>
+							</div>
+							<div class="card-body">
+								<div class="input-group mb-3">
+									<input type="text" id="actorSearch" class="form-control" placeholder="Search for an actor...">
+									<button class="btn btn-outline-primary" type="button" id="searchActorBtn">
+										<i class="fas fa-search me-1"></i>Search
+									</button>
+								</div>
+								<div id="searchResults" class="list-group actor-results">
+									<!-- Search results will be populated here -->
+								</div>
+							</div>
+						</div>
+						<div id="actorsSection" class="mb-4">
+                            <h4 class="mb-3">主演</h4>
                             <div class="row" id="actorsContainer">
                                 <!-- This will be populated via AJAX -->
                             </div>
@@ -228,6 +265,7 @@
     <script src="~/assets/js/core/bootstrap.min.js"></script>
     <script src="~/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
     <script src="~/assets/js/kaiadmin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
@@ -273,6 +311,93 @@
                     $('#videoPreview').hide();
                 }
             });
+
+             $('#searchActorBtn').click(function () {
+                            var query = $('#actorSearch').val();
+                            if (query.trim() === '') {
+                                Swal.fire('Oops!', 'Please enter an actor name to search.', 'warning');
+                                return;
+                            }
+                            $.ajax({
+                                url: '/admin/MovieActor/SearchActors',
+                                data: { query: query },
+                                method: 'GET',
+                                beforeSend: function () {
+                                    $('#searchResults').html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Searching...</div>');
+                                },
+                                success: function (data) {
+                                    var html = '';
+                                    if (data.actors.length > 0) {
+                                        data.actors.forEach(function (actor) {
+                                            html += `<button type="button" class="list-group-item list-group-item-action add-actor" data-actor-id="${actor.actorId}">${actor.actorName}</button>`;
+                                        });
+                                    } else if (!data.exactMatch) {
+                                        html = `<button type="button" class="list-group-item list-group-item-action add-new-actor">${query} (新增演員)</button>`;
+                                    }
+                                    $('#searchResults').html(html);
+                                }
+                            });
+                        });
+
+                $(document).on('click', '.add-new-actor', function () {
+                    var actorName = $(this).text().replace(' (新增演員)', '');
+
+                    Swal.fire({
+                        title: '新增演員',
+                        text: `演員 "${actorName}" 不存在。您要新增這個演員嗎？`,
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: '是，新增演員',
+                        cancelButtonText: '取消'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: '/admin/MovieActor/AddNewActor',
+                                data: { actorName: actorName },
+                                method: 'POST',
+                                success: function (data) {
+                                    Swal.fire(
+                                        '成功!',
+                                        '新演員已成功添加',
+                                        'success'
+                                    );
+                                    addActorToMovie(data.actorId, data.actorName);
+                                },
+                                error: function (xhr) {
+                                    Swal.fire(
+                                        '錯誤!',
+                                        '添加新演員失敗',
+                                        'error'
+                                    );
+                                }
+                            });
+                        }
+                    });
+                });
+
+            function addActorToMovie(actorId, actorName) {
+                var movieId = $('#MovieId').val();
+                $.ajax({
+                    url: '/admin/MovieActor/AddActorToMovie',
+                    data: { movieId: movieId, actorId: actorId },
+                    method: 'POST',
+                    success: function (data) {
+                        toastr.success(`演員 ${actorName} 已成功添加到電影`);
+                        loadActors();
+                    },
+                    error: function (xhr) {
+                        toastr.error(xhr.responseText);
+                    }
+                });
+            }
+
+            $(document).on('click', '.add-actor', function () {
+                var actorId = $(this).data('actor-id');
+                var actorName = $(this).text();
+                addActorToMovie(actorId, actorName);
+            });
             function getYouTubeVideoId(url) {
                 var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
                 var match = url.match(regExp);
@@ -287,32 +412,44 @@
 
                 $.ajax({
                     url: '/admin/Movies/GetMovieActors', // Updated URL
-
                     data: { movieId: movieId },
                     method: 'GET',
                     success: function (data) {
-                        alert("AJAX call successful. Data received: " + JSON.stringify(data)); // Alert 3
+                        // alert("AJAX call successful. Data received: " + JSON.stringify(data)); // Alert 3
 
-                        var html = '<h4>Actors</h4>';
-                        data.forEach(function (actor) {
+                        var html = '<h4 class="mb-3">主演</h4><div class="row">';
+                        data.forEach(function (actor, index) {
                             html += `
-                                       <div class="actor-selection mb-3">
-            <div class="d-flex align-items-center">
-                <div class="form-check me-3">
-                    <input type="checkbox" class="form-check-input" id="actor${actor.actorId}"
-                           ${actor.isSelected ? 'checked' : ''} data-actor-id="${actor.actorId}">
-                    <label class="form-check-label" for="actor${actor.actorId}">${actor.actorName}</label>
-                </div>
-                <div class="input-group" style="max-width: 150px;">
-                    <span class="input-group-text">主要性</span>
-                    <input type="number" class="form-control" value="${actor.mainLevel}"
-                           placeholder="Main Level" data-actor-id="${actor.actorId}" min="1" max="10">
-                </div>
-            </div>
-        </div>
-                    `;
+                            <div class="col-md-4 mb-3">
+                                <div class="actor-item p-3 border rounded h-100">
+                                    <div class="d-flex flex-column justify-content-between h-100">
+                                        <div class="form-check mb-2">
+                                            <input type="checkbox" class="form-check-input" id="actor${actor.actorId}"
+                                                   ${actor.isSelected ? 'checked' : ''} data-actor-id="${actor.actorId}">
+                                            <label class="form-check-label fw-bold" for="actor${actor.actorId}">${actor.actorName}</label>
+                                        </div>
+                                        <div>
+                                            <label for="mainLevel${actor.actorId}" class="me-2">Main Level:</label>
+                                            <select class="form-select form-select-sm" id="mainLevel${actor.actorId}"
+                                                    data-actor-id="${actor.actorId}">
+                                                <option value="0" ${actor.mainLevel == 0 ? 'selected' : ''}>選擇角色</option>
+                                                <option value="1" ${actor.mainLevel == 1 ? 'selected' : ''}>男主角</option>
+                                                <option value="2" ${actor.mainLevel == 2 ? 'selected' : ''}>女主角</option>
+                                                <option value="3" ${actor.mainLevel == 3 ? 'selected' : ''}>配角</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            `;
+                            // Close the row and start a new one every 3 actors
+                            if ((index + 1) % 3 === 0 && index !== data.length - 1) {
+                                html += '</div><div class="row">';
+                            }
                         });
+                        html += '</div>'; // Close the last row
                         $('#actorsSection').html(html);
+                        alert("Actors HTML generated and inserted into DOM"); // Alert 4
 
                     },
                     error: function (xhr, status, error) {
@@ -323,18 +460,19 @@
                     }
                 });
             }
-
+           
             function saveMovie() {
+                alert("saveActors function called");
                 var movieData = $('form').serialize();
                 var actorsData = [];
-                $('.actor-selection').each(function () {
+                $('#actorsSection .actor-item').each(function () {
                     var actorId = $(this).find('input[type="checkbox"]').data('actor-id');
                     var isSelected = $(this).find('input[type="checkbox"]').is(':checked');
-                    var mainLevel = $(this).find('input[type="number"]').val();
+                    var mainLevel = $(this).find('select').val();
                     actorsData.push({
                         actorId: actorId,
                         isSelected: isSelected,
-                        mainLevel: mainLevel
+                        mainLevel: parseInt(mainLevel)
                     });
                 });
 
@@ -362,8 +500,11 @@
                         toastr.error("Failed to save movie. Please try again.");
                     }
                 });
-            } $('form').submit(function (e) {
+            }
+            $('form').submit(function (e) {
                 e.preventDefault();
+                alert("Form submission prevented");
+
                 saveMovie();
             });
         });
