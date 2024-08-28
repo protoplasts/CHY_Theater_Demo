@@ -25,7 +25,6 @@ namespace CHY_Theater.Areas.Booking.Models.ViewModels
             public string MovieName { get; set; }
             public int Level { get; set; }
             public DateTime ShowDateTime { get; set; }
-            // Add any other Show properties you need to display
         }
 
     }

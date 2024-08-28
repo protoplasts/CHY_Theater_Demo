@@ -2,7 +2,7 @@
 @{
     // Group all shows by date, then by movie, then by auditorium
     var showsByDateAndMovie = Model.Auditoriums
-        .SelectMany(a => a.Shows.Select(s => new { Show = s, Auditorium = a }))
+        .SelectMany(a => a.Shows.Select(s => new { Show = s, Auditorium = a })) //Flattened Collection
         .GroupBy(x => x.Show.ShowDateTime.Date)
         .OrderBy(g => g.Key)
         .Select(dateGroup => new
@@ -51,6 +51,8 @@
     string GetChineseDayOfWeek(DateTime date)
     {
         string[] chineseDaysOfWeek = { "日", "一", "二", "三", "四", "五", "六" };
+        // The DayOfWeek property of the DateTime object returns an enum value
+        // Uses it as an index to access the corresponding Chinese character in the chineseDaysOfWeek array.
         return chineseDaysOfWeek[(int)date.DayOfWeek];
     }
 }
@@ -61,12 +63,12 @@
     <div class="tab-links">
         @foreach (var date in GetNextFiveDays())
         {
+            @* data-target attribute is a custom data attribute used in HTML to associate additional information with an element. In this case, it's being used to create a connection between the tab buttons and their corresponding content sections. *@
             <button class="tab-link" data-target="#date-@date.ToString("yyyy-MM-dd")">
                 @date.ToString("M月dd日") (@("星期" + GetChineseDayOfWeek(date)))
             </button>
         }
     </div>
-
     <!-- Tab Content -->
     @foreach (var date in GetNextFiveDays())
     {
@@ -133,6 +135,7 @@
             tabs.forEach(function (tab) {
                 tab.addEventListener('click', function (event) {
                     event.preventDefault();
+                    //getAttribute:retrieves the value of a specified attribute on an HTML element.
                     const targetId = tab.getAttribute('data-target');
 
                     tabContents.forEach(function (content) {

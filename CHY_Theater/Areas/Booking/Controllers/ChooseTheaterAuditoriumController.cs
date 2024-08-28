@@ -31,7 +31,6 @@ namespace CHY_Theater.Areas.Booking.Controllers
                 .Where(a => a.TheaterId == theaterID)
                 .Include(a => a.Shows)
                 .ThenInclude(s => s.Movie);
-
             var viewModel = new TheaterAuditoriumsViewModel
             {
                 Auditoriums = auditoriums.Select(a => new AuditoriumInfo
@@ -49,7 +48,7 @@ namespace CHY_Theater.Areas.Booking.Controllers
                     }).ToList()
                 }).ToList(),
                 Theaters = new List<Theater> { theater },
-                TheaterId = theaterID  // Add this line to include TheaterId in the viewModel
+                TheaterId = theaterID  
             };
             return PartialView("~/Areas/Booking/Views/PartialView/_AuditoriumPartial.cshtml", viewModel);
         }
