@@ -15,11 +15,13 @@ namespace CHY_Theater.Areas.Booking.Controllers
 
     public class BookingController : Controller
     {
+        #region readonly
         private readonly Theater_ProjectDbContext _context;
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly IRewardPointService _rewardPointService;
+        #endregion
 
-		public BookingController(UserManager<ApplicationUser> userManager, Theater_ProjectDbContext context, IRewardPointService rewardPointService)
+        public BookingController(UserManager<ApplicationUser> userManager, Theater_ProjectDbContext context, IRewardPointService rewardPointService)
         {
             _context = context; 
             _userManager = userManager;
@@ -143,12 +145,10 @@ namespace CHY_Theater.Areas.Booking.Controllers
 
                                 usercoupon.IsUsed = true;
                                 await _context.SaveChangesAsync();
-
                             }
 
                         }
-                        else { 
-                            
+                        else {                             
                             if (coupon.CurrentUsageCount.HasValue)
                             {
                                 coupon.CurrentUsageCount++;
@@ -156,9 +156,7 @@ namespace CHY_Theater.Areas.Booking.Controllers
                             else
                             {
                                 coupon.CurrentUsageCount = 1;
-                            }
-
-                            
+                            }                            
                         }
                         await _context.SaveChangesAsync();
                     }

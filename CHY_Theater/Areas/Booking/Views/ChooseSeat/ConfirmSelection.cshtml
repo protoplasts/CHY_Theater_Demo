@@ -171,6 +171,26 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
+        .button-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+            .button-row .btn {
+                flex: 1;
+                margin: 0 0.5rem;
+                width: auto;
+                min-width: 120px;
+                max-width: 180px;
+            }
+
+        .btn-abandon {
+            background-color: red;
+            color: white;
+            width:50%
+        }
+       
       
         #paymentOptions {
             margin-top: 2rem;
@@ -244,7 +264,6 @@
                 @foreach (var ticketType in Model.SelectedTickets)
                 {
                     <li>@ticketType.TypeName - @ticketType.Quantity 張 </li>
-
                 }
             </ul>
             <p><strong>明細:</strong></p>
@@ -261,15 +280,9 @@
             </ul>
             <p><strong>加購品項: </strong></p>
             <ul>
-
-
                 @foreach (var ticketType in Model.SelectedSnacks)
                 {
-                    <li>
-
-                        @ticketType.SnackName x @ticketType.Quantity
-
-                    </li>
+                    <li>@ticketType.SnackName x @ticketType.Quantity</li>
                 }
             </ul>
             <p><strong>座位:</strong></p>
@@ -317,9 +330,10 @@
                 <button id="usePointsBtn" class="btn">使用紅利折抵</button>
                 <button id="cancelPointsBtn" class="btn" style="display: none;">取消使用</button>
             </div>
-                <button class="btn btn-abandon btn-block animateBtn mt-4" onclick="goBackToIndex()">放棄本次訂票</button>
-
-            <button class="btn btn-primary btn-block animateBtn mt-4" onclick="proceedToPayment()">確認訂單</button>
+                <div class="button-row">
+                    <button class="btn btn-abandon animateBtn" onclick="goBackToIndex()">放棄本次訂票</button>
+                    <button class="btn btn-primary animateBtn" onclick="proceedToPayment()">確認訂單</button>
+                </div>
         </div>
     </div>
     <div id="paymentOptions" style="display: none;">
@@ -361,32 +375,32 @@
 
         $(document).ready(function () {
             let originalTotal = parseFloat('@Model.MovieTotalPrice'.replace(/[^0-9.-]+/g, ""));
-            currentTotalPrice = originalTotal; // Initialize the global variable
+            currentTotalPrice = originalTotal; 
             let appliedCouponDiscount = 0;
             let appliedPointsDiscount = 0;
             let appliedPoints = 0;
             let appliedCouponCode = '';
             $('#userCouponSelect').change(function () {
                 var selectedCoupon = $(this).val();
-                if (selectedCoupon == "選擇優惠券") {
+                if (selectedCoupon == "選擇優惠券") 
+                {
                     cancelCoupon();
                     $('#couponCode').show();
                     $('#CouponBtnSection').show();
                     $('#couponCodeInputSection').show();
-
                 }
-                else{
+                else
+                {
                     $('#couponCode').val(selectedCoupon);
                     $('#CouponBtnSection').hide();
                     $('#couponCodeInputSection').hide();
-
                     applyCoupon();
                 }
             });
 
             function updateTotalPrice() {
                 currentTotalPrice = originalTotal - appliedCouponDiscount - appliedPointsDiscount;
-                $('#totalPrice').text(currentTotalPrice.toFixed(2));
+                $('#totalPrice').text(currentTotalPrice.toFixed(0));
             }
 
             function applyCoupon() {
@@ -407,18 +421,18 @@
                             appliedCouponDiscount = currentTotalPrice - response.newTotal;
                             updateTotalPrice();
                             appliedCouponCode = couponCode;
-                            $('#couponMessage').text('優惠碼已成功應用！').removeClass('text-danger').addClass('text-success');
+                            $('#couponMessage').text('優惠碼已成功應用！').removeClass('text-dark').addClass('text-danger');
 
                             // Disable the coupon input and apply button, show cancel button
                             $('#couponCode, #applyCouponBtn').prop('disabled', true);
                             $('#cancelCouponBtn').show();
                             $('#applyCouponBtn').hide();
                         } else {
-                            $('#couponMessage').text(response.message).removeClass('text-success').addClass('text-danger');
+                            $('#couponMessage').text(response.message).removeClass('text-dark').addClass('text-danger');
                         }
                     },
                     error: function () {
-                        $('#couponMessage').text('驗證優惠碼時發生錯誤。請重試。').removeClass('text-success').addClass('text-danger');
+                        $('#couponMessage').text('驗證優惠碼時發生錯誤。請重試。').removeClass('text-dark').addClass('text-danger');
                     }
                 });
             }
@@ -429,7 +443,7 @@
 
                 // Clear coupon code and message
                 $('#couponCode').val('').prop('disabled', false);
-                $('#couponMessage').text('').removeClass('text-success text-danger');
+                $('#couponMessage').text('').removeClass('text-danger');
                 $('#couponCode').show();
                 // Reset button states
                 $('#applyCouponBtn').prop('disabled', false).show();
@@ -455,9 +469,8 @@
                     showLoaderOnConfirm: true,
                     preConfirm: (pointsToUse) => {
                         pointsToUse = parseInt(pointsToUse);
-                        let discount = pointsToUse; // Assuming 100 points = $1 discount
+                        let discount = pointsToUse; // Assuming 1 points = $1 discount
                         let newTotal = currentTotalPrice - discount;
-
                         return {
                             pointsToUse: pointsToUse,
                             newTotal: newTotal,
@@ -586,7 +599,7 @@
                 showConfirmButton: false,
                 timer: 1000
             }).then(() => {
-                var TotalPrice = Math.round(currentTotalPrice); // This will now work correctly
+                var TotalPrice = Math.round(currentTotalPrice);
                 var merchantTradeNo = '@Model.MerchantTradeNo';
                 $('#payLaterBtn').hide();
                 alert(TotalPrice);

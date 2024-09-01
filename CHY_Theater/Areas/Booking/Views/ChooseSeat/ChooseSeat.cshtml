@@ -460,9 +460,8 @@
                     <div class="movie-info">
                     <h3>@Model.MovieName (@Model.MovieEnglishName)</h3>
                     <p>
-                        <strong class="fw-bold fs-4 text-dark">級別:</strong> @* @Model.Movie.Level *@
+                        <strong class="fw-bold fs-4 text-dark">級別:</strong>
                         <img src="@GetLevelImagePath(Model.Level)" alt="Level @Model.Level" class="" style="height:50px" />
-
                     </p>
                     <p><strong>開演時間 :</strong> @Model.ShowDateTime.ToString("yyyy/MM/dd HH:mm") <span id="timeLeft"></span></p>
                     <p><strong>地點:</strong> @Model.AuditoriumName-@Model.Auditoriumtype</p>
@@ -470,35 +469,25 @@
                     <ul>
                         @foreach (var ticketType in Model.TicketTypes)
                         {
-                            <p>@ticketType.TypeName - @ticketType.Quantity 張 </p>
+                            <li>@ticketType.TypeName - @ticketType.Quantity 張 </li>
                         }
                     </ul>
                     <p><strong>明細:</strong> </p>
                     <ul>
-
                         <li>@Model.GetCombinedTicketDescription()</li>
-
-
                     </ul>
                     <p><strong>加購品項:</strong> </p>
 
                     <ul>
-
                         @foreach (var ticketType in Model.SelectedSnacks)
                         {
-                            <li>
-
-                                @ticketType.SnackName x @ticketType.Quantity
-
-                            </li>
+                           <li>@ticketType.SnackName x @ticketType.Quantity</li>
                         }
                     </ul>
                     <p><strong>座位:</strong> <span id="selectedSeatInfo"></span></p>
                     <p><strong>總計:</strong> @Model.BookingSelection.TotalPrice</p>
-
-
                 </div>
-                </div>
+             </div>
      </div>
 
     <div class="row my-4">
@@ -526,7 +515,6 @@
                         {
                             var showSeatStatus = seat.ShowSeatStatus == "Available" ? "available" : "booked";
                             var isAisle = seat.SeatNumber == 7 || seat.SeatNumber == 8 || seat.SeatNumber == 18 || seat.SeatNumber == 19;
-
                             <div class="seat @showSeatStatus @(isAisle ? "aisle" : "")"
                                  data-seat-id="@seat.SeatID"
                                  onclick="changeSeat('@seat.SeatID', '@seat.SeatNumber', '@showSeatStatus', '@seat.SeatRow')">
@@ -538,10 +526,10 @@
                             <div class="seat-placeholder"></div>
                         }
 
-                        @if (seat.SeatNumber == 7 || seat.SeatNumber == 18)
-                        {
-                            <div class="row-label aisle">@row.Key</div>
-                        }
+                            if ((seat.SeatNumber == 7 && row.Any(s => s.SeatNumber > 7)) || (seat.SeatNumber == 18 && row.Any(s => s.SeatNumber > 18)))
+                            {
+                                <div class="row-label aisle">@row.Key</div>
+                            }
                     }
                     <div class="row-label right">@row.Key</div>
                 </div>
@@ -593,33 +581,35 @@
     function enableConfirmButton() {
         quantityButton.disabled = selectedSeats.length !== requiredSeats;
     }
-
     function changeSeat(seatID, seatNumber, seatStatus, seatRow) {
         if (seatStatus === 'booked') {
             showNotification('這個座位已經被預訂了。請您選擇其他可用座位.');
             return;
         }
-
         const seat = document.querySelector(`.seat[data-seat-id="${seatID}"]`);
-        const seatIndex = selectedSeats.findIndex(seat => seat.SeatID === seatID);
 
+        //在selectedSeats暫存array找現在選擇的SeatID之index
+        const seatIndex = selectedSeats.findIndex(seat => seat.SeatID === seatID);
+        
+        //如果這個座位被選過seatIndex就不會為-1
         if (seatIndex !== -1) {
             selectedSeats.splice(seatIndex, 1);
             seat.classList.remove('chosen');
             showNotification(`您已取消選擇座位。您已選擇 ${selectedSeats.length} 個座位，還需再選擇 ${requiredSeats - selectedSeats.length} 個座位。`);
-        } else if (selectedSeats.length < requiredSeats) {
+        } 
+        else if (selectedSeats.length < requiredSeats) {
             selectedSeats.push({ SeatID: seatID, seatRow: seatRow, seatNumber: seatNumber });
             seat.classList.add('chosen');
-            if (selectedSeats.length === requiredSeats) {
-                showNotification(`您已經選取完所需的座位數`);
-            } else {
+            if (selectedSeats.length === requiredSeats) {showNotification(`您已經選取完所需的座位數`);
+            } 
+            else {
                 showNotification(`您已選擇 ${selectedSeats.length} 個座位。您需要再選擇 ${requiredSeats - selectedSeats.length} 個席位。`);
             }
-        } else {
+        } 
+        else {
             showNotification('請先取消選取已選取座位。');
             return;
         }
-
         enableConfirmButton();
         updateSelectedSeatInfo();
         updateQuantityButtonText();
@@ -815,6 +805,7 @@
         }
         document.getElementById("timeLeft").textContent = "(" + timeLeftDisplay + ")";
     }
+    // Update the time left every second
     setInterval(updateTimeLeft, 1000);
     updateTimeLeft();
 </script>

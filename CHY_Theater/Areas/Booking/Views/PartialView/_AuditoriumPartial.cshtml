@@ -127,33 +127,51 @@
 
 @section Scripts {
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     // Tab functionality
+        //     const tabs = document.querySelectorAll('.tab-link');
+        //     const tabContents = document.querySelectorAll('.tab-content');
+
+        //     tabs.forEach(function (tab) {
+        //         tab.addEventListener('click', function (event) {
+        //             event.preventDefault();
+        //             //getAttribute:retrieves the value of a specified attribute on an HTML element.
+        //             const targetId = tab.getAttribute('data-target');
+
+        //             tabContents.forEach(function (content) {
+        //                 content.style.display = 'none';
+        //             });
+        //             tabs.forEach(function (item) {
+        //                 item.classList.remove('active');
+        //             });
+
+        //             document.querySelector(targetId).style.display = 'block';
+        //             tab.classList.add('active');
+        //         });
+        //     });
+
+        //     // Activate the first tab by default
+        //     if (tabs.length > 0) {
+        //         tabs[0].click();
+        //     }
+        // });
+        //改用 jQuery
+        $(document).ready(function () {
             // Tab functionality
-            const tabs = document.querySelectorAll('.tab-link');
-            const tabContents = document.querySelectorAll('.tab-content');
+            $('.tab-link').on('click', function (e) {
+                e.preventDefault();
+                var targetId = $(this).data('target');
 
-            tabs.forEach(function (tab) {
-                tab.addEventListener('click', function (event) {
-                    event.preventDefault();
-                    //getAttribute:retrieves the value of a specified attribute on an HTML element.
-                    const targetId = tab.getAttribute('data-target');
+                // Hide all tab contents and remove active class from tabs
+                $('.tab-content').hide();
+                $('.tab-link').removeClass('active');
 
-                    tabContents.forEach(function (content) {
-                        content.style.display = 'none';
-                    });
-                    tabs.forEach(function (item) {
-                        item.classList.remove('active');
-                    });
-
-                    document.querySelector(targetId).style.display = 'block';
-                    tab.classList.add('active');
-                });
+                // Show the target content and add active class to clicked tab
+                $(targetId).show();
+                $(this).addClass('active');
             });
 
             // Activate the first tab by default
-            if (tabs.length > 0) {
-                tabs[0].click();
-            }
-        });
-    </script>
+            $('.tab-link:first').click();
+        });</script>
 }

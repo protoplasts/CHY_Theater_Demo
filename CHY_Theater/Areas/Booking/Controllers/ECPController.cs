@@ -45,7 +45,6 @@ namespace CHY_Theater.Areas.Booking.Controllers
             return "TR" + DateTime.Now.ToString("yyyyMMddHHmmss") + new Random().Next(1000, 9999).ToString();
         }
 
-
         public IActionResult GetPaymentForm(int totalPrice, string merchantTradeNo)
         {
             var model = new ECPayViewModel
@@ -59,7 +58,6 @@ namespace CHY_Theater.Areas.Booking.Controllers
         public IActionResult SendToNewebPay(ECPayViewModel inModel)
         {
             var userId = GetCurrentUserId();
-
             //var service = GetPayType(inModel.PayOption);
             var service = new ECPayService(_context, _accessor, userId);
 

@@ -20,14 +20,11 @@ namespace CHY_Theater.Areas.Booking.Controllers
         private readonly Theater_ProjectDbContext _context;
         private readonly IRewardPointService _rewardPointService;
         private readonly IUserCouponService _userCouponService;
-
         public ChooseSeatController(Theater_ProjectDbContext context, IRewardPointService rewardPointService, IUserCouponService userCouponService)
         {
             _context = context; 
             _rewardPointService = rewardPointService;
             _userCouponService = userCouponService;
-
-
         }
         public IActionResult ChooseSeat()
         {
@@ -45,7 +42,6 @@ namespace CHY_Theater.Areas.Booking.Controllers
                 string snackName = snack.SnackName;
                 int price = snack.Price;
                 int quantity = snack.Quantity;
-
             }
             foreach (var ticket in selectedTickets)
             {
@@ -115,7 +111,6 @@ namespace CHY_Theater.Areas.Booking.Controllers
 
         public async Task<IActionResult> ConfirmSelection([FromForm] ConfirmSelectionViewModel model)
         {
-
             if (model == null)
             {
                 return BadRequest("No data received");
@@ -124,7 +119,7 @@ namespace CHY_Theater.Areas.Booking.Controllers
             {
                 model.MerchantTradeNo = GenerateUniqueMerchantTradeNo();
             }
-            // If SelectedSnacks is still null, try to bind it manually
+            
             if (model.SelectedSnacks == null)
             {
                 model.SelectedSnacks = new List<ConfirmSelectionViewModel.SelectedSnack>();
@@ -132,7 +127,6 @@ namespace CHY_Theater.Areas.Booking.Controllers
                 {
                     var snackId = Request.Form[$"SelectedSnacks[{i}].SnackId"];
                     if (string.IsNullOrEmpty(snackId)) break;
-
                     model.SelectedSnacks.Add(new ConfirmSelectionViewModel.SelectedSnack
                     {
                         SnackId = int.Parse(snackId),
@@ -147,14 +141,13 @@ namespace CHY_Theater.Areas.Booking.Controllers
 
             // Fetch available points
             var availablePoints = await _rewardPointService.GetTotalPointsAsync(userId);
-
             // Pass the available points to the view using ViewBag
             ViewBag.AvailablePoints = availablePoints;
+
             // Fetch user-specific coupons
             var userCoupons = await _userCouponService.GetUserCoupons(userId);
             ViewBag.UserCoupons = userCoupons.Where(uc => !uc.IsUsed).ToList();
-            //model.MovieImg.Add(movie.MovieImage);
-            // Process the rest of the submitted data
+       
             return View(model);
         }
         private string GenerateUniqueMerchantTradeNo()
@@ -175,7 +168,6 @@ namespace CHY_Theater.Areas.Booking.Controllers
             {
                 return Json(new { isValid = false, message = "無效的優惠碼。" });
             }
-
             var currentDate = DateOnly.FromDateTime(DateTime.Now);
             if (currentDate < coupon.StartDate || currentDate > coupon.ExpiryDate)
             {
