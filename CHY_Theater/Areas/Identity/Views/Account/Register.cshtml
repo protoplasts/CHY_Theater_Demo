@@ -191,10 +191,15 @@
                     success: function (result) {
                         if (result.success) {
                             Swal.fire({
-                                title: 'Registration Successful!',
+                                title: '註冊成功！',
                                 html: result.message,
                                 icon: 'success',
                                 confirmButtonText: 'OK'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    // Redirect to the homepage
+                                    window.location.href = '/';
+                                }
                             });
                         } else {
                             // Handle validation errors or other issues

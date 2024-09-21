@@ -20,9 +20,8 @@ namespace CHY_Theater.Service
         }
 
         public async Task CreateNewUserCoupon(string userId)
-        {
-           
-            var newUserCoupons = await _context.Coupons
+        {           
+          var newUserCoupons = await _context.Coupons
          .Where(c => c.IsUserSpecific && c.Description == "新用戶禮")
          .ToListAsync();
 
@@ -39,8 +38,7 @@ namespace CHY_Theater.Service
                     };
                     _context.UserCoupons.Add(userCoupon);
                 }
-                // Check if it's the user's birth month
-               
+                // Check if it's the user's birth month               
                 await _context.SaveChangesAsync();
             }
         }

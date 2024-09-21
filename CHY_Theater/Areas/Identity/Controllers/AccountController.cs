@@ -92,7 +92,6 @@ namespace CHY_Theater.Areas.Identity.Controllers
                     TotalSpent = 0,
                     LastLoginTime = DateTime.UtcNow
                 };
-
                 try
                 {
                     var result = await _userManager.CreateAsync(user, model.Password);
@@ -119,7 +118,7 @@ namespace CHY_Theater.Areas.Identity.Controllers
                         //用於確定在用戶登錄之前是否需要確認帳戶。我在Program.cs設為false所以不需要驗證即可登入)
                         if (_userManager.Options.SignIn.RequireConfirmedAccount)
                         {
-                            return Json(new { success = true, message = "註冊成功。請檢查您的電子郵件以進行驗證。" });
+                            return Json(new { success = true, message = "註冊成功。請檢查您的電子郵件以進行驗證才可登入。" });
                         }
                         else
                         {
@@ -144,8 +143,8 @@ namespace CHY_Theater.Areas.Identity.Controllers
         }
 
         private async Task SendEmailAsync(string email, string subject, string htmlMessage)
-        {    
-            // 從配置中讀取電子郵件設置
+        {
+            // 從配置中(appsettings.json)讀取電子郵件設置
             var emailSettings = _configuration.GetSection("EmailSettings");
             var smtpServer = emailSettings["SmtpServer"];
             var smtpPort = int.Parse(emailSettings["SmtpPort"]);
@@ -161,7 +160,6 @@ namespace CHY_Theater.Areas.Identity.Controllers
             {
                 Text = htmlMessage
             };
-
             // 使用 MailKit 的 SmtpClient 發送郵件
             using (var client = new SmtpClient())
             {

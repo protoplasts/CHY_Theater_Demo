@@ -2,6 +2,7 @@
 using CHY_Theater.Areas.Booking.Services;
 using CHY_Theater_DataAcess.Data;
 using CHY_Theater_Models.Models;
+using Commerce.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -38,12 +39,7 @@ namespace CHY_Theater.Areas.Booking.Controllers
             };
 
             return View(viewModel);
-        }
-        private string GenerateUniqueTradeNo()
-        {
-            // Implement your logic to generate a unique trade number
-            return "TR" + DateTime.Now.ToString("yyyyMMddHHmmss") + new Random().Next(1000, 9999).ToString();
-        }
+        }       
 
         public IActionResult GetPaymentForm(int totalPrice, string merchantTradeNo)
         {
@@ -58,10 +54,26 @@ namespace CHY_Theater.Areas.Booking.Controllers
         public IActionResult SendToNewebPay(ECPayViewModel inModel)
         {
             var userId = GetCurrentUserId();
-            //var service = GetPayType(inModel.PayOption);
-            var service = new ECPayService(_context, _accessor, userId);
+            var service = GetPayType(inModel.PayOption);
+            //var service = new ECPayService(_context, _accessor, userId);
 
             return Json(GetReturnValue(service, inModel));
+        }
+        private ICommerce GetPayType(string option)
+        {
+            var userId = GetCurrentUserId();
+
+            switch (option)
+            {
+                case "newbPay":
+                case "newbPayPeriod":
+                    return new NewebpayService(_context, _accessor, userId);
+                case "ECPay":
+                case "ECPayPeriod":
+                    return new ECPayService(_context, _accessor, userId);
+
+                default: throw new ArgumentException("No Such option");
+            }
         }
         private string GetReturnValue(ICommerce service, ECPayViewModel inModel)
         {
@@ -83,7 +95,7 @@ namespace CHY_Theater.Areas.Booking.Controllers
         {
             var userId = GetCurrentUserId();
 
-            var service = new ECPayService(_context, _accessor, userId);
+            var service = GetPayType(option);
             var result = service.GetCallbackResult(Request.Form);
             ViewData["ReceiveObj"] = result.ReceiveObj;
             ViewData["TradeInfo"] = result.TradeInfo;
@@ -94,6 +106,11 @@ namespace CHY_Theater.Areas.Booking.Controllers
         private string GetCurrentUserId()
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier);
+        } 
+        private string GenerateUniqueTradeNo()
+        {
+            // Implement your logic to generate a unique trade number
+            return "TR" + DateTime.Now.ToString("yyyyMMddHHmmss") + new Random().Next(1000, 9999).ToString();
         }
     }
 

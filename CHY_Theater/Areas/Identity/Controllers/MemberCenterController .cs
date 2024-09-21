@@ -162,7 +162,6 @@ namespace CHY_Theater.Areas.Identity.Controllers
             if (isBirthdayFirstSet)
             {
                 user.Birthday = model.Birthday;
-
                 // Check if all detailed info is filled
                 if (!string.IsNullOrEmpty(user.Address) &&
                     !string.IsNullOrEmpty(user.PhoneNumber) &&
@@ -190,7 +189,6 @@ namespace CHY_Theater.Areas.Identity.Controllers
                 }
                 return RedirectToAction("Index", "MemberCenter");
             }
-
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);

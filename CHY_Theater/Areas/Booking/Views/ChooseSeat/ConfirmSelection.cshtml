@@ -602,9 +602,8 @@
                 var TotalPrice = Math.round(currentTotalPrice);
                 var merchantTradeNo = '@Model.MerchantTradeNo';
                 $('#payLaterBtn').hide();
-                alert(TotalPrice);
-                alert(merchantTradeNo);
-
+                // alert(TotalPrice);
+                // alert(merchantTradeNo);
                 loadECPayForm(TotalPrice, merchantTradeNo);
             });
         }

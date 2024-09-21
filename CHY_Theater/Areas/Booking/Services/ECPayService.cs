@@ -178,7 +178,7 @@ namespace CHY_Theater.Areas.Booking.Services
             return checkValue.ToUpper();
         }
 
-        public ECPResultViewModel GetCallbackResult(IFormCollection form)
+        public Result GetCallbackResult(IFormCollection form)
         {
             var data = new Dictionary<string, string>();
             foreach (string key in form.Keys)
@@ -186,6 +186,7 @@ namespace CHY_Theater.Areas.Booking.Services
                 data.Add(key, form[key]);
             }
             string temp = form["MerchantTradeNo"]; //寫在LINQ(下一行)會出錯，
+
             var booking = _context.Bookings.Where(m => m.MerchantTradeNo == temp).FirstOrDefault();
             if (booking != null)
             {
@@ -221,7 +222,7 @@ namespace CHY_Theater.Areas.Booking.Services
             {
                 receive.AppendLine(item.Key + "=" + item.Value + "<br>");
             }
-            var result = new ECPResultViewModel
+            var result = new Result
             {
                 ReceiveObj = receive.ToString(),
                 MerchantTradeNo = temp,

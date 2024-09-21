@@ -6,6 +6,6 @@ namespace CHY_Theater.Areas.Booking.Services
     {
         string GetCallBack(ECPayViewModel inModel);
         string GetPeriodCallBack(ECPayViewModel inModel);
-        ECPResultViewModel GetCallbackResult(IFormCollection form);
+        Result GetCallbackResult(IFormCollection form);
     }
 }
