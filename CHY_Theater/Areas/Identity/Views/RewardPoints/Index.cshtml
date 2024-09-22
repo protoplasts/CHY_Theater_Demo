@@ -74,13 +74,13 @@
 <div class="card mb-4 mt-2">
 		<div class="card-body">
 
-            <h5 class="card-title">總點數（過去12個月）： @Model.TotalPoints</h5>
-            <h6 class="card-subtitle mb-2 text-muted">可用點數： @Model.AvailablePoints</h6>
-        <h6 class="card-subtitle mb-2 text-muted">最新交易獲得: @Model.LatestPoints points</h6>
+            @* <h5 class="card-title">總點數（過去12個月）： @Model.TotalPoints</h5> *@
+            <h5 class="card-title">可用點數： @Model.AvailablePoints</h5>
+        <h6 class="card-subtitle mb-2 text-muted">最新交易獲得: @Model.LatestPoints 點</h6>
         @if (Model.LatestTransactionDate.HasValue)
-        {
-            <p class="card-text">Last updated: @Model.LatestTransactionDate.Value.ToString("g")</p>
-        }
+            {
+                <p class="card-subtitle mb-2 text-muted">上筆交易時間:@Model.LatestTransactionDate.Value.ToString("g")</p>
+            }
         else
         {
                 <p class="card-text">過去12個月沒有交易記錄。</p>

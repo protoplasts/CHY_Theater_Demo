@@ -1,47 +1,118 @@
-﻿@model ECPayViewModel
+﻿<style>
+    #ecpayForm {
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-top: 2rem;
+        overflow: hidden;
+    }
 
+        #ecpayForm .card-header {
+            background-color: #007bff;
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 600;
+            padding: 1rem 1.5rem;
+        }
+
+        #ecpayForm .card-body {
+            padding: 2rem;
+        }
+
+        #ecpayForm .form-label {
+            font-weight: 500;
+            color: #495057;
+        }
+
+        #ecpayForm .form-control {
+            border-radius: 6px;
+            border-color: #ced4da;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+            #ecpayForm .form-control:focus {
+                border-color: #80bdff;
+                box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            }
+
+            #ecpayForm .form-control[readonly] {
+                background-color: #f8f9fa;
+            }
+
+        #ecpayForm .btn {
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+            #ecpayForm .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            }
+
+        #ecpayForm .btn-primary {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+            #ecpayForm .btn-primary:hover {
+                background-color: #218838;
+                border-color: #1e7e34;
+            }
+
+        #ecpayForm .btn-secondary {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+            #ecpayForm .btn-secondary:hover {
+                background-color: #c82333;
+                border-color: #bd2130;
+            }
+</style>
+
+@model ECPayViewModel
 <div class="card" id="ecpayForm">
     <div class="card-header">
-        EC Pay 支付
+        線上支付
     </div>
     <div class="card-body">
-        <div class="row mb-2">
-            <div class="col-md-6">
-                <label class="form-label">付款選項</label>
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+                <label class="form-label" for="PayOption">付款選項</label>
                 <select id="PayOption" class="form-control" name="PayOption">
                     <option selected="selected" value="ECPay">綠界支付</option>
                     <option value="newbPay">藍新支付</option>
                 </select>
             </div>
-            <div class="col-md-6">
-                <label class="form-label">訂單編號</label>
+            <div class="col-md-6 mb-3">
+                <label class="form-label" for="MerchantOrderNo">訂單編號</label>
                 <input type="text" class="form-control" id="MerchantOrderNo" value="@Model.MerchantTradeNo" readonly>
             </div>
-            <div class="col-md-6">
-                <label class="form-label">商品說明</label>
+            <div class="col-md-6 mb-3">
+                <label class="form-label" for="ItemDesc">商品說明</label>
                 <input type="text" class="form-control" id="ItemDesc" readonly>
             </div>
-            <div class="col-md-6">
-                <label class="form-label">商品金額</label>
+            <div class="col-md-6 mb-3">
+                <label class="form-label" for="Amt">商品金額</label>
                 <input type="text" class="form-control" id="Amt" value="@Model.TotalAmount" readonly>
             </div>
-        </div>
-        <div class="row mb-2">
-            <div class="col-md-6">
-                <label class="form-label">繳費有效期限</label>
+            <div class="col-md-6 mb-3">
+                <label class="form-label" for="ExpireDate">繳費有效期限</label>
                 <input type="text" class="form-control" id="ExpireDate" value="@Model.ExpireDate" readonly>
             </div>
-            <div class="col-md-6">
-                <label class="form-label">付款人電子信箱</label>
+            <div class="col-md-6 mb-3" id="emailFieldContainer" style="display: none;">
+                <label class="form-label" for="Email">付款人電子信箱</label>
                 <input type="text" class="form-control" id="Email">
             </div>
         </div>
-        <div class="row mt-3">
-            <div class="col-md-6">
-                <button type="button" class="btn btn-primary" id="ecpaySubmitButton">確認付款</button>
+        <div class="row mt-4">
+            <div class="col-md-6 mb-3">
+                <button type="button" class="btn btn-primary btn-block" id="ecpaySubmitButton">確認付款</button>
             </div>
-            <div class="col-md-6">
-                <button type="button" class="btn btn-secondary" onclick="abandonOnlinePayment()">放棄線上支付</button>
+            <div class="col-md-6 mb-3">
+                <button type="button" class="btn btn-secondary btn-block" onclick="abandonOnlinePayment()">放棄線上支付</button>
             </div>
         </div>
     </div>
@@ -51,8 +122,19 @@
 <script>
     $(document).ready(function () {
         $('#ItemDesc').val('如影隨形公司娛樂消費');
-
         $('#PayOption').val('ECPay');
+
+        function toggleEmailField() {
+            if ($('#PayOption').val() === 'newbPay') {
+                $('#emailFieldContainer').slideDown(300);
+            } else {
+                $('#emailFieldContainer').slideUp(300);
+            }
+        }
+
+        $('#PayOption').change(toggleEmailField);
+        toggleEmailField(); // Call once on page load
+
         function SendToNewebPay(ChannelID) {
             var postData = {
                 ChannelID: ChannelID,
@@ -77,7 +159,7 @@
                     alert(err.status + " " + err.statusText + '\n' + err.responseText);
                 }
             });
-        };
+        }
 
         $('#ecpaySubmitButton').click(function () {
             SendToNewebPay('VACC');

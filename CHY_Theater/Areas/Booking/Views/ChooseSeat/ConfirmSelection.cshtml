@@ -3,8 +3,8 @@
 @model ConfirmSelectionViewModel
 @Html.AntiForgeryToken()
 
-
 @section Styles {
+    <link rel="stylesheet" href="~/css/payment-options.css" asp-append-version="true" />
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -336,11 +336,17 @@
                 </div>
         </div>
     </div>
-    <div id="paymentOptions" style="display: none;">
-        <h4>選擇付款方式</h4>
-        <button class="btn btn-primary m-2" onclick="useECPay()">使用綠界支付付款</button>
-        <button class="btn btn-secondary m-2" onclick="payLater()">現場取票付款</button>
-    </div>
+        <div id="paymentOptions" style="display: none;">
+            <h4>選擇付款方式</h4>
+            <div class="payment-buttons">
+                <button class="payment-button payment-button-online" onclick="useECPay()">
+                    <i class="fas fa-credit-card mr-2"></i> 使用線上支付
+                </button>
+                <button class="payment-button payment-button-later" onclick="payLater()">
+                    <i class="fas fa-store mr-2"></i> 現場取票付款
+                </button>
+            </div>
+        </div>
     <div id="ECPayContent"></div>
 	</div>
 </section>
