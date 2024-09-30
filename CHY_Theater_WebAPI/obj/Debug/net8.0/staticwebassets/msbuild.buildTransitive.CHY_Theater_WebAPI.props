@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\CHY_Theater_WebAPI.props" />
+</Project>

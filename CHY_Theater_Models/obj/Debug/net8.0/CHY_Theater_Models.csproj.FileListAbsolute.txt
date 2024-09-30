@@ -1,0 +1,15 @@
+C:\Users\dd111\Desktop\我的專題\CHY_Theater_Demo\CHY_Theater_Models\bin\Debug\net8.0\CHY_Theater_Models.deps.json
+C:\Users\dd111\Desktop\我的專題\CHY_Theater_Demo\CHY_Theater_Models\bin\Debug\net8.0\CHY_Theater_Models.runtimeconfig.json
+C:\Users\dd111\Desktop\我的專題\CHY_Theater_Demo\CHY_Theater_Models\bin\Debug\net8.0\CHY_Theater_Models.dll
+C:\Users\dd111\Desktop\我的專題\CHY_Theater_Demo\CHY_Theater_Models\bin\Debug\net8.0\CHY_Theater_Models.pdb
+C:\Users\dd111\Desktop\我的專題\CHY_Theater_Demo\CHY_Theater_Models\obj\Debug\net8.0\CHY_Theater_Models.csproj.AssemblyReference.cache
+C:\Users\dd111\Desktop\我的專題\CHY_Theater_Demo\CHY_Theater_Models\obj\Debug\net8.0\CHY_Theater_Models.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dd111\Desktop\我的專題\CHY_Theater_Demo\CHY_Theater_Models\obj\Debug\net8.0\CHY_Theater_Models.AssemblyInfoInputs.cache
+C:\Users\dd111\Desktop\我的專題\CHY_Theater_Demo\CHY_Theater_Models\obj\Debug\net8.0\CHY_Theater_Models.AssemblyInfo.cs
+C:\Users\dd111\Desktop\我的專題\CHY_Theater_Demo\CHY_Theater_Models\obj\Debug\net8.0\CHY_Theater_Models.csproj.CoreCompileInputs.cache
+C:\Users\dd111\Desktop\我的專題\CHY_Theater_Demo\CHY_Theater_Models\obj\Debug\net8.0\CHY_Theater_Models.sourcelink.json
+C:\Users\dd111\Desktop\我的專題\CHY_Theater_Demo\CHY_Theater_Models\obj\Debug\net8.0\CHY_Theater_Models.dll
+C:\Users\dd111\Desktop\我的專題\CHY_Theater_Demo\CHY_Theater_Models\obj\Debug\net8.0\refint\CHY_Theater_Models.dll
+C:\Users\dd111\Desktop\我的專題\CHY_Theater_Demo\CHY_Theater_Models\obj\Debug\net8.0\CHY_Theater_Models.pdb
+C:\Users\dd111\Desktop\我的專題\CHY_Theater_Demo\CHY_Theater_Models\obj\Debug\net8.0\CHY_Theater_Models.genruntimeconfig.cache
+C:\Users\dd111\Desktop\我的專題\CHY_Theater_Demo\CHY_Theater_Models\obj\Debug\net8.0\ref\CHY_Theater_Models.dll

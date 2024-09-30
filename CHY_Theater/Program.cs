@@ -66,19 +66,16 @@ builder.Services.ConfigureApplicationCookie(opt =>
 
 builder.Services.AddAuthentication().AddMicrosoftAccount(opt =>
 {
-	opt.ClientId = "95de3a24-950e-40af-b746-55671c7b109a";
-	opt.ClientSecret = "vub8Q~mZPp0ksucpN2oqpCQ5Lk7rDXrifKjjFaIt";
+    opt.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"];
+    opt.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"];
 });
 // Add Google authentication
 builder.Services.AddAuthentication()
-	.AddGoogle(options =>
-	{
-		IConfigurationSection googleAuthNSection =
-			builder.Configuration.GetSection("Authentication:Google");
-
-		options.ClientId = googleAuthNSection["ClientId"];
-		options.ClientSecret = googleAuthNSection["ClientSecret"];
-	});
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    });
 // Add Facebook authentication
 builder.Services.AddAuthentication().AddFacebook(options =>
 {

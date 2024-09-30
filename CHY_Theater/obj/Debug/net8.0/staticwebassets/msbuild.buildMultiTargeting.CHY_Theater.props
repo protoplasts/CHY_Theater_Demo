@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\CHY_Theater.props" />
+</Project>

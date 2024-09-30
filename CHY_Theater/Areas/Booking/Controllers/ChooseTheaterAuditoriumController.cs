@@ -8,11 +8,9 @@ using static CHY_Theater.Areas.Booking.Models.ViewModels.TheaterAuditoriumsViewM
 namespace CHY_Theater.Areas.Booking.Controllers
 {
     [Area("Booking")]
-
     public class ChooseTheaterAuditoriumController : Controller
     {
         private readonly Theater_ProjectDbContext _context;
-
         public ChooseTheaterAuditoriumController(Theater_ProjectDbContext context)
         {
             _context = context;

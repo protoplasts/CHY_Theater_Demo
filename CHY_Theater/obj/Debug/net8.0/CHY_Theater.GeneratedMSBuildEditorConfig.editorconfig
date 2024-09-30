@@ -1,0 +1,371 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = CHY_Theater
+build_property.RootNamespace = CHY_Theater
+build_property.ProjectDir = C:\Users\dd111\Desktop\我的專題\CHY_Theater_Demo\CHY_Theater\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\dd111\Desktop\我的專題\CHY_Theater_Demo\CHY_Theater
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Admin/Views/Actors/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWN0b3JzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Admin/Views/Actors/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWN0b3JzXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Admin/Views/Actors/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWN0b3JzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Admin/Views/Actors/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWN0b3JzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Admin/Views/Actors/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWN0b3JzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Admin/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Admin/Views/MovieAJAX/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcTW92aWVBSkFYXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Admin/Views/MovieCRUD/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcTW92aWVDUlVEXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Admin/Views/Movies/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcTW92aWVzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Admin/Views/Movies/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcTW92aWVzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Admin/Views/Revenue/Revenue.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUmV2ZW51ZVxSZXZlbnVlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Admin/Views/Shares/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVzXF9WaWV3SW1wb3J0cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Admin/Views/Shares/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVzXF9WaWV3U3RhcnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Booking/Views/ChooseSeat/ChooseSeat.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQm9va2luZ1xWaWV3c1xDaG9vc2VTZWF0XENob29zZVNlYXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Booking/Views/ChooseSeat/ConfirmSelection.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQm9va2luZ1xWaWV3c1xDaG9vc2VTZWF0XENvbmZpcm1TZWxlY3Rpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Booking/Views/ChooseTheaterAuditorium/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQm9va2luZ1xWaWV3c1xDaG9vc2VUaGVhdGVyQXVkaXRvcml1bVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Booking/Views/ECP/CallbackReturn.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQm9va2luZ1xWaWV3c1xFQ1BcQ2FsbGJhY2tSZXR1cm4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Booking/Views/PartialView/_AuditoriumPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQm9va2luZ1xWaWV3c1xQYXJ0aWFsVmlld1xfQXVkaXRvcml1bVBhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Booking/Views/PartialView/_ECPayForm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQm9va2luZ1xWaWV3c1xQYXJ0aWFsVmlld1xfRUNQYXlGb3JtLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Booking/Views/TicketTypeAndSnack/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQm9va2luZ1xWaWV3c1xUaWNrZXRUeXBlQW5kU25hY2tcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Booking/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQm9va2luZ1xWaWV3c1xfVmlld0ltcG9ydHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Booking/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQm9va2luZ1xWaWV3c1xfVmlld1N0YXJ0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Customer/Views/Events/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcRXZlbnRzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Customer/Views/Events/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcRXZlbnRzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Customer/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Customer/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Customer/Views/Movies/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcTW92aWVzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Customer/Views/Movies/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcTW92aWVzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Customer/Views/News/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcTmV3c1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Customer/Views/News/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcTmV3c1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Customer/Views/Theaters/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcVGhlYXRlcnNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Customer/Views/Theaters/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcVGhlYXRlcnNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Customer/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Customer/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/Account/AuthenticatorConfirmation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcQWNjb3VudFxBdXRoZW50aWNhdG9yQ29uZmlybWF0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/Account/ConfirmEmail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcQWNjb3VudFxDb25maXJtRW1haWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/Account/EnableAuthenticator.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcQWNjb3VudFxFbmFibGVBdXRoZW50aWNhdG9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/Account/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcQWNjb3VudFxFcnJvci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/Account/ExternalLoginConfirmation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcQWNjb3VudFxFeHRlcm5hbExvZ2luQ29uZmlybWF0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/Account/FakeConfirmEmail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcQWNjb3VudFxGYWtlQ29uZmlybUVtYWlsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/Account/ForgotPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcQWNjb3VudFxGb3Jnb3RQYXNzd29yZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/Account/ForgotPasswordConfirmation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcQWNjb3VudFxGb3Jnb3RQYXNzd29yZENvbmZpcm1hdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/Account/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcQWNjb3VudFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/Account/Lockout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcQWNjb3VudFxMb2Nrb3V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/Account/Login2.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcQWNjb3VudFxMb2dpbjIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/Account/NoAccess.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcQWNjb3VudFxOb0FjY2Vzcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/Account/RegisterConfirmation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcQWNjb3VudFxSZWdpc3RlckNvbmZpcm1hdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/Account/ResetPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcQWNjb3VudFxSZXNldFBhc3N3b3JkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/Account/ResetPasswordConfirmation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcQWNjb3VudFxSZXNldFBhc3N3b3JkQ29uZmlybWF0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/Account/VerifyAuthenticatorCode.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcQWNjb3VudFxWZXJpZnlBdXRoZW50aWNhdG9yQ29kZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/Authenticator/TwoFactorLogin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcQXV0aGVudGljYXRvclxUd29GYWN0b3JMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/MemberCenter/ChangePassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcTWVtYmVyQ2VudGVyXENoYW5nZVBhc3N3b3JkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/MemberCenter/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcTWVtYmVyQ2VudGVyXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/MemberCenter/OrderInquiry.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcTWVtYmVyQ2VudGVyXE9yZGVySW5xdWlyeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/MemberCenter/UpdatePersonalInfo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcTWVtYmVyQ2VudGVyXFVwZGF0ZVBlcnNvbmFsSW5mby5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/MemberCenter/UserCoupons.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcTWVtYmVyQ2VudGVyXFVzZXJDb3Vwb25zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/PartialView/_BookingCard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcUGFydGlhbFZpZXdcX0Jvb2tpbmdDYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/PartialView/_EnableAuthenticator.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcUGFydGlhbFZpZXdcX0VuYWJsZUF1dGhlbnRpY2F0b3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/RewardPoints/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcUmV3YXJkUG9pbnRzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/RewardPoints/IndexDataTable.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcUmV3YXJkUG9pbnRzXEluZGV4RGF0YVRhYmxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/Shared/Components/Breadcrumb/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcU2hhcmVkXENvbXBvbmVudHNcQnJlYWRjcnVtYlxEZWZhdWx0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/Shared/_LoginPartialCustom.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcU2hhcmVkXF9Mb2dpblBhcnRpYWxDdXN0b20uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Areas/Identity/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Views/Shared/ApiError.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEFwaUVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Views/Shared/Components/Breadcrumb/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcQnJlYWRjcnVtYlxEZWZhdWx0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Views/Shared/Components/Carousel/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcQ2Fyb3VzZWxcRGVmYXVsdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Views/Shared/Components/Events/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcRXZlbnRzXERlZmF1bHQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Views/Shared/Components/Focus/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcRm9jdXNcRGVmYXVsdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Views/Shared/Components/MovieTrailers/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcTW92aWVUcmFpbGVyc1xEZWZhdWx0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Views/Shared/Components/News/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcTmV3c1xEZWZhdWx0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Views/Shared/Partial View/_carousel.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFBhcnRpYWwgVmlld1xfY2Fyb3VzZWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Views/Shared/Partial View/_Focus.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFBhcnRpYWwgVmlld1xfRm9jdXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Views/Shared/Partial View/_OnShow.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFBhcnRpYWwgVmlld1xfT25TaG93LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Views/Shared/UnauthorizedAccess.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFVuYXV0aG9yaXplZEFjY2Vzcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Views/Shared/_ShowTimes.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TaG93VGltZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Views/Shared/_TheaterShowTimes.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9UaGVhdGVyU2hvd1RpbWVzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Views/Shared/_AdminLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pbkxheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = b-g03o5ow92b
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-r74cg2febs
+
+[C:/Users/dd111/Desktop/我的專題/CHY_Theater_Demo/CHY_Theater/Views/Shared/_MemberCenterLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9NZW1iZXJDZW50ZXJMYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-5vmntc2gjm

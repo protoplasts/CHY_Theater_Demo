@@ -38,7 +38,6 @@
             position: relative;
             
         }
-
             .movie-information::before {
                 content: '';
                 position: absolute;
@@ -229,176 +228,173 @@
     </style>
 }
 <section class="movie-information">
-
-
-<div class="container mt-4 shadow-lg p-5  rounded main-content">
-
-    <div class="bg-white border rounded-3 p-3 shadow-sm mt-1">
-        <div class="row">
-            <div class="col-md-4 d-flex justify-content-center align-items-start">
-                <div class="movie-poster-wrapper">
-                    <img src="@Model.Movie.MovieImage" alt="@Model.Movie.MovieName" class="movie-poster img-fluid rounded shadow" />
+    <div class="container mt-4 shadow-lg p-5  rounded main-content">
+        <div class="bg-white border rounded-3 p-3 shadow-sm mt-1">
+            <div class="row">
+                <div class="col-md-4 d-flex justify-content-center align-items-start">
+                    <div class="movie-poster-wrapper">
+                        <img src="@Model.Movie.MovieImage" alt="@Model.Movie.MovieName" class="movie-poster img-fluid rounded shadow" />
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-md-8">
-                <ul class="movie-details mb-4 list-unstyled">
-                    <li class="mb-3">
-                        <h1 class="fw-bold text-dark">@Model.Movie.MovieName</h1>
-                            <h2 class="fs-4 text-dark">@Model.Movie.MovieEnglishName</h2>
-                    </li>
-                    <li class="mb-3">
-                        <span class="fs-5 text-dark">級別:</span>
-                        <img src="@GetLevelImagePath(Model.Movie.Level)" alt="Level @Model.Movie.Level" class="ms-2" style="height:40px" />
-                    </li>
-                    <li class="mb-3">
-                        <span class="fs-5 text-dark">開演時間:</span>
-                        <span class="fs-5 ms-2 text-dark">@Model.Show.ShowDateTime.ToString("yyyy年M月d日 H點")</span>
-                    </li>
-                    <li class="selected-tickets mt-4 pt-3 border-top">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h3 class="fw-bold fs-5 text-dark mb-3">票種</h3>
-                                <div id="selected-tickets-list" class="mb-3 text-dark"></div>
-                                    <h3 class="fw-bold fs-5 text-dark mb-3">明細</h3>
-                                <div id="selected-tickets-detail" class="mb-3 text-dark"></div>
+                <div class="col-md-8">
+                    <ul class="movie-details mb-4 list-unstyled">
+                        <li class="mb-3">
+                            <h1 class="fw-bold text-dark">@Model.Movie.MovieName</h1>
+                                <h2 class="fs-4 text-dark">@Model.Movie.MovieEnglishName</h2>
+                        </li>
+                        <li class="mb-3">
+                            <span class="fs-5 text-dark">級別:</span>
+                            <img src="@GetLevelImagePath(Model.Movie.Level)" alt="Level @Model.Movie.Level" class="ms-2" style="height:40px" />
+                        </li>
+                        <li class="mb-3">
+                            <span class="fs-5 text-dark">開演時間:</span>
+                            <span class="fs-5 ms-2 text-dark">@Model.Show.ShowDateTime.ToString("yyyy年M月d日 H點")</span>
+                        </li>
+                        <li class="selected-tickets mt-4 pt-3 border-top">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="fw-bold fs-5 text-dark mb-3">票種</h3>
+                                    <div id="selected-tickets-list" class="mb-3 text-dark"></div>
+                                        <h3 class="fw-bold fs-5 text-dark mb-3">明細</h3>
+                                    <div id="selected-tickets-detail" class="mb-3 text-dark"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h3 class="fw-bold fs-5 text-dark mb-3">加購</h3>
+                                    <div id="selected-snacks-list" class="mb-3 text-dark"></div>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <h3 class="fw-bold fs-5 text-dark mb-3">加購</h3>
-                                <div id="selected-snacks-list" class="mb-3 text-dark"></div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="mb-3" style="display:none">
-                            <span class="fs-5 text-dark">總座位數:</span>
-                        <span id="total-seats" class="fs-5 ms-2 text-muted"></span>
-                    </li>
+                        </li>
+                        <li class="mb-3" style="display:none">
+                                <span class="fs-5 text-dark">總座位數:</span>
+                            <span id="total-seats" class="fs-5 ms-2 text-muted"></span>
+                        </li>
                    
-                </ul>
+                    </ul>
+                </div>
+
+            </div>
+            @*   <div class="selected-tickets mt-3 pt-3 border-top">
+            <h4 class="fw-bold fs-5 text-muted">已選取票種</h4>
+            <ul id="selected-tickets-list" class="list-unstyled">
+            <!-- This will be populated dynamically with JavaScript -->
+            </ul>
+            </div> *@
+            <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                <h3 class="mb-0 text-dark">總計:</h3>
+                    <h3 class="mb-0 text-dark">$<span id="grand-total">0.00</span></h3>
+            </div>
+        </div>
+        <div class="bg-white rounded-3 p-3 mt-1">
+
+        <form asp-action="ProcessSelection" method="post">
+            <div class="d-flex justify-content-between align-items-center my-4">
+                <h2 class="mb-0">請選擇您的票種與加購</h2>
+                <button type="submit" id="proceed-button" class="btn" style="display: none;">
+                    以選取<span id="total-ticket-quantity">0</span>張票;開始選取座位
+                </button>
             </div>
 
-        </div>
-        @*   <div class="selected-tickets mt-3 pt-3 border-top">
-        <h4 class="fw-bold fs-5 text-muted">已選取票種</h4>
-        <ul id="selected-tickets-list" class="list-unstyled">
-        <!-- This will be populated dynamically with JavaScript -->
-        </ul>
-        </div> *@
-        <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
-            <h3 class="mb-0 text-dark">總計:</h3>
-                <h3 class="mb-0 text-dark">$<span id="grand-total">0.00</span></h3>
-        </div>
-    </div>
-    <div class="bg-white rounded-3 p-3 mt-1">
+            <input type="hidden" name="ShowId" value="@Model.BookingSelection.ShowId" />
+            <input type="hidden" name="MovieId" value="@Model.BookingSelection.MovieId" />
+            <input type="hidden" name="TheaterId" value="@Model.BookingSelection.TheaterId" />
+            <input type="hidden" name="Auditoriumid" value="@Model.BookingSelection.Auditoriumid" />
+            @* <input type="hidden" id="GrandTotal" name="GrandTotal" value="0" /> *@
 
-    <form asp-action="ProcessSelection" method="post">
-        <div class="d-flex justify-content-between align-items-center my-4">
-            <h2 class="mb-0">請選擇您的票種與加購</h2>
-            <button type="submit" id="proceed-button" class="btn" style="display: none;">
-                以選取<span id="total-ticket-quantity">0</span>張票;開始選取座位
-            </button>
-        </div>
-
-        <input type="hidden" name="ShowId" value="@Model.BookingSelection.ShowId" />
-        <input type="hidden" name="MovieId" value="@Model.BookingSelection.MovieId" />
-        <input type="hidden" name="TheaterId" value="@Model.BookingSelection.TheaterId" />
-        <input type="hidden" name="Auditoriumid" value="@Model.BookingSelection.Auditoriumid" />
-        @* <input type="hidden" id="GrandTotal" name="GrandTotal" value="0" /> *@
-
-        @* <h3 class="mb-3">Tickets</h3> *@
-        <div class="table-responsive">
-            <table class="table table-borderless mb-4">
-                <thead>
-                    <tr>
-                        <th>票種</th>
-                        <th class="text-end">單價</th>
-                        <th class="text-center">數量</th>
-                        <th class="text-end">小計</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var ticketType in Model.TicketTypes)
-                    {
-                        <tr class="ticket-row" data-ticket-id="@ticketType.TicketTypeId" data-ticket-name="@ticketType.TypeName" data-ticket-price="@ticketType.Price" data-ticket-type="@ticketType.TicketDescription" data-seats-for-type="@ticketType.HowManySeatForType">
-                            <td>
-                                @ticketType.TypeName <br />
-                                <div style="font-size: smaller; color: gray;" class="mt-2">@ticketType.TicketDescription</div>
-                            </td>
-                            <td class="unit-price text-end">@ticketType.Price.ToString("C0")</td>
-                            <td class="text-center">
-                                <select class="quantity-select form-select form-select-sm w-auto mx-auto">
-                                    @for (int i = 0; i <= 10; i++)
-                                    {
-                                        <option value="@i">@i</option>
-                                    }
-                                </select>
-                            </td>
-                            <td class="total-amount text-end">
-                                @((0m).ToString("C0", CultureInfo.CreateSpecificCulture("en-US")))
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3" class="text-end fw-bold">票價總計:</td>
-                        <td class="total-amount ticket-total text-end fw-bold">0.00</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-        @* <h3 class="mb-3">Snacks</h3> *@
-        <div class="table-responsive">
-                <table class="table table-borderless">
+            @* <h3 class="mb-3">Tickets</h3> *@
+            <div class="table-responsive">
+                <table class="table table-borderless mb-4">
                     <thead>
                         <tr>
-                            <th>加購品項</th>
-                            <th>尺寸</th>
+                            <th>票種</th>
                             <th class="text-end">單價</th>
                             <th class="text-center">數量</th>
                             <th class="text-end">小計</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @{
-                            var groupedSnacks = Model.Snacks.GroupBy(s => s.SnackName);
-                        }
-                        @foreach (var group in groupedSnacks)
+                        @foreach (var ticketType in Model.TicketTypes)
                         {
-                            <tr class="snack-row" data-snack-name="@group.Key">
-                                <td>@group.Key</td>
+                            <tr class="ticket-row" data-ticket-id="@ticketType.TicketTypeId" data-ticket-name="@ticketType.TypeName" data-ticket-price="@ticketType.Price" data-ticket-type="@ticketType.TicketDescription" data-seats-for-type="@ticketType.HowManySeatForType">
                                 <td>
-                                    <select class="size-select form-select form-select-sm">
-                                        @foreach (var snack in group)
-                                        {
-                                            <option value="@snack.SnackId" data-price="@snack.Price">@snack.SnackSize</option>
-                                        }
-                                    </select>
+                                    @ticketType.TypeName <br />
+                                    <div style="font-size: smaller; color: gray;" class="mt-2">@ticketType.TicketDescription</div>
                                 </td>
-                                <td class="unit-price text-end">@group.First().Price.ToString("C0")</td>
+                                    <td class="unit-price text-end">@ticketType.Price.ToString("N0", CultureInfo.CreateSpecificCulture("en-US"))</td>
                                 <td class="text-center">
                                     <select class="quantity-select form-select form-select-sm w-auto mx-auto">
-                                        @for (int j = 0; j <= 10; j++)
+                                        @for (int i = 0; i <= 10; i++)
                                         {
-                                            <option value="@j">@j</option>
+                                            <option value="@i">@i</option>
                                         }
                                     </select>
                                 </td>
-                                <td class="total-amount text-end">@((0m).ToString("C0"))</td>
+                                <td class="total-amount text-end">
+                                    @((0m).ToString("C0", CultureInfo.CreateSpecificCulture("en-US")))
+                                </td>
                             </tr>
                         }
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="4" class="text-end fw-bold">加購總計:</td>
-                            <td class="total-amount snack-total text-end fw-bold">@((0m).ToString("C0"))</td>
+                            <td colspan="3" class="text-end fw-bold">票價總計:</td>
+                                <td class="total-amount ticket-total text-end fw-bold">0.00</td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
-    </form>
-	</div>
-</div>
+            @* <h3 class="mb-3">Snacks</h3> *@
+            <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr>
+                                <th>加購品項</th>
+                                <th>尺寸</th>
+                                <th class="text-end">單價</th>
+                                <th class="text-center">數量</th>
+                                <th class="text-end">小計</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var groupedSnacks = Model.Snacks.GroupBy(s => s.SnackName);
+                            }
+                            @foreach (var group in groupedSnacks)
+                            {
+                                <tr class="snack-row" data-snack-name="@group.Key">
+                                    <td>@group.Key</td>
+                                    <td>
+                                        <select class="size-select form-select form-select-sm">
+                                            @foreach (var snack in group)
+                                            {
+                                                <option value="@snack.SnackId" data-price="@snack.Price">@snack.SnackSize</option>
+                                            }
+                                        </select>
+                                    </td>
+                                    <td class="unit-price text-end">@group.First().Price.ToString("C0", CultureInfo.CreateSpecificCulture("en-US"))</td>
+                                    <td class="text-center">
+                                        <select class="quantity-select form-select form-select-sm w-auto mx-auto">
+                                            @for (int j = 0; j <= 10; j++)
+                                            {
+                                                <option value="@j">@j</option>
+                                            }
+                                        </select>
+                                    </td>
+                                    <td class="total-amount text-end">@((0m).ToString("C0", CultureInfo.CreateSpecificCulture("en-US")))</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4" class="text-end fw-bold">加購總計:</td>
+                                <td class="total-amount snack-total text-end fw-bold">@((0m).ToString("C0", CultureInfo.CreateSpecificCulture("en-US")))</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+        </form>
+	    </div>
+    </div>
 </section>
 @section Scripts {
     <script>
